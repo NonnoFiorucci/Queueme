@@ -1,0 +1,186 @@
+/* APP */
+
+.mainStyle {
+    margin-bottom : 70px;
+    margin-top: 0px;
+    text-align: center;
+}
+
+.loading{
+    margin-top: 300px;
+    display: flex;
+    justify-content: center;
+}
+
+.headerStyle {
+    margin-bottom: 70px;
+}
+
+.pageStyle{
+    margin-right : 10px;
+    margin-left: 10px;
+    margin-bottom : 70px;
+    margin-top: 30px;
+}
+
+/* login */
+
+.formLogin {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.accessoButton {
+    margin-bottom : 30px;
+    margin-top: 10px;
+}
+
+.formAccesso {
+    margin-bottom : 30px;
+    margin-top: 10px;
+}
+
+/* blog */
+
+.blogButton {
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.cardStyle {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.blogIcon {
+    margin-left: 7px;
+    margin-right: 7px;
+    margin-bottom: 5px;
+}
+
+
+.infoCard{
+    color: white;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+
+.cardCommento {
+    margin-top: 5px; 
+}
+
+.commentaFormStyle {
+    margin-top: 10px;
+}
+
+.segnalazioneButton {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.contattiList {
+    list-style-type: none
+}
+
+.contattiIcon {
+    margin-left: 5px;
+    margin-bottom: 4px;
+}
+
+/* header */
+
+.mr-auto{
+    text-align: center;
+}
+
+/* .headerNull {
+    background-color: red;
+} */
+
+/* profile */
+
+
+
+.formDati {
+    margin-top: 30px;
+    margin-left: 50px;
+    margin-right: 50px;
+
+}
+
+.formDatiLabel {
+    text-align: center;
+}
+
+
+/* footer */
+
+.footerButton {
+    margin-top: -5px;
+    margin-bottom: -2px;
+}
+
+.footericon{
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    margin-bottom: 0px;
+}
+
+.footerText {
+    margin-top: -5px;
+    margin-bottom: -10px;
+}
+
+.footericonPhone {
+    width: 18px;
+    height: 18px;
+    margin-top: -10px;
+    margin-bottom: 0px;
+    transform: rotate(90deg);
+}
+
+.carousel-caption {
+    background: rgba(0, 0, 0, 0.2);    
+   }
+
+
+.navbar{
+    margin-bottom: 0px;
+}
+
+::-webkit-input-placeholder {
+    text-align: center;
+   }
+
+
+input[type="email"]{  
+    text-align: center; 
+} 
+
+input[type="password"] {  
+    text-align: center; 
+} 
+
+
+.googleCentrato{
+    display: flex;
+    justify-content: center
+}
+
+.QCard{
+    margin-left: auto;
+    margin-right: auto;
+   
+}
+
+.QueueForm {
+    margin-left: 10px;
+    margin-right: 10px;
+}
