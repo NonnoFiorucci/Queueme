@@ -21,6 +21,7 @@ import MyQueue from './components/pages/myqueue/myqueue';
 
 import Faq from './components/pages/faq/faq';
 
+import './components/style.css';
 
 
 

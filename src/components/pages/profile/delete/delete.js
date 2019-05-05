@@ -6,6 +6,7 @@ import { FaAngleLeft } from 'react-icons/fa';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 
+import * as ROUTES from '../../../../constants/routes';
 
 class deleteProfile extends Component {
 
@@ -79,15 +80,14 @@ class deleteProfile extends Component {
   render() {
     return (
       <div>
-        <div style={{ display: "flex", justifyContent: "left" }}><Button variant="info" href="/profile"> <FaAngleLeft /> </Button></div>
+        <div style={{ display: "flex", justifyContent: "left" }}>
+          <Button variant='secondary' href={ROUTES.PROFILE}> 
+            <FaAngleLeft/> 
+          </Button>
+        </div>
 
         <h1>Elimina il tuo profilo</h1>
-        <br />
         <h4><strong>Una volta eliminato l'account non potrai più leggere alcuna delle tue conversazioni.</strong></h4>
-
-        <br />
-        <br />
-        <br />
 
         <OverlayTrigger
           trigger="click"
@@ -103,7 +103,7 @@ class deleteProfile extends Component {
               <div className="btn-toolbar" style={{ display: 'felx' }}>
 
                 <Button variant="danger" onClick={this.deleteaccount} > Elimina</Button>  {}
-                <Button style={{ marginLeft: 50 }} href="/deleteProfile" variant="secondary">Annulla</Button>
+                <Button style={{ marginLeft: 50 }} href={ROUTES.DELPRO} variant="secondary">Annulla</Button>
               </div>
             </Popover>
           }

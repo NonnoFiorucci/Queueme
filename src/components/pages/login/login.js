@@ -4,8 +4,8 @@ import { Button, Form, Collapse } from 'react-bootstrap';
 import { GoogleLoginButton } from "react-social-login-buttons";
 import { fire, providerGoogle } from '../../../config/FirebaseConfig';
 
-//eslint-disable-next-line
-import Style from '../../style.css';
+
+import '../../style.css';
 
 
 class Login extends Component{
@@ -168,19 +168,19 @@ class Login extends Component{
     formAccesso() {
       return (
         <div className="formAccesso">
-          <Form className="formLogin" onSubmit={(event) => this.autenticaEmailPassword(event)}>
-            <Form.Group controlId="formBasicEmail">
+          <Form onSubmit={(event) => this.autenticaEmailPassword(event)}>
+            <Form.Group >
               <Form.Label>Email</Form.Label>
               <Form.Control type="email" placeholder="Inserisci Email" ref={(input) => { this.emailInputAccesso = input }}/>
             </Form.Group>
-            <Form.Group controlId="formBasicPassword">
+            <Form.Group>
               <Form.Label>Password</Form.Label>
               <Form.Control type="password" placeholder="Inserisci Password" ref={(input) => { this.passwordInputAccesso = input }}/>
             </Form.Group>
             <Form.Group controlId="formBasicChecbox">
             </Form.Group>
             <br></br>            
-            <Button variant="info" type="submit" style={{fontWeight:'bold'}}>
+            <Button variant="secondary" type="submit" >
               Accedi
             </Button>                       
           </Form>
@@ -211,14 +211,13 @@ class Login extends Component{
           </Form.Group>
           <Form.Group controlId="exampleForm.ControlSelect1">
           <Form.Label>Sono uno</Form.Label>
-            <Form.Control as="select" ref={(input) => { this.tipoInputRegistrazione = input }}>
-              
+            <Form.Control id="sltForm"as="select" ref={(input) => { this.tipoInputRegistrazione = input }}>              
               <option>Utente</option>
               <option>Azienda</option>
             </Form.Control>
           </Form.Group>
           <br></br>            
-          <Button variant="info" type="submit" style={{fontWeight:'bold'}}>
+          <Button variant="secondary" type="submit" style={{fontWeight:'bold'}}>
             Registrati
           </Button>                       
         </Form>
@@ -236,7 +235,7 @@ class Login extends Component{
         <h3>Login/Registrazione</h3>
         <br></br>
         <h5>Hai già un account QueueMe?</h5>
-        <Button variant='warning' className="accessoButton" style={{fontWeight:'bold'}}
+        <Button variant="secondary"
           onClick={() => this.setState({ openRegistrazione: false , openAccesso: !openAccesso})}
           aria-controls="collapse-accedi"
           aria-expanded={openAccesso}>
@@ -251,7 +250,7 @@ class Login extends Component{
         
         <br></br>
         <h5>Oppure Registrati, ci vuole un attimo!</h5>
-        <Button variant='warning' className="accessoButton" style={{fontWeight:'bold'}}
+        <Button  variant="secondary"
           onClick={() => this.setState({ openAccesso: false , openRegistrazione: !openRegistrazione})}
           aria-controls="collapse-registrazione"
           aria-expanded={openRegistrazione}>

@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 
 import * as ROUTES from '../../../constants/routes';
+import '../../style.css';
 
 class Profile extends Component {
 
@@ -22,15 +23,15 @@ class Profile extends Component {
   render() {
     return (
       <div>
-        <h3>Profilo {this.props.ruolo}</h3>
+        <h3>Profilo {this.state.ruolo}</h3>
 
-        <Button href={ROUTES.MYQUEUE} variant="danger" size="lg" block>
+        <Button href={ROUTES.MYQUEUE} variant="secondary" >
           Le mie Code
         </Button>
-        <Button href={ROUTES.DELPRO} variant="danger" size="lg" block>
+        <Button href={ROUTES.DELPRO} variant="secondary"  >
           Elimina profilo
         </Button>
-        <Button href={ROUTES.LOGOUT} variant="danger" size="lg" block>
+        <Button href={ROUTES.LOGOUT} variant="secondary" >
           Esci
         </Button>
       </div>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { fire } from '../../../../config/FirebaseConfig';
 import { Button, Form } from 'react-bootstrap';
-import {FaAngleLeft} from 'react-icons/fa';
+import { FaAngleLeft } from 'react-icons/fa';
 
 class modifyProfile extends Component{
 
@@ -129,19 +129,6 @@ class modifyProfile extends Component{
                         :   <Form.Control className="formDatiLabel" type="text" value={this.state.telefono} ref={(input) => { this.aggiornaTelefono = input }}/>
                         }
                     </Form.Group>
-
-                    {/* <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control className="formDatiLabel" type="text" defaultValue={this.props.email} ref={(input) => { this.aggiornaEmail = input }}/>
-                    </Form.Group>                    
-                    <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Istituto</Form.Label>
-                        <Form.Control className="formDatiLabel" type="text" placeholder={this.state.istituto} ref={(input) => { this.aggiornaIstituto = input }}/>
-                    </Form.Group>
-                    <Form.Group controlId="formBasicPassword">
-                        <Form.Label>Telefono</Form.Label>
-                        <Form.Control className="formDatiLabel" type="text" placeholder={this.state.telefono} ref={(input) => { this.aggiornaTelefono = input }}/>
-                    </Form.Group> */}
                     <Form.Group controlId="formBasicChecbox">
                     </Form.Group>
                     <br></br>            

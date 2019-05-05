@@ -1,41 +1,48 @@
 /* APP */
-
 .mainStyle {
     margin-bottom : 70px;
     margin-top: 0px;
     text-align: center;
+    
 }
 
 .loading{
     margin-top: 300px;
     display: flex;
     justify-content: center;
+
 }
 
 .headerStyle {
     margin-bottom: 70px;
+    
 }
-
 .pageStyle{
-    margin-right : 10px;
-    margin-left: 10px;
-    margin-bottom : 70px;
-    margin-top: 30px;
+    width: 40%;
+    margin-right : 30%;
+    margin-left: 30%;
+    margin-bottom : 5%;
+    margin-top: 5%; 
+    
 }
 
 /* login */
 
-.formLogin {
-    margin-left: 10px;
-    margin-right: 10px;
-}
 
+.accessoButton:hover{
+    /* background-color: #474748;
+    color:white; */
+}
 .accessoButton {
+    /* color:white;
+    background-color:#333333; */
     margin-bottom : 30px;
     margin-top: 10px;
 }
 
 .formAccesso {
+    /* border-style: #474748;
+    background-color:#333333; */
     margin-bottom : 30px;
     margin-top: 10px;
 }
@@ -52,6 +59,9 @@
 .cardStyle {
     margin-left: 10px;
     margin-right: 10px;
+    background-color:#2A2D2E;
+    border-style: solid;
+    border-color: #474748;
 }
 
 .blogIcon {
@@ -59,7 +69,6 @@
     margin-right: 7px;
     margin-bottom: 5px;
 }
-
 
 .infoCard{
     color: white;
@@ -92,28 +101,12 @@
     margin-left: 5px;
     margin-bottom: 4px;
 }
-
-/* header */
-
-.mr-auto{
-    text-align: center;
-}
-
-/* .headerNull {
-    background-color: red;
-} */
-
 /* profile */
-
-
-
 .formDati {
     margin-top: 30px;
     margin-left: 50px;
     margin-right: 50px;
-
 }
-
 .formDatiLabel {
     text-align: center;
 }
@@ -121,52 +114,63 @@
 
 /* footer */
 
-.footerButton {
+.footeBtn {
     margin-top: -5px;
     margin-bottom: -2px;
 }
 
-.footericon{
+.footIco{
     width: 20px;
     height: 20px;
     margin-top: -10px;
     margin-bottom: 0px;
 }
 
-.footerText {
+.footTxt {
     margin-top: -5px;
     margin-bottom: -10px;
+    color: antiquewhite;
 }
 
-.footericonPhone {
-    width: 18px;
-    height: 18px;
-    margin-top: -10px;
-    margin-bottom: 0px;
-    transform: rotate(90deg);
+
+.headNavBar{
+    text-align: center;
 }
-
-.carousel-caption {
-    background: rgba(0, 0, 0, 0.2);    
-   }
-
-
 .navbar{
     margin-bottom: 0px;
+
 }
 
 ::-webkit-input-placeholder {
     text-align: center;
-   }
+ }
 
 
-input[type="email"]{  
-    text-align: center; 
+input[type]{ 
+    /* background: #474748;
+    color: #C5C5C5; */
+    width: 50%;
+    display: block;
+    margin: auto;
+
 } 
 
-input[type="password"] {  
-    text-align: center; 
-} 
+input[type]:focus{
+    border-color: cornflowerblue;
+    border-style: solid;
+    /* background: #474748;
+    color: #C5C5C5; */
+}
+
+#sltForm{
+    /* background: #474748;
+    color: #C5C5C5; */
+    width: 50%;
+    display: block;
+    margin: auto;
+}
+
+
 
 
 .googleCentrato{
@@ -177,10 +181,18 @@ input[type="password"] {
 .QCard{
     margin-left: auto;
     margin-right: auto;
+    width: '24rem';
    
 }
 
 .QueueForm {
     margin-left: auto;
     margin-right: auto;
+}
+
+/* btnStyle */
+
+.btnAdd:hover{
+    
+    
 }

@@ -3,13 +3,17 @@ import { fire } from '../../../config/FirebaseConfig';
 
 
 import { TiDeleteOutline } from 'react-icons/ti';
+import { TiPlus } from 'react-icons/ti';
 import { FiSend } from 'react-icons/fi';
+
+
+
 
 import { Card, Button, Form } from 'react-bootstrap';
 
 
-//eslint-disable-next-line
-import Style from '../../style.css';
+
+import '../../style.css';
 
 
 
@@ -137,7 +141,7 @@ class ListaCode extends Component {
               <Button variant="success" style={{ fontWeight: 'bold' }} className="segnalazioneButton" type="submit">Invia<FiSend className="blogIcon" />
               </Button>
               <Button variant="danger" style={{ fontWeight: 'bold' }} className="segnalazioneButton"
-                onClick={() => { this.resetForm() }} ref={(form) => { this.segnForm = form }}>Cancella
+                onClick={() => { this.resetForm() }} ref={(form) => { this.segnForm = form }}>Reset Dati Inseriti 
                     <TiDeleteOutline className="blogIcon" />
               </Button>
             </Card.Body>
@@ -159,7 +163,7 @@ class ListaCode extends Component {
         {this.state.codice.map((codice, index) => (
           <div  >
             <br />
-            <Card className="QCard" style={{ width: '24rem' }}>
+            <Card className="QCard" >
               <Card.Img variant="top" src={this.state.image[index]} />
               <Card.Body>
                 <Card.Title>{this.state.titletxt[index]}  </Card.Title>
@@ -168,7 +172,8 @@ class ListaCode extends Component {
                   <br />
                   {this.state.number[index]}
                 </Card.Text>
-                <Button variant="primary">Q ME</Button>
+                <Button className ='btnAdd'>< TiPlus /></Button>
+                
               </Card.Body>
             </Card>
             <br />
