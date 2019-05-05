@@ -5,49 +5,37 @@ import React, { Component } from 'react';
 
 import { Button } from 'react-bootstrap';
 
-class Profile extends Component{
+import * as ROUTES from '../../../constants/routes';
 
-    constructor() {
-        super();
-        this.state = {
-            nome: null,
-            email: null,
-           
-            ruolo: null
-          }      
-      }
+class Profile extends Component {
 
-     
-      render () {        
-        return (
-            <div>
-                <h3>Profilo {this.props.ruolo}</h3>
-              <br/>
-              <br/>
-
-                <Button href="/myqueue" variant="danger" size="lg" block>
-    Le mie Code
-  </Button>
-
-  <br/>
-  
-  <br/>
-  <Button href="deleteProfile" variant="danger" size="lg" block>
-   Elimina profilo
-  </Button>
-  <br/>
-  
-  <br/>
-  <Button href="/logout" variant="danger" size="lg" block>
-   Esci
-  </Button>
+  constructor() {
+    super();
+    this.state = {
+      nome: null,
+      email: null,
+      ruolo: null
+    }
+  }
 
 
-            
+  render() {
+    return (
+      <div>
+        <h3>Profilo {this.props.ruolo}</h3>
 
-            </div>
-        );
-      }    
+        <Button href={ROUTES.MYQUEUE} variant="danger" size="lg" block>
+          Le mie Code
+        </Button>
+        <Button href={ROUTES.DELPRO} variant="danger" size="lg" block>
+          Elimina profilo
+        </Button>
+        <Button href={ROUTES.LOGOUT} variant="danger" size="lg" block>
+          Esci
+        </Button>
+      </div>
+    );
+  }
 }
 
 export default Profile;
@@ -174,15 +162,15 @@ class Profile extends Component {
           Modifica profilo
         </Button>
 
-        {/* 
-             
+        {/*
+
                 {this.props.picture === 'null'
                 ? <Button variant="info" href="/profile" size="sm">
                     Inserisci immagine
                   </Button>
                 : <Button variant="outline" href="/profile" size="sm">
                     <img className="profileImg" src={this.props.picture} alt="UserPicture"/>
-                  </Button> 
+                  </Button>
                 }
                 <Form className="formDati" onSubmit={(event) => this.aggiornaDati(event)} ref={(form) => { this.datiForm = form }}>
                     <Form.Group controlId="formBasicEmail">
@@ -190,7 +178,7 @@ class Profile extends Component {
                         {this.props.name === 'null'
                         ?   <Form.Control className="formDatiLabel" type="text" placeholder="inserisci nome" ref={(input) => { this.aggiornaNome = input }}/>
                         :   <Form.Control className="formDatiLabel" type="text" value={this.state.nome} ref={(input) => { this.aggiornaNome = input }}/>
-                        }                        
+                        }
                     </Form.Group>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email</Form.Label>
@@ -214,7 +202,7 @@ class Profile extends Component {
                     {/* <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email</Form.Label>
                         <Form.Control className="formDatiLabel" type="text" defaultValue={this.props.email} ref={(input) => { this.aggiornaEmail = input }}/>
-                    </Form.Group>                    
+                    </Form.Group>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Istituto</Form.Label>
                         <Form.Control className="formDatiLabel" type="text" placeholder={this.state.istituto} ref={(input) => { this.aggiornaIstituto = input }}/>
@@ -222,13 +210,13 @@ class Profile extends Component {
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Telefono</Form.Label>
                         <Form.Control className="formDatiLabel" type="text" placeholder={this.state.telefono} ref={(input) => { this.aggiornaTelefono = input }}/>
-                    </Form.Group> 
+                    </Form.Group>
                     <Form.Group controlId="formBasicChecbox">
                     </Form.Group>
-                    <br></br>            
+                    <br></br>
                     <Button variant="info" type="submit" style={{fontWeight:'bold'}}>
                         Aggiorna
-                    </Button>                       
+                    </Button>
                 </Form>
 
 

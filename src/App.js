@@ -37,7 +37,7 @@ class App extends React.Component {
       userID: null,
       email: null,
       name: null,
-      
+
       telefono: null,
     }
     this.setAuthenticated = this.setAuthenticated.bind(this)
@@ -114,9 +114,11 @@ class App extends React.Component {
     if (this.state.loading === true) {
       return (
         <div className="loading">
-          <Spinner animation="grow"/>
-          <Spinner animation="grow"/>
-          <Spinner animation="grow"/>
+          <Spinner animation="grow" />
+          <Spinner animation="grow" />
+          <Spinner animation="grow" />
+          <Spinner animation="grow" />
+          <Spinner animation="grow" />
         </div>
       )
     }
@@ -125,11 +127,11 @@ class App extends React.Component {
       <div>
         {this.state.authenticated
           ?
-            <div className="headerStyle">
-              <Header authenticated={this.state.authenticated} />
-            </div>
+          <div className="headerStyle">
+            <Header authenticated={this.state.authenticated} />
+          </div>
           : null
-        }        
+        }
         <div className="mainStyle">
           <BrowserRouter>
             <div className="pageStyle">
@@ -152,89 +154,89 @@ class App extends React.Component {
                     } />
 
                     <Route path="/profile" render={() =>
-                      <Profile/>
+                      <Profile />
                     } />
 
 
-<Route path="/modifyProfile" render={() =>
+                    <Route path="/modifyProfile" render={() =>
                       <ModifyProfile
                         userID={this.state.userID}
                         email={this.state.email}
                         name={this.state.name}
-                       
+
                         ruolo={this.state.ruolo}
                         istituto={this.state.istituto}
-                      
+
                         setRuolo={this.state.setRuolo}
                         setStateUser={this.setStateUser}
-                     
+
                         setLocalName={this.setLocalName}
                         setLocalRole={this.setLocalRole}
-                       
+
                         setLocalUser={this.setLocalUser} />
                     } />
 
-<Route path="/deleteProfile" render={() =>
+                    <Route path="/deleteProfile" render={() =>
                       <DeleteProfile
                         userID={this.state.userID}
                         email={this.state.email}
                         name={this.state.name}
-                      
+
                         ruolo={this.state.ruolo}
-                      
+
                         setRuolo={this.state.setRuolo}
                         setStateUser={this.setStateUser}
-                      
+
                         setLocalName={this.setLocalName}
                         setLocalRole={this.setLocalRole}
-                     
+
                         setLocalUser={this.setLocalUser} />
                     } />
 
 
 
-<Route path="/queuelist" render={() =>
+                    <Route path="/queuelist" render={() =>
                       <QueueList
                         userID={this.state.userID}
                         email={this.state.email}
                         name={this.state.name}
-                        
+
                         ruolo={this.state.ruolo}
-                        
+
                         setRuolo={this.state.setRuolo}
                         setStateUser={this.setStateUser}
-                       
+
                         setLocalName={this.setLocalName}
                         setLocalRole={this.setLocalRole}
-                        
+
                         setLocalUser={this.setLocalUser} />
                     } />
 
 
-<Route path="/myqueue" render={() =>
+                    <Route path="/myqueue" render={() =>
                       <MyQueue
                         userID={this.state.userID}
                         email={this.state.email}
                         name={this.state.name}
-                        
+
                         ruolo={this.state.ruolo}
-                        
+
                         setRuolo={this.state.setRuolo}
                         setStateUser={this.setStateUser}
-                       
+
                         setLocalName={this.setLocalName}
                         setLocalRole={this.setLocalRole}
-                        
+
                         setLocalUser={this.setLocalUser} />
                     } />
 
                     <Route path="/info" component={Info} />
-                    
-                    
+
+
                     <Route path="/faq" component={Faq} />
-                   
-                   
-                    </>
+
+
+                  </>
                   : <Redirect to='/login' />
                 }
               </Switch>

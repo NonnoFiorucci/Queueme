@@ -1,9 +1,9 @@
 {
-  "short_name": "Stop! Bullying",
-  "name": "Stop! Bullying",
+  "short_name": "QueueME",
+  "name": "QueueME",
   "icons": [
     {
-      "src": "icon.png",
+      "src": "LogoQME.png",
       "sizes": "512x512",
       "type": "image/png"
     }
