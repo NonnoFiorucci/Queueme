@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { fire } from '../../../config/FirebaseConfig';
 
+// import FireAPI from '../../firebaseAPIStatic';
+
 class Logout extends Component {
     constructor() {
         super()
@@ -11,6 +13,7 @@ class Logout extends Component {
     }
 
     componentWillMount() {
+        // FireAPI.signOut();
         fire.auth().signOut().then((user) => {
             this.setState({ redirect: true })
         })

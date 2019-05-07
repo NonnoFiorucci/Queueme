@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
-
 import * as ROUTES from '../../constants/routes';
 import logo from '../media/LogoQME.png';
 

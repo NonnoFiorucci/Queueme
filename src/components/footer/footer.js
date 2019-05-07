@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { Navbar, Button, Nav } from 'react-bootstrap';
-
 import {  FaUserCircle } from 'react-icons/fa';
 import { IoMdContacts } from "react-icons/io";
 
 import * as ROUTES from '../../constants/routes';
-
 
 import '../style.css';
 
