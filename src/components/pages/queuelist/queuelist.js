@@ -32,8 +32,6 @@ class ListaCode extends Component {
       data: [],
       key: 'home',
       indexModal: null,
-
-
     };
 
     this.showQueue = this.showQueue.bind(this);
@@ -63,13 +61,12 @@ class ListaCode extends Component {
   }
 
 
-  writeQueue(codice, idAzienda, Titolo, Descrizione, Numero, Immagine) {
+  writeQueue(codice, idAzienda, Titolo, Descrizione, Immagine) {
     fire.database().ref('queue/' + codice).set({
       idCompany: idAzienda,
       titletxt: Titolo,
       description: Descrizione,
-      number: Numero,
-
+      number: 0,
       image: Immagine,
     }).then((data) => {
       //success callback
@@ -93,7 +90,7 @@ class ListaCode extends Component {
 
     const image = this.Immagine.value
 
-    const numero = 0
+    const numero = 0;
 
     const codiceQueue = this.uniqueIDCode();
     //const data = this.getData();

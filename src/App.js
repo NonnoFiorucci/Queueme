@@ -17,7 +17,7 @@ import ModifyProfile from './components/pages/profile/modify/modify';
 import DeleteProfile from './components/pages/profile/delete/delete';
 import Info from './components/pages/info/info';
 import QueueList from './components/pages/queuelist/queuelist';
-import MyQueue from './components/pages/myqueue/myqueue';
+import MyQueue from './components/pages/profile/myqueue/myqueue';
 
 import Faq from './components/pages/faq/faq';
 

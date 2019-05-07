@@ -9,7 +9,7 @@ function Landing() {
         <div>
             <h3 >Benvenuto!</h3>
             
-             <h2>Non sprecare il tuo tempo, la vita è troppo breve!</h2>
+            <h2>Non sprecare il tuo tempo, la vita è troppo breve!</h2>
             
             <Button variant="secondary" type="submit" href={ROUTES.LOGIN}>
                 ENTRA !
