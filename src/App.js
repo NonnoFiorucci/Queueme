@@ -15,6 +15,7 @@ import Landing from './components/pages/landing/landing';
 import Profile from './components/pages/profile/profile';
 import ModifyProfile from './components/pages/profile/modify/modify';
 import DeleteProfile from './components/pages/profile/delete/delete';
+import Company from './components/pages/profile/company';
 import Info from './components/pages/info/info';
 import QueueList from './components/pages/queuelist/queuelist';
 import MyQueue from './components/pages/profile/myqueue/myqueue';
@@ -212,6 +213,24 @@ class App extends React.Component {
 
                         setLocalUser={this.setLocalUser} />
                     } />
+                    
+                    <Route path="/company" render={() =>
+                      <Company
+                        userID={this.state.userID}
+                        email={this.state.email}
+                        name={this.state.name}
+
+                        ruolo={this.state.ruolo}
+
+                        setRuolo={this.state.setRuolo}
+                        setStateUser={this.setStateUser}
+
+                        setLocalName={this.setLocalName}
+                        setLocalRole={this.setLocalRole}
+
+                        setLocalUser={this.setLocalUser} />
+                    } />
+                   
 
 
                     <Route path="/myqueue" render={() =>

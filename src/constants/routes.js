@@ -2,6 +2,8 @@ export const LANDING = '/';
 export const LOGIN = '/login';
 export const MYQUEUE = '/myqueue';
 export const QUEUES = '/queuelist';
+export const COMPANY = '/company';
+
 
 export const PROFILE = '/profile';
 export const DELPRO = '/deleteProfile';
