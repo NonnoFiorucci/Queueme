@@ -1,6 +1,6 @@
 import React from 'react';
 import { fire } from '../../../../config/FirebaseConfig';
-import { Form, Table, Row, Button } from 'react-bootstrap';
+import { Form, Table, Button } from 'react-bootstrap';
 
 
 class Company extends React.Component {
@@ -34,7 +34,7 @@ class Company extends React.Component {
     }
     //utilizzato nella select del form di creazione di una nuova coda
     showOperator() {
-        const dbQueryOperator = fire.database().ref().child('operator/').orderByChild('idCompany').equalTo(this.state.idCompany)
+        const dbQueryOperator = fire.database().ref('operator/').child().orderByChild('idCompany').equalTo(this.state.idCompany)
         dbQueryOperator.on('value', snap => {
             const previusList = this.state.listOfOperator;
             previusList.append({
@@ -49,7 +49,7 @@ class Company extends React.Component {
     }
     //fa una query per visualizzare le code gestite da una determinata azienda
     showQueues() {
-        const dbQueryQueues = fire.database().ref().child('queue').orderByChild('idCompany').equalTo(this.state.idCompany);
+        const dbQueryQueues = fire.database().ref('/queue').orderByChild('idCompany').equalTo(this.state.idCompany);
 
         dbQueryQueues.once('value', snap => {
             snap.forEach(child => {
@@ -67,8 +67,8 @@ class Company extends React.Component {
         })
     }
     
-    createNewQueueOnDb(idQueue, title, description, idOperator, active) {
-        fire.database().ref('queue/' + idQueue).set({
+    createNewQueueOnDb( title, description, idOperator, active) {
+        fire.database().ref('provacode/' + this.uniqueIDCode()).set({
             idCompany: this.props.userID,
             title: title,
             description: description,
@@ -83,11 +83,7 @@ class Company extends React.Component {
             })
     }
     newQueue = event => {
-
-        if (this.refs.title.value === '' || this.refs.description === '')
-            alert("Compila i campi base")
-        else
-            this.createNewQueueOnDb(this.uniqueIDCode, this.refs.title.value, this.refs.description.value, this.refs.idOperator.value, this.refs.active.value)
+        this.createNewQueueOnDb( this.refs.title.value, this.refs.description.value, this.refs.idOperator.value, this.refs.active.value)
         event.preventDefault();
     }
     getQueueList() {
@@ -120,17 +116,17 @@ class Company extends React.Component {
     createQueueForm() {
         return (
             <Form onSubmit={this.newQueue} >
-                <Form.Group as={Row} controlId="title">
+                <Form.Group >
                     <Form.Label>Titolo</Form.Label>
-                    <Form.Control type="text" placeholder="Nome coda" required/>
+                    <Form.Control ref='title' type="text" placeholder="Nome coda" required/>
                 </Form.Group>
-                <Form.Group as={Row} controlId="description">
+                <Form.Group >
                     <Form.Label>Descrizione</Form.Label>
-                    <Form.Control type="text" placeholder="Posizione all'interno della struttura" required/>
+                    <Form.Control ref='description' type="text" placeholder="Posizione all'interno della struttura" required/>
                 </Form.Group>
-                <Form.Group as={Row} controlId="operator">
+                <Form.Group  >
                     <Form.Label>Operatore</Form.Label>
-                    <Form.Control as="select" required>
+                    <Form.Control ref='operator' as="select" >
                         {this.state.listOfOperator.map(
                             operator =>
                             <option value={operator.operatorId}>{operator.name} [{operator.operatorId}]</option>
@@ -138,13 +134,13 @@ class Company extends React.Component {
                         }
                     </Form.Control>
                 </Form.Group>                
-                <Form.Group controlId="Active">
-                    <Form.Check type="checkbox" label="La lista é attiva?"/>
+                <Form.Group >
+                    <Form.Check ref='active' type="checkbox" label="La lista é attiva?"/>
                 </Form.Group>
-                <Form.Group>
-                    <Button variant="second" type="submit"/> 
+                
+                <Button variant="secondary" type="submit">Crea</Button> 
 
-                </Form.Group>
+
             </Form>            
         )
     }
