@@ -73,7 +73,6 @@ class Company extends React.Component {
     }
 
     createNewQueueOnDb(title, description, idOperator, active) {
-        console.log(title,description,active);
         fire.database().ref('provacode/' + this.uniqueIDCode()).set({
             idCompany: this.props.userID,
             title: title,
@@ -89,11 +88,9 @@ class Company extends React.Component {
             })
     }
     newQueue = event => {
-        console.log(this.refs.title.value, this.refs.description.value, this.refs.active.value);
-        
-        
-        
-        this.createNewQueueOnDb(this.refs.title.value, this.refs.description.value, this.refs.idOperator.value, this.refs.active.value)
+        console.log(this.refs.title.value, this.refs.description.value, this.refs.active.value);      
+        //fino a qui i valori arrivano quindi non é il form
+        this.createNewQueueOnDb(this.refs.title.value, this.refs.description.value, this.refs.idOperator.value, this.refs.active.value);
         event.preventDefault();
     }
     getQueueList() {
