@@ -27,6 +27,7 @@ class Header extends Component {
                             <Nav.Link style={{ color: 'white', fontWeight: 'bold' }} href={ROUTES.PROFILE}>Profilo</Nav.Link>
                             <Nav.Link style={{ color: 'white', fontWeight: 'bold' }} href={ROUTES.FAQ}>FAQ</Nav.Link>
                             <Nav.Link style={{ color: 'white', fontWeight: 'bold' }} href={ROUTES.INFO}>Info</Nav.Link>
+                            <Nav.Link style={{ color: 'white', fontWeight: 'bold' }} href={ROUTES.COMPANY}>Manage Company</Nav.Link>
                             <Nav.Link style={{ color: 'white', fontWeight: 'bold' }} href={ROUTES.LOGOUT}>Logout</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>

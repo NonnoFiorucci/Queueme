@@ -114,7 +114,7 @@
 
 /* footer */
 
-.footeBtn {
+.footBtn {
     margin-top: -5px;
     margin-bottom: -2px;
 }
@@ -190,9 +190,4 @@ input[type]:focus{
     margin-right: auto;
 }
 
-/* btnStyle */
 
-.btnAdd:hover{
-    
-    
-}

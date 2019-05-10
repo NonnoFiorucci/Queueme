@@ -15,4 +15,4 @@ const fire = firebase.initializeApp(config);
 const providerGoogle = new firebase.auth.GoogleAuthProvider();
 
 
-export { fire, providerGoogle}
+export { fire, providerGoogle};
