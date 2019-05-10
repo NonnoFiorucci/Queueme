@@ -11,12 +11,6 @@ class Company extends React.Component {
             checkboxChecked: false,
             showCreate: false,
 
-            // queueCreation = {
-            //     title: '',
-            //     desc: '',
-            //     idOperator: '',
-            //     active: ''
-            // },
             idQueue: [],
             title: [],
             description: [],
@@ -24,6 +18,8 @@ class Company extends React.Component {
             idOperator: [],
             numWait: [],
             active: [],
+
+            listOfQueues: [],
 
             listOfOperator: []
         }
@@ -44,15 +40,15 @@ class Company extends React.Component {
         var ID = Date.now();
         return ID;
     }
-    componentWillMount(){
+    componentWillMount() {
         this.showQueues();
         //this.showOperator();
-        
+
     }
     //utilizzato nella select del form di creazione di una nuova coda
     showOperator() {
-        const dbQueryOperator = fire.database().ref('operator/').child().orderByChild('idCompany').equalTo(this.state.idCompany)
-        dbQueryOperator.on('value', snap => {
+        const dbQueryOperator = fire.database().ref('operator/').orderByChild('idCompany/').equalTo(this.state.idCompany)
+        dbQueryOperator.once('value', snap => {
             const previusList = this.state.listOfOperator;
             previusList.append({
                 operatorKey: snap.key,
@@ -66,46 +62,67 @@ class Company extends React.Component {
     }
     //fa una query per visualizzare le code gestite da una determinata azienda ## da sistemare
     showQueues() {
+        // *** Query per ricavare la lista di code associata a quella azienda **
+        const dbQueryQueues = fire.database().ref('queue/').orderByChild('idCompany/').equalTo(this.props.userID);
 
-        const dbQueryQueues = fire.database().ref('queue/').child().equalTo(
-        );
 
-        dbQueryQueues.once('value', snap => {
-            snap.forEach(child => {
-                console.log(child.key+' '+child.val())
+        dbQueryQueues.on('value', snap => {
+            snap.forEach(snap => {
+                // const queueValues = snap.val();
+                // if (queueValues) {
+                //     const queueList = Object.keys(queueValues).map(key => ({
+                //         ...queueValues[key]
+                //     }));
+                //     this.setState({
+                //         listOfQueues: queueList
+                //     })
+                // }
+
+
+                // console.log(snap.key + ' ' + snap.val());
+                    this.setState({
+                        idQueue: this.state.idQueue.concat([snap.key]),
+                        title: this.state.title.concat([snap.val().titletxt]),
+                        description: this.state.description.concat([snap.val().description]),
+                        //image: this.state.image.concat([child.val().image]),
+                        //sempre lo stesso perchè la compagnia visualizza solo le sue code
+                        //idOperator: this.state.idOperator([child.val().idOperator]),
+                        numWait: this.state.idOperator.concat([snap.val().number]),
+                        active: this.state.active.concat([snap.val().active])
+                    })
             });
         })
     }
-    showQueue() {
-        const dbQueryQueues = fire.database().ref('queue/').orderByChild('idCompany/').equalTo(this.state.idCompany);
+    // showQueue() {
+    //     const dbQueryQueues = fire.database().ref('queue/').orderByChild('idCompany/').equalTo(this.state.idCompany);
 
 
-        dbQueryQueues.once('value', snap => {
-            snap.forEach(child => {
-                this.setState({
-                    idQueue: this.state.idQueue.concat([child.key]),
-                    title: this.state.title.concat([child.val().title]),
-                    description: this.state.description.concatconcat([child.val().description]),
-                    //image: this.state.image.concat([child.val().image]),
-                    //sempre lo stesso perchè la compagnia visualizza solo le sue code
-                    idOperator: this.state.idOperator([child.val().idOperator]),
-                    numWait: this.state.idOperator([child.val().numWait]),
-                    active: this.state.active([child.val().active])
-                })
-            });
-        })
-    }
+    //     dbQueryQueues.once('value', snap => {
+    //         snap.forEach(child => {
+    //             this.setState({
+    //                 idQueue: this.state.idQueue.concat([child.key]),
+    //                 title: this.state.title.concat([child.val().title]),
+    //                 description: this.state.description.concatconcat([child.val().description]),
+    //                 //image: this.state.image.concat([child.val().image]),
+    //                 //sempre lo stesso perchè la compagnia visualizza solo le sue code
+    //                 idOperator: this.state.idOperator([child.val().idOperator]),
+    //                 numWait: this.state.idOperator([child.val().numWait]),
+    //                 active: this.state.active([child.val().active])
+    //             })
+    //         });
+    //     })
+    // }
 
 
     // createNewQueueOnDb(title, description, idOperator, active) {
-        
+
     // }
     handleNewQueue = (event) => {
-        alert(this.refs.title.value, this.refs.description.value,this.refs.idOperator.value, this.refs.active.checked);      
+        //alert(this.refs.title.value, this.refs.description.value,this.refs.idOperator.value, this.refs.active.checked);      
         //fino a qui i valori arrivano quindi non é il form
-        
-        fire.database().ref('queues/').set({
-            idCompany: 1,
+
+        fire.database().ref('queues/' + this.uniqueIDCode).set({
+            idCompany: this.props.userID,
             title: this.refs.title.value,
             description: this.refs.description.value,
             idOperator: this.refs.idOperator.value,
@@ -117,7 +134,7 @@ class Company extends React.Component {
             .catch((error) => {
                 alert(error);
             });
-        
+
         event.preventDefault();
     }
 
@@ -128,10 +145,7 @@ class Company extends React.Component {
 
     //     )
     // }
-    componentWillMount(){
-        // this.firebaseTest();
-        this.showQueues();
-    }
+
     getQueueList() {
         return (
             <Table striped bordered hover variant="dark">
@@ -147,13 +161,23 @@ class Company extends React.Component {
                     {
                         this.state.idQueue.map((codice, index) => (
                             <tr>
-                                <th>{this.state.idQueue}</th>
+                                <th>{this.state.idQueue[index]}</th>
+                                <th>{this.state.title[index]}</th>
+                                <th>{this.state.description[index]}</th>
+                                <th>{this.state.idOperator[index]}</th>
+                            </tr>
+                        ))
+                    }
+                    {/* {
+                        this.state.idQueue.map((codice, index) => (
+                            <tr>
+                                <th>{this.state.}</th>
                                 <th>{this.state.title}</th>
                                 <th>{this.state.description}</th>
                                 <th>{this.state.idOperator}</th>
                             </tr>
                         ))
-                    }
+                    } */}
                 </tbody>
 
             </Table>
@@ -162,7 +186,7 @@ class Company extends React.Component {
     createQueueForm() {
         return (
             <Card>
-                <Form onSubmit={this.handleNewQueue}  ref={(form) => { this.segnForm = form }} >
+                <Form onSubmit={this.handleNewQueue} ref={(form) => { this.segnForm = form }} >
                     <Form.Group controlId='formCreateQueue'>
                         <Form.Label>Titolo</Form.Label>
                         <Form.Control ref='title' type="text" placeholder="Nome coda" required />
@@ -173,7 +197,7 @@ class Company extends React.Component {
                     </Form.Group>
                     <Form.Group  >
                         <Form.Label>Operatore</Form.Label>
-                        <Form.Control ref='operator'as='select'>
+                        <Form.Control ref='operator' as='select'>
                             <option value='1'>Uno</option>
                         </Form.Control>
                         {/* <Form.Control ref='operator' as="select" >
@@ -198,8 +222,8 @@ class Company extends React.Component {
     render() {
         return (
             <div>
-                 {this.createQueueForm()}
-                {this.getQueueList()} 
+                {this.createQueueForm()}
+                {this.getQueueList()}
             </div>
 
         )
