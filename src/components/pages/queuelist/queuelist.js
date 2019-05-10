@@ -161,7 +161,7 @@ class ListaCode extends Component {
           <div  >
             <br />
             <Card className="QCard" >
-              <Card.Img variant="top" src={this.state.image[index]} />
+              {/* <Card.Img variant="top" src={this.state.image[index]} /> */}
               <Card.Body>
                 <Card.Title>{this.state.titletxt[index]}  </Card.Title>
                 <Card.Text>

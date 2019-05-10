@@ -32,6 +32,11 @@ class Company extends React.Component {
         var ID = Date.now();
         return ID;
     }
+    componentWillMount(){
+        this.showQueues();
+        //this.showOperator();
+        
+    }
     //utilizzato nella select del form di creazione di una nuova coda
     showOperator() {
         const dbQueryOperator = fire.database().ref('operator/').child().orderByChild('idCompany').equalTo(this.state.idCompany)
@@ -49,7 +54,7 @@ class Company extends React.Component {
     }
     //fa una query per visualizzare le code gestite da una determinata azienda
     showQueues() {
-        const dbQueryQueues = fire.database().ref('/queue').orderByChild('idCompany').equalTo(this.state.idCompany);
+        const dbQueryQueues = fire.database().ref().child(NAMED_QUEUE_QUERY).orderByChild('idCompany').equalTo(this.state.idCompany);
 
         dbQueryQueues.once('value', snap => {
             snap.forEach(child => {
@@ -67,8 +72,8 @@ class Company extends React.Component {
         })
     }
     
-    createNewQueueOnDb( title, description, idOperator, active) {
-        fire.database().ref('provacode/' + this.uniqueIDCode()).set({
+    createNewQueueOnDb(title, description, idOperator, active) {
+        fire.database().ref(NAMED_QUEUE_QUERY + this.uniqueIDCode()).set({
             idCompany: this.props.userID,
             title: title,
             description: description,
