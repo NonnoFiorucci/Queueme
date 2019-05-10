@@ -66,9 +66,7 @@ class Company extends React.Component {
     }
     //fa una query per visualizzare le code gestite da una determinata azienda ## da sistemare
     showQueues() {
-<<<<<<< HEAD
-        const dbQueryQueues = fire.database().ref().child(NAMED_QUEUE_QUERY).orderByChild('idCompany').equalTo(this.state.idCompany);
-=======
+
         const dbQueryQueues = fire.database().ref('queue/').child().equalTo(
         );
 
@@ -80,7 +78,7 @@ class Company extends React.Component {
     }
     showQueue() {
         const dbQueryQueues = fire.database().ref('queue/').orderByChild('idCompany/').equalTo(this.state.idCompany);
->>>>>>> eb6fcbef04ee96d5254873898a77777e5be94be4
+
 
         dbQueryQueues.once('value', snap => {
             snap.forEach(child => {
@@ -97,16 +95,7 @@ class Company extends React.Component {
             });
         })
     }
-<<<<<<< HEAD
-    
-    createNewQueueOnDb(title, description, idOperator, active) {
-        fire.database().ref(NAMED_QUEUE_QUERY + this.uniqueIDCode()).set({
-            idCompany: this.props.userID,
-            title: title,
-            description: description,
-            idOperator: idOperator,
-            active: active
-=======
+
 
     // createNewQueueOnDb(title, description, idOperator, active) {
         
@@ -121,7 +110,6 @@ class Company extends React.Component {
             description: this.refs.description.value,
             idOperator: this.refs.idOperator.value,
             active: this.refs.active.value
->>>>>>> eb6fcbef04ee96d5254873898a77777e5be94be4
         })
             .then((data) => {
                 alert(data);
@@ -185,7 +173,7 @@ class Company extends React.Component {
                     </Form.Group>
                     <Form.Group  >
                         <Form.Label>Operatore</Form.Label>
-                        <Form.Control ref='oeprator'as='select'>
+                        <Form.Control ref='operator'as='select'>
                             <option value='1'>Uno</option>
                         </Form.Control>
                         {/* <Form.Control ref='operator' as="select" >
