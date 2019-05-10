@@ -198,7 +198,7 @@ class ListaCode extends Component {
       <div>
         {/*    IF AZIENDA    */}
 
-        {this.getQueueForm()}
+        {/* {this.getQueueForm()} */}
 
 
 

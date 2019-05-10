@@ -1,6 +1,7 @@
 import React from 'react';
 import { fire } from '../../../../config/FirebaseConfig';
 import { Card, Form, Table, Button } from 'react-bootstrap';
+import { IoIosCheckmark, IoIosClose  } from "react-icons/io";
 
 
 
@@ -8,7 +9,6 @@ class Company extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            checkboxChecked: false,
             showCreate: false,
 
             idQueue: [],
@@ -18,9 +18,8 @@ class Company extends React.Component {
             idOperator: [],
             numWait: [],
             active: [],
-
-            listOfQueues: [],
-
+           //--- alterantiva ---
+           // listOfQueues: [],
             listOfOperator: []
         }
         this.showQueues = this.showQueues.bind(this);
@@ -32,9 +31,9 @@ class Company extends React.Component {
     expandCreateForm = () => {
         this.setState(state => ({ showCreate: !this.state.showCreate }));
     }
-    handleChange(evt) {
-        this.setState({ checkboxChecked: evt.target.checked });
-    }
+    // handleChange(evt) {
+    //     this.setState({ checkboxChecked: evt.target.checked });
+    // }
 
     uniqueIDCode() {
         var ID = Date.now();
@@ -63,9 +62,7 @@ class Company extends React.Component {
     //fa una query per visualizzare le code gestite da una determinata azienda ## da sistemare
     showQueues() {
         // *** Query per ricavare la lista di code associata a quella azienda **
-        const dbQueryQueues = fire.database().ref('queue/').orderByChild('idCompany/').equalTo(this.props.userID);
-
-
+        const dbQueryQueues = fire.database().ref('queues/').orderByChild('idCompany/').equalTo(this.props.userID);
         dbQueryQueues.on('value', snap => {
             snap.forEach(snap => {
                 // const queueValues = snap.val();
@@ -77,22 +74,21 @@ class Company extends React.Component {
                 //         listOfQueues: queueList
                 //     })
                 // }
-
-
                 // console.log(snap.key + ' ' + snap.val());
                     this.setState({
                         idQueue: this.state.idQueue.concat([snap.key]),
-                        title: this.state.title.concat([snap.val().titletxt]),
+                        title: this.state.title.concat([snap.val().title]),
                         description: this.state.description.concat([snap.val().description]),
                         //image: this.state.image.concat([child.val().image]),
                         //sempre lo stesso perchè la compagnia visualizza solo le sue code
-                        //idOperator: this.state.idOperator([child.val().idOperator]),
-                        numWait: this.state.idOperator.concat([snap.val().number]),
+                        idOperator: this.state.idOperator.concat([snap.val().idOperator]),
+                        numWait: this.state.numWait.concat([snap.val().numWait]),
                         active: this.state.active.concat([snap.val().active])
                     })
             });
         })
     }
+    //*** OLD show ***
     // showQueue() {
     //     const dbQueryQueues = fire.database().ref('queue/').orderByChild('idCompany/').equalTo(this.state.idCompany);
 
@@ -117,25 +113,26 @@ class Company extends React.Component {
     // createNewQueueOnDb(title, description, idOperator, active) {
 
     // }
-    handleNewQueue = (event) => {
+    handleNewQueue (event) {
         //alert(this.refs.title.value, this.refs.description.value,this.refs.idOperator.value, this.refs.active.checked);      
         //fino a qui i valori arrivano quindi non é il form
-
-        fire.database().ref('queues/' + this.uniqueIDCode).set({
+        event.preventDefault();
+        fire.database().ref('queues/').child(this.uniqueIDCode()).set({
             idCompany: this.props.userID,
             title: this.refs.title.value,
             description: this.refs.description.value,
             idOperator: this.refs.idOperator.value,
-            active: this.refs.active.value
+            numWait: 0,
+            active: this.refs.active.checked
         })
             .then((data) => {
-                alert(data);
+               this.alertSuccess("Coda inserita con successo!");
             })
             .catch((error) => {
                 alert(error);
             });
 
-        event.preventDefault();
+        
     }
 
     // firebaseTest() {
@@ -155,6 +152,8 @@ class Company extends React.Component {
                         <th>Titolo</th>
                         <th>Descrizione</th>
                         <th>IDOperatore</th>
+                        <th>Persone in coda</th>
+                        <th>Attiva</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -165,19 +164,14 @@ class Company extends React.Component {
                                 <th>{this.state.title[index]}</th>
                                 <th>{this.state.description[index]}</th>
                                 <th>{this.state.idOperator[index]}</th>
+                                <th>{this.state.numWait[index]}</th>
+                                <th> {
+                                    this.state.active[index] ? <IoIosCheckmark/> : <IoIosClose/>
+                                }
+                                </th>
                             </tr>
                         ))
                     }
-                    {/* {
-                        this.state.idQueue.map((codice, index) => (
-                            <tr>
-                                <th>{this.state.}</th>
-                                <th>{this.state.title}</th>
-                                <th>{this.state.description}</th>
-                                <th>{this.state.idOperator}</th>
-                            </tr>
-                        ))
-                    } */}
                 </tbody>
 
             </Table>
@@ -185,19 +179,15 @@ class Company extends React.Component {
     }
     createQueueForm() {
         return (
-            <Card>
-                <Form onSubmit={this.handleNewQueue} ref={(form) => { this.segnForm = form }} >
+            <Card controlId='cards4Form'>
+                <Form >
                     <Form.Group controlId='formCreateQueue'>
                         <Form.Label>Titolo</Form.Label>
                         <Form.Control ref='title' type="text" placeholder="Nome coda" required />
-                    </Form.Group>
-                    <Form.Group >
                         <Form.Label>Descrizione</Form.Label>
                         <Form.Control ref='description' type="text" placeholder="Posizione all'interno della struttura" required />
-                    </Form.Group>
-                    <Form.Group  >
                         <Form.Label>Operatore</Form.Label>
-                        <Form.Control ref='operator' as='select'>
+                        <Form.Control ref='idOperator' as='select'>
                             <option value='1'>Uno</option>
                         </Form.Control>
                         {/* <Form.Control ref='operator' as="select" >
@@ -207,13 +197,20 @@ class Company extends React.Component {
                             )
                             }
                         </Form.Control> */}
-                    </Form.Group>
-                    <Form.Group >
                         <Form.Check ref='active' type="checkbox" label="La lista é attiva?" />
                     </Form.Group>
 
-                    <Button variant="secondary" type="submit">Crea</Button>
+                    <Button variant="secondary" onClick={this.handleNewQueue} >Crea</Button>
 
+
+                </Form>
+            </Card>
+        )
+    }
+    addOperatorToCompanyForm(){
+        return (
+            <Card controlId='cards4Form'>
+                <Form>
 
                 </Form>
             </Card>
