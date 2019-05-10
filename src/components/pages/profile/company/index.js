@@ -1,6 +1,7 @@
 import React from 'react';
 import { fire } from '../../../../config/FirebaseConfig';
-import { Form, Table, Button } from 'react-bootstrap';
+import { Card, Form, Table, Button } from 'react-bootstrap';
+
 
 
 class Company extends React.Component {
@@ -9,25 +10,29 @@ class Company extends React.Component {
         this.state = {
             showCreate: false,
 
+            // queueCreation = {
+            //     title: '',
+            //     desc: '',
+            //     idOperator: '',
+            //     active: ''
+            // },
             idQueue: [],
             title: [],
             description: [],
-            idCompany: this.props.userID,
+            idCompany: '',
             idOperator: [],
             numWait: [],
             active: [],
 
             listOfOperator: []
-            // operatorName: [],
-            // operatorId: []
         }
         this.showQueues = this.showQueues.bind(this);
     }
 
     expandCreateForm = () => {
-        this.setState(state => ({ showCreate: !state.showCreate }));
+        this.setState(state => ({ showCreate: !this.state.showCreate }));
     }
- 
+
     uniqueIDCode() {
         var ID = Date.now();
         return ID;
@@ -49,7 +54,7 @@ class Company extends React.Component {
     }
     //fa una query per visualizzare le code gestite da una determinata azienda
     showQueues() {
-        const dbQueryQueues = fire.database().ref('/queue').orderByChild('idCompany').equalTo(this.state.idCompany);
+        const dbQueryQueues = fire.database().ref('queue/').orderByChild('idCompany').equalTo(this.state.idCompany);
 
         dbQueryQueues.once('value', snap => {
             snap.forEach(child => {
@@ -66,8 +71,9 @@ class Company extends React.Component {
             });
         })
     }
-    
-    createNewQueueOnDb( title, description, idOperator, active) {
+
+    createNewQueueOnDb(title, description, idOperator, active) {
+        console.log(title,description,active);
         fire.database().ref('provacode/' + this.uniqueIDCode()).set({
             idCompany: this.props.userID,
             title: title,
@@ -83,7 +89,11 @@ class Company extends React.Component {
             })
     }
     newQueue = event => {
-        this.createNewQueueOnDb( this.refs.title.value, this.refs.description.value, this.refs.idOperator.value, this.refs.active.value)
+        console.log(this.refs.title.value, this.refs.description.value, this.refs.active.value);
+        
+        
+        
+        this.createNewQueueOnDb(this.refs.title.value, this.refs.description.value, this.refs.idOperator.value, this.refs.active.value)
         event.preventDefault();
     }
     getQueueList() {
@@ -115,42 +125,44 @@ class Company extends React.Component {
     }
     createQueueForm() {
         return (
-            <Form onSubmit={this.newQueue} >
-                <Form.Group >
-                    <Form.Label>Titolo</Form.Label>
-                    <Form.Control ref='title' type="text" placeholder="Nome coda" required/>
-                </Form.Group>
-                <Form.Group >
-                    <Form.Label>Descrizione</Form.Label>
-                    <Form.Control ref='description' type="text" placeholder="Posizione all'interno della struttura" required/>
-                </Form.Group>
-                <Form.Group  >
-                    <Form.Label>Operatore</Form.Label>
-                    <Form.Control ref='operator' as="select" >
-                        {this.state.listOfOperator.map(
-                            operator =>
-                            <option value={operator.operatorId}>{operator.name} [{operator.operatorId}]</option>
+            <Card>
+                <Form onSubmit={this.newQueue}  ref={(form) => { this.segnForm = form }} >
+                    <Form.Group >
+                        <Form.Label>Titolo</Form.Label>
+                        <Form.Control ref='title' type="text" placeholder="Nome coda" required />
+                    </Form.Group>
+                    <Form.Group >
+                        <Form.Label>Descrizione</Form.Label>
+                        <Form.Control ref='description' type="text" placeholder="Posizione all'interno della struttura" required />
+                    </Form.Group>
+                    <Form.Group  >
+                        <Form.Label>Operatore</Form.Label>
+                        <Form.Control ref='operator' as="select" >
+                            {this.state.listOfOperator.map(
+                                operator =>
+                                    <option value={operator.operatorId}>{operator.name} [{operator.operatorId}]</option>
                             )
-                        }
-                    </Form.Control>
-                </Form.Group>                
-                <Form.Group >
-                    <Form.Check ref='active' type="checkbox" label="La lista é attiva?"/>
-                </Form.Group>
-                
-                <Button variant="secondary" type="submit">Crea</Button> 
+                            }
+                        </Form.Control>
+                    </Form.Group>
+                    <Form.Group >
+                        <Form.Check ref='active' type="checkbox" label="La lista é attiva?" />
+                    </Form.Group>
+
+                    <Button variant="secondary" type="submit">Crea</Button>
 
 
-            </Form>            
+                </Form>
+            </Card>
         )
     }
-    render(){
-        return(
+    render() {
+        return (
             <div>
-                {this.createQueueForm()} 
-                {this.getQueueList()}  
+                {/* {this.createQueueForm()}
+                {this.getQueueList()} */}
             </div>
-            
+
         )
     }
 }
