@@ -1,7 +1,8 @@
 import React from 'react';
 import { fire } from '../../../../config/FirebaseConfig';
-import { Card, Form, Table, Button } from 'react-bootstrap';
-import { IoIosCheckmark, IoIosClose  } from "react-icons/io";
+import { Card, Form, Table, Button, Collapse, Alert } from 'react-bootstrap';
+import { IoIosCheckmark, IoIosClose,IoIosArrowDropdownCircle } from "react-icons/io";
+
 
 
 
@@ -9,7 +10,8 @@ class Company extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showCreate: false,
+            showQeueueCreation: false,
+            showOperatorAssign: false,
 
             idQueue: [],
             title: [],
@@ -18,18 +20,14 @@ class Company extends React.Component {
             idOperator: [],
             numWait: [],
             active: [],
-           //--- alterantiva ---
-           // listOfQueues: [],
+            //--- alterantiva ---
+            // listOfQueues: [],
             listOfOperator: []
         }
         this.showQueues = this.showQueues.bind(this);
         this.handleNewQueue = this.handleNewQueue.bind(this);
         // this.handleChange = this.handleChange.bind(this);
         // this.createNewQueueOnDb = this.createNewQueueOnDb.bind(this);
-    }
-
-    expandCreateForm = () => {
-        this.setState(state => ({ showCreate: !this.state.showCreate }));
     }
     // handleChange(evt) {
     //     this.setState({ checkboxChecked: evt.target.checked });
@@ -44,6 +42,7 @@ class Company extends React.Component {
         //this.showOperator();
 
     }
+
     //utilizzato nella select del form di creazione di una nuova coda
     showOperator() {
         const dbQueryOperator = fire.database().ref('operator/').orderByChild('idCompany/').equalTo(this.state.idCompany)
@@ -65,6 +64,7 @@ class Company extends React.Component {
         const dbQueryQueues = fire.database().ref('queues/').orderByChild('idCompany/').equalTo(this.props.userID);
         dbQueryQueues.on('value', snap => {
             snap.forEach(snap => {
+                //*** Equivalente alla parte non commentata ma più difficile da capire ***
                 // const queueValues = snap.val();
                 // if (queueValues) {
                 //     const queueList = Object.keys(queueValues).map(key => ({
@@ -75,16 +75,16 @@ class Company extends React.Component {
                 //     })
                 // }
                 // console.log(snap.key + ' ' + snap.val());
-                    this.setState({
-                        idQueue: this.state.idQueue.concat([snap.key]),
-                        title: this.state.title.concat([snap.val().title]),
-                        description: this.state.description.concat([snap.val().description]),
-                        //image: this.state.image.concat([child.val().image]),
-                        //sempre lo stesso perchè la compagnia visualizza solo le sue code
-                        idOperator: this.state.idOperator.concat([snap.val().idOperator]),
-                        numWait: this.state.numWait.concat([snap.val().numWait]),
-                        active: this.state.active.concat([snap.val().active])
-                    })
+                this.setState({
+                    idQueue: this.state.idQueue.concat([snap.key]),
+                    title: this.state.title.concat([snap.val().title]),
+                    description: this.state.description.concat([snap.val().description]),
+                    //image: this.state.image.concat([child.val().image]),
+                    //sempre lo stesso perchè la compagnia visualizza solo le sue code
+                    idOperator: this.state.idOperator.concat([snap.val().idOperator]),
+                    numWait: this.state.numWait.concat([snap.val().numWait]),
+                    active: this.state.active.concat([snap.val().active])
+                })
             });
         })
     }
@@ -113,7 +113,7 @@ class Company extends React.Component {
     // createNewQueueOnDb(title, description, idOperator, active) {
 
     // }
-    handleNewQueue (event) {
+    handleNewQueue(event) {
         //alert(this.refs.title.value, this.refs.description.value,this.refs.idOperator.value, this.refs.active.checked);      
         //fino a qui i valori arrivano quindi non é il form
         event.preventDefault();
@@ -126,13 +126,13 @@ class Company extends React.Component {
             active: this.refs.active.checked
         })
             .then((data) => {
-               this.alertSuccess("Coda inserita con successo!");
+                this.alertSuccess("Coda inserita con successo!");
             })
             .catch((error) => {
                 alert(error);
             });
 
-        
+
     }
 
     // firebaseTest() {
@@ -166,7 +166,7 @@ class Company extends React.Component {
                                 <th>{this.state.idOperator[index]}</th>
                                 <th>{this.state.numWait[index]}</th>
                                 <th> {
-                                    this.state.active[index] ? <IoIosCheckmark/> : <IoIosClose/>
+                                    this.state.active[index] ? <IoIosCheckmark /> : <IoIosClose />
                                 }
                                 </th>
                             </tr>
@@ -207,7 +207,7 @@ class Company extends React.Component {
             </Card>
         )
     }
-    addOperatorToCompanyForm(){
+    addOperatorToCompanyForm() {
         return (
             <Card controlId='cards4Form'>
                 <Form>
@@ -219,10 +219,17 @@ class Company extends React.Component {
     render() {
         return (
             <div>
-                {this.createQueueForm()}
+                <Alert variant="primary">
+                    Vuoi creare una nuova coda? 
+                        <Button variant="outline-primary" onClick={() => this.setState({ showQeueueCreation: !this.state.showQeueueCreation })}>
+                                 <IoIosArrowDropdownCircle/>
+                        </Button>
+                 </Alert>
+                <Collapse in={this.state.showQeueueCreation}>
+                    {this.createQueueForm()}
+                </Collapse>
                 {this.getQueueList()}
             </div>
-
         )
     }
 }
