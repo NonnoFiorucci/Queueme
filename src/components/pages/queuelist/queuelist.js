@@ -171,7 +171,7 @@ class ListaCode extends Component {
                   <br />
                   {this.state.numWait[index]}
                 </Card.Text>
-                <Button className ='btnAdd' size="lg" block>< TiPlus /></Button>                
+                <Button className ='btnAdd' size="lg" block disabled={!this.state.active[index]}>< TiPlus /></Button>                
               </Card.Body>
             </Card>
             <br />

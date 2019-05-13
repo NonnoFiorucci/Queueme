@@ -103,9 +103,9 @@
 }
 /* profile */
 .formDati {
-    margin-top: 30px;
-    margin-left: 50px;
-    margin-right: 50px;
+    margin-top: 3rem;
+    margin-left: 3rem;
+    margin-right: 3rem;
 }
 .formDatiLabel {
     text-align: center;
@@ -147,25 +147,23 @@
 
 
 input[type]{ 
-    /* background: #474748;
-    color: #C5C5C5; */
-    width: 50%;
+    width: 40rem;
     display: block;
     margin: auto;
-
 } 
 
 input[type]:focus{
     border-color: cornflowerblue;
     border-style: solid;
-    /* background: #474748;
-    color: #C5C5C5; */
+}
+.customSelect{
+    width: 40rem;
+    display: block;
+    margin: auto;
 }
 
-#sltForm{
-    /* background: #474748;
-    color: #C5C5C5; */
-    width: 50%;
+.sltForm{
+    width: 50rem;
     display: block;
     margin: auto;
 }

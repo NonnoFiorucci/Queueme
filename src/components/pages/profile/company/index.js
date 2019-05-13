@@ -1,7 +1,8 @@
 import React from 'react';
 import { fire } from '../../../../config/FirebaseConfig';
-import { Card, Form, Table, Button, Collapse, Alert } from 'react-bootstrap';
+import { Card, Form, Table, Button, Collapse, Alert, Col, Row } from 'react-bootstrap';
 import { IoIosCheckmark, IoIosClose,IoIosArrowDropdownCircle } from "react-icons/io";
+
 
 
 
@@ -22,7 +23,8 @@ class Company extends React.Component {
             active: [],
             //--- alterantiva ---
             // listOfQueues: [],
-            listOfOperator: []
+            usersAvailableKey: [],
+            usersAvailableUsername: []
         }
         this.showQueues = this.showQueues.bind(this);
         this.handleNewQueue = this.handleNewQueue.bind(this);
@@ -39,6 +41,7 @@ class Company extends React.Component {
     }
     componentWillMount() {
         this.showQueues();
+        this.showUser();
         //this.showOperator();
 
     }
@@ -58,12 +61,24 @@ class Company extends React.Component {
             })
         })
     }
+    showUser(){
+        const dbQueryUser = fire.database().ref('users/');
+        dbQueryUser.on( 'value', snapQuery=>{
+            snapQuery.forEach(snap => {
+            
+                this.setState({
+                    usersAvailableKey:this.state.usersAvailableKey.concat([snap.key]), 
+                    usersAvailableUsername: this.state.usersAvailableUsername.concat([snap.val().username])
+                })
+            })
+        })
+    }
     //fa una query per visualizzare le code gestite da una determinata azienda ## da sistemare
     showQueues() {
         // *** Query per ricavare la lista di code associata a quella azienda **
         const dbQueryQueues = fire.database().ref('queues/').orderByChild('idCompany/').equalTo(this.props.userID);
-        dbQueryQueues.on('value', snap => {
-            snap.forEach(snap => {
+        dbQueryQueues.on('value', snapQuery => {
+            snapQuery.forEach(snap => {
                 //*** Equivalente alla parte non commentata ma più difficile da capire ***
                 // const queueValues = snap.val();
                 // if (queueValues) {
@@ -134,6 +149,13 @@ class Company extends React.Component {
 
 
     }
+    //da correggere -- visualizzare solo la lista degli operatori creata per quell'azienda
+    handleNewOperator(event){
+        event.preventDefault();
+        fire.database().ref('Azienda/').child().update({
+            idOperator: this.refs.idUserForOperator.value
+        })
+    }
 
     // firebaseTest() {
     //     fire.database().ref('tt/').push({
@@ -142,7 +164,7 @@ class Company extends React.Component {
 
     //     )
     // }
-
+ 
     getQueueList() {
         return (
             <Table striped bordered hover variant="dark">
@@ -158,7 +180,7 @@ class Company extends React.Component {
                 </thead>
                 <tbody>
                     {
-                        this.state.idQueue.map((codice, index) => (
+                        this.state.idQueue.map((codice,index) => (
                             <tr>
                                 <th>{this.state.idQueue[index]}</th>
                                 <th>{this.state.title[index]}</th>
@@ -179,15 +201,15 @@ class Company extends React.Component {
     }
     createQueueForm() {
         return (
-            <Card controlId='cards4Form'>
+            <Card >
                 <Form >
-                    <Form.Group controlId='formCreateQueue'>
+                    <Form.Group>
                         <Form.Label>Titolo</Form.Label>
                         <Form.Control ref='title' type="text" placeholder="Nome coda" required />
                         <Form.Label>Descrizione</Form.Label>
                         <Form.Control ref='description' type="text" placeholder="Posizione all'interno della struttura" required />
                         <Form.Label>Operatore</Form.Label>
-                        <Form.Control ref='idOperator' as='select'>
+                        <Form.Control custom ref='idOperator' as='select' id={"customSelect"}>
                             <option value='1'>Uno</option>
                         </Form.Control>
                         {/* <Form.Control ref='operator' as="select" >
@@ -197,7 +219,7 @@ class Company extends React.Component {
                             )
                             }
                         </Form.Control> */}
-                        <Form.Check ref='active' type="checkbox" label="La lista é attiva?" />
+                        <Form.Check custom ref='active' id={"customCheck"} type="checkbox" label="La lista é attiva?" />
                     </Form.Group>
 
                     <Button variant="secondary" onClick={this.handleNewQueue} >Crea</Button>
@@ -207,15 +229,34 @@ class Company extends React.Component {
             </Card>
         )
     }
-    addOperatorToCompanyForm() {
-        return (
-            <Card controlId='cards4Form'>
+    createAnOperator() {
+        return(
+            <Card>
                 <Form>
+                <Form.Group as={Row}>
+                    <Form.Label column sm="2">Utente</Form.Label>
+                    <Col sm="10">
+                        <Form.Control as='select' ref="idUserForOperator" required >
+                            {this.state.usersAvailableKey.map((codice,index) =>(
+                                <option value={this.state.usersAvailableKey[index]}> {this.state.usersAvailableUsername[index]} </option>
+                            ))                                
+                            }
+                        </Form.Control>
+                    </Col>
+                 </Form.Group>
+                 <Form.Group as={Row}>
+                    <Col sm="6">
+                        <Button onClick={this.handleNewOperator}>Crea operatore </Button>
+                    </Col>
+                </Form.Group>
+                    
 
+                    
                 </Form>
             </Card>
         )
     }
+
     render() {
         return (
             <div>
@@ -224,10 +265,20 @@ class Company extends React.Component {
                         <Button variant="outline-primary" onClick={() => this.setState({ showQeueueCreation: !this.state.showQeueueCreation })}>
                                  <IoIosArrowDropdownCircle/>
                         </Button>
-                 </Alert>
-                <Collapse in={this.state.showQeueueCreation}>
+                 </Alert> 
+                 <Collapse in={this.state.showQeueueCreation}>
                     {this.createQueueForm()}
                 </Collapse>
+                 <Alert variant="secondary">
+                    Vuoi creare un nuovo operatore?
+                        <Button variant="outline-secondary" onClick={() => this.setState({ showOperatorAssign: !this.state.showOperatorAssign })}>
+                                 <IoIosArrowDropdownCircle/>
+                        </Button>
+                 </Alert>
+                <Collapse in={this.state.showOperatorAssign}>
+                    {this.createAnOperator()}
+                </Collapse>
+               
                 {this.getQueueList()}
             </div>
         )
