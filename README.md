@@ -25,6 +25,8 @@ You will also see any lint errors in the console.
 
 	firebase deploy (effettua deploy su servizio di hosting firebase)
 
+	npm version TIPO (dove tipo può essere patch, minor o major. questa azione va a cambiare la versione di rilascio quindi usare solo con versioni stabili)
+
 
 
 

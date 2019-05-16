@@ -1,8 +1,8 @@
 {
   "rules": {
-    ".read": "auth=!null",
-    ".write": "auth=!null",
-    "queue": {
+    ".read": "auth!==null",
+    ".write": "auth!==null",
+    "queues": {
         ".indexOn": ["idCompany"]
       }
     }

@@ -9,11 +9,12 @@ import { TiPlus } from 'react-icons/ti';
 
 
 
-import { Card, Button, CardDeck } from 'react-bootstrap';
+import { Card, Button, CardGroup } from 'react-bootstrap';
 
 
 
 import '../../style.css';
+
 
 
 
@@ -30,6 +31,8 @@ class ListaCode extends Component {
       image: [],
       numWait: [],
       active: [],
+
+      editQueueId: [],
 
 
       key: 'home',
@@ -61,7 +64,7 @@ class ListaCode extends Component {
 
   //TODO da fixare
   enqueueUser(event) {
-    
+    event.preventDefault();
     // fire.database().ref('queues/'+idQueue+'/userList').push(this.props.userID);
     // fire.database().ref('queue/'+idQueue+'/numWait').update({
     //   numWait: this.state.numWait[index] +1
@@ -84,24 +87,22 @@ class ListaCode extends Component {
   getQueue() {
     return (
       <div>
-        <CardDeck>
+        <CardGroup>
         {this.state.idQueue.map((idQueue, index) => (
-          
-            <Card className="QCard" style={{ width: '20rem' }} >
+            <Card className="QCard" key={index}>
+              <Card.Header>{this.state.title[index]} </Card.Header>
               {/* <Card.Img variant="top" src={this.state.image[index]} /> */}
-              <Card.Body>
+              <Card.Body className="text-left">
                 <Card.Title>{this.state.title[index]}  </Card.Title>
-                <Card.Text>
-                  {this.state.description[index]}
-                  <br />
-                  {this.state.numWait[index]}
-                </Card.Text>
+                <Card.Subtitle> {this.state.description[index]}</Card.Subtitle>
+                <Card.Text> {this.state.numWait[index]} </Card.Text>
                 <Button className='btnAdd' size="lg" onClick={this.enqueueUser} block disabled={!this.state.active[index]}>< TiPlus /></Button>
               </Card.Body>
             </Card>
-          
-        ))}
-  </CardDeck>
+
+        ))
+          }}
+        </CardGroup>
       </div>
     )
   }
