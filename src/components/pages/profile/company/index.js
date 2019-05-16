@@ -175,7 +175,7 @@ class Company extends React.Component {
     createQueueForm() {
         return (
             <Card >
-                <Form >
+                <Form onSubmit={this.handleNewQueue} >
                     <Form.Group>
                         <Form.Label>Titolo</Form.Label>
                         <Form.Control ref='title' type="text" placeholder="Nome coda" required />
@@ -195,7 +195,7 @@ class Company extends React.Component {
                         <Form.Check custom ref='active' id={"customCheck"} type="checkbox" label="La lista é attiva?" />
                     </Form.Group>
 
-                    <Button variant="secondary" onClick={this.handleNewQueue} >Crea</Button>
+                    <Button variant="secondary" type="submit">Crea</Button>
 
 
                 </Form>
@@ -205,7 +205,7 @@ class Company extends React.Component {
     createAnOperator() {
         return (
             <Card>
-                <Form>
+                <Form onSubmit={this.handleNewOperator}>
                     <Form.Group as={Row}>
                         <Form.Label column sm="2">Utente</Form.Label>
                         <Col sm="6">
@@ -220,11 +220,7 @@ class Company extends React.Component {
                             </Form.Control>
                         </Col>
                     </Form.Group>
-                    <Button onClick={this.handleNewOperator}>Crea operatore </Button>
-
-
-
-
+                    <Button type="submit">Crea operatore</Button>
                 </Form>
             </Card>
         )
@@ -258,5 +254,4 @@ class Company extends React.Component {
     }
 }
 
-//da sincronizzare con firebase database e riformattare il form
 export default Company;
