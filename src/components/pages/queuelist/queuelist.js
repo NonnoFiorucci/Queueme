@@ -98,7 +98,7 @@ class ListaCode extends Component {
             </Card>
 
         ))
-          }}
+          }
         </CardGroup>
       </div>
     )

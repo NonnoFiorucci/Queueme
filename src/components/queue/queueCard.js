@@ -9,44 +9,49 @@ import '../style.css';
 
 class SimpleQueue extends React.Component {
     constructor(props) {
+        super(props);
         this.state = {
-            active: props.active,
-            enqueued: props.currentUserEnqueue,
+            enqueued: this.props.queue.currentUserEnqueue
+            //enqueued: false,
         };
-    };
+    }
+    componentWillMount(){
+        console.log(this.props.queue.currentUserEnqueue);
+    }
     onToggleAddUserQueue= () =>{
         this.setState({
             enqueued: true
         });
         //punta alla lista di code
-        this.props.onAddUser( queue.queueId );
+        console.log("sono dentro il toggle"+  this.props.queue.queueId );
+        this.props.onAddUser( this.props.queue.queueId );
     }
     onToggleRemoveUserQueue= () =>{
         this.setState({
             enqueued: false
         });
         //punta alla lista di code
-        this.props.onRemoveUser( this.props.queue );
+        this.props.onRemoveUser( this.props.queue.queueId );
     }
     render() {
         const { queue } = this.props;
-        const { queueState } = this.state;
+        // console.log(queueState.active, queueState.enqueued);
         return (
             <Card className="QCard">
                 <Card.Header> {queue.title} </Card.Header>
                 {/* <Card.Img variant="top" src={this.state.image[index]} /> */}
                 <Card.Body className="text-left">
                     <Card.Subtitle> {queue.description}</Card.Subtitle>
-                    <Card.Text> {queue.numWait} </Card.Text>
-                    <Card.Footer>
-                        <Button className='btnAdd' size="lg" onClick={this.onAddUser} disabled={!queueState.active || queueState.enqueueUser}>
+                    <Card.Text> {queue.numWait} </Card.Text>                  
+                </Card.Body>  
+                <Card.Footer>
+                        <Button className='btnAdd' size="lg" block onClick={this.onToggleAddUserQueue} disabled={(!queue.active) || (queue.currentUserEnqueue)}>
                             < TiPlus />
                         </Button>
-                        <Button className='btnDel' size="lg" onClick={this.onRemoveUser} disabled={!queueState.enqueueUser}>
+                        <Button className='btnDel' size="lg" block onClick={this.onToggleRemoveUserQueue} >
                             < TiDeleteOutline />
                         </Button>
                     </Card.Footer>
-                </Card.Body>
             </Card>
         )
     }

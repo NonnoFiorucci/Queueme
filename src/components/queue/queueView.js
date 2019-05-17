@@ -1,7 +1,7 @@
 import React from 'react';
 
 import QueueCardList from './queueCardList';
-import { Spinner } from 'reactstrap';
+import { Spinner } from 'react-bootstrap';
 import { fire } from '../../config/FirebaseConfig';
 
 class QueueView extends React.Component {
@@ -15,7 +15,7 @@ class QueueView extends React.Component {
         }
         this.onShowQueue = this.onShowQueue.bind(this);
     }
-    componentDidMount() {
+    componentWillMount() {
         this.onShowQueue();
     }
     
@@ -24,7 +24,7 @@ class QueueView extends React.Component {
         fire.database().ref().child('queues/').once(
             'value', snap => {
                 const queueProps = snap.val();
-                allQueuesGetted = Object.keys(queueProps).map(key => ({
+                const allQueuesGetted = Object.keys(queueProps).map(key => ({
                     ...queueProps[key],
                     queueId: key
                 }));
@@ -35,37 +35,40 @@ class QueueView extends React.Component {
             }
         )
     }
-    onVerifyAlreadyEnqueue(){
-        fire.database().ref()
-        return 
+    //TODO fixare sta query che non me rileva 
+    onVerifyAlreadyEnqueue = quId =>{
+        fire.database().ref('queues/' + quId +'userList/').once('value', snap => {
+            return (snap.val()!==null) ? false : true     
+        })
+    }
+    //TODO fixare sta query che non me cancella il tizio
+    onRemoveUser = quId => {
+        fire.database().ref('queues/' + quId + '/userList/').child(this.props.userID).remove();
+    }
+    onAddUser = quId => {
+        fire.database().ref('queues/'+ quId + '/userList').set();
     }
 
-    onRemoveUser = queueId => {
-        //fare la query per rimuovere l'utente dalla coda
-        //decrementare il contatore
-    }
-    onAddUser = queueId => {
-        //fare la query per aggiungere l'utente dalla coda
-        //decrementare il contatore
-    }
-
-    rendere() {
+    render() {
+        const { queues, loading } = this.state;
         return(
             <div>
-                //durante il caricamento da realtimedb
+                {/*durante il caricamento da realtimedb*/}
                 {loading && (<Spinner color="secondary" />)}
-                //se ci sono code
+                {/*se ci sono code*/}
                 {queues && (
                     <QueueCardList 
-                        queues={
-
-                        }
-                )}
-            
+                        queues={queues.map(queue => ({
+                            ...queue,
+                            currentUserEnqueue: this.onVerifyAlreadyEnqueue(queue.queueId)
+                        }))}
+                        onAddUser={this.onAddUser}
+                        onRemoveUser={this.onRemoveUser}
+                        />
+                )}          
             
             </div>
         )
     }
-
-
 }
+export default QueueView;

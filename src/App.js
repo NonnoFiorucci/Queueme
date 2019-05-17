@@ -18,7 +18,7 @@ import DeleteProfile from './components/pages/profile/delete/delete';
 import Company from './components/pages/profile/company';
 import Info from './components/pages/info/info';
 import QueueList from './components/pages/queuelist/queuelist';
-import MyQueue from './components/pages/profile/myqueue/myqueue';
+import QueueView from './components/queue/queueView';
 
 import Faq from './components/pages/faq/faq';
 
@@ -234,7 +234,7 @@ class App extends React.Component {
 
 
                     <Route path="/myqueue" render={() =>
-                      <MyQueue
+                      <QueueView
                         userID={this.state.userID}
                         email={this.state.email}
                         name={this.state.name}
