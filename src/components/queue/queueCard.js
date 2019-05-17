@@ -22,8 +22,7 @@ class SimpleQueue extends React.Component {
         this.setState({
             enqueued: true
         });
-        //punta alla lista di code
-        console.log("sono dentro il toggle"+  this.props.queue.queueId );
+        //punta alla lista di coda
         this.props.onAddUser( this.props.queue.queueId );
     }
     onToggleRemoveUserQueue= () =>{
@@ -45,10 +44,10 @@ class SimpleQueue extends React.Component {
                     <Card.Text> {queue.numWait} </Card.Text>                  
                 </Card.Body>  
                 <Card.Footer>
-                        <Button className='btnAdd' size="lg" block onClick={this.onToggleAddUserQueue} disabled={(!queue.active) || (queue.currentUserEnqueue)}>
+                        <Button className='btnAdd' size="lg" block onClick={this.onToggleAddUserQueue} disabled={(!queue.active || queue.currentUserEnqueue)}>
                             < TiPlus />
                         </Button>
-                        <Button className='btnDel' size="lg" block onClick={this.onToggleRemoveUserQueue} >
+                        <Button className='btnDel' size="lg" block onClick={this.onToggleRemoveUserQueue} disable={!queue.currentUserEnqueue} >
                             < TiDeleteOutline />
                         </Button>
                     </Card.Footer>

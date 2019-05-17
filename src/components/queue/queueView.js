@@ -36,17 +36,31 @@ class QueueView extends React.Component {
         )
     }
     //TODO fixare sta query che non me rileva 
-    onVerifyAlreadyEnqueue = quId =>{
-        fire.database().ref('queues/' + quId +'userList/').once('value', snap => {
-            return (snap.val()!==null) ? false : true     
+    onVerifyAlreadyEnqueue = quId =>{        
+        const verify = fire.database().ref('queues/' + quId + '/userList/')
+        verify.orderByChild('userId').equalTo(this.props.userID).on('value', snap => {
+            snap.forEach( n => {
+                if(n.val().userId===this.props.userID)
+                    return true 
+            })
         })
+        return false
     }
-    //TODO fixare sta query che non me cancella il tizio
+    
     onRemoveUser = quId => {
-        fire.database().ref('queues/' + quId + '/userList/').child(this.props.userID).remove();
+        const remQuery = fire.database().ref('queues/' + quId + '/userList/')
+        remQuery.orderByChild('userId').equalTo(this.props.userID).on(
+            'value', snap=> {
+                snap.forEach( n =>{
+                    remQuery.child(n.key).remove();
+                })
+            }
+        );
     }
     onAddUser = quId => {
-        fire.database().ref('queues/'+ quId + '/userList').set();
+        fire.database().ref('queues/'+ quId + '/userList/').push({
+            userId: (this.props.userID)
+        });
     }
 
     render() {
