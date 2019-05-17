@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { fire } from '../../../config/FirebaseConfig';
 
-
-//import { TiDeleteOutline } from 'react-icons/ti';
 import { TiPlus } from 'react-icons/ti';
 //import { FiSend } from 'react-icons/fi';
 
@@ -93,7 +91,6 @@ class ListaCode extends Component {
               <Card.Header>{this.state.title[index]} </Card.Header>
               {/* <Card.Img variant="top" src={this.state.image[index]} /> */}
               <Card.Body className="text-left">
-                <Card.Title>{this.state.title[index]}  </Card.Title>
                 <Card.Subtitle> {this.state.description[index]}</Card.Subtitle>
                 <Card.Text> {this.state.numWait[index]} </Card.Text>
                 <Button className='btnAdd' size="lg" onClick={this.enqueueUser} block disabled={!this.state.active[index]}>< TiPlus /></Button>
@@ -114,7 +111,6 @@ class ListaCode extends Component {
   render() {
     return (
       <div>
-
         <h2>Code Disponibili:</h2>
         {this.getQueue()}
       </div>
