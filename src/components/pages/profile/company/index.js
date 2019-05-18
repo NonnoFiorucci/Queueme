@@ -1,6 +1,6 @@
 import React from 'react';
 import { fire } from '../../../../config/FirebaseConfig';
-import { Card, Form, Table, Button, Collapse, Alert, Col, Row } from 'react-bootstrap';
+import { Form, Table, Button, Collapse, Alert, Col, Row } from 'react-bootstrap';
 import { IoIosCheckmark, IoIosClose, IoIosArrowDropdownCircle } from "react-icons/io";
 
 
@@ -76,17 +76,6 @@ class Company extends React.Component {
         const dbQueryQueues = fire.database().ref('queues/').orderByChild('idCompany/').equalTo(this.props.userID);
         dbQueryQueues.on('value', snapQuery => {
             snapQuery.forEach(snap => {
-                //*** Equivalente alla parte non commentata ma più difficile da capire ***
-                // const queueValues = snap.val();
-                // if (queueValues) {
-                //     const queueList = Object.keys(queueValues).map(key => ({
-                //         ...queueValues[key]
-                //     }));
-                //     this.setState({
-                //         listOfQueues: queueList
-                //     })
-                // }
-                // console.log(snap.key + ' ' + snap.val());
                 this.setState({
                     idQueue: this.state.idQueue.concat([snap.key]),
                     title: this.state.title.concat([snap.val().title]),
@@ -123,7 +112,6 @@ class Company extends React.Component {
 
 
     }
-    //da correggere -- visualizzare solo la lista degli operatori creata per quell'azienda
     handleNewOperator(event) {
         event.preventDefault();
         fire.database().ref('Azienda/' + this.state.idCompany + '/operators/').push({
@@ -174,7 +162,6 @@ class Company extends React.Component {
     }
     createQueueForm() {
         return (
-            <Card >
                 <Form onSubmit={this.handleNewQueue} >
                     <Form.Group>
                         <Form.Label>Titolo</Form.Label>
@@ -195,16 +182,12 @@ class Company extends React.Component {
                         <Form.Check custom ref='active' id={"customCheck"} type="checkbox" label="La lista é attiva?" />
                     </Form.Group>
 
-                    <Button variant="secondary" type="submit">Crea</Button>
-
-
+                    <Button bsPrefix="btnStyle one" type="submit">Crea</Button>
                 </Form>
-            </Card>
         )
     }
     createAnOperator() {
         return (
-            <Card>
                 <Form onSubmit={this.handleNewOperator}>
                     <Form.Group as={Row}>
                         <Form.Label column sm="2">Utente</Form.Label>
@@ -220,15 +203,14 @@ class Company extends React.Component {
                             </Form.Control>
                         </Col>
                     </Form.Group>
-                    <Button type="submit">Crea operatore</Button>
+                    <Button bsPrefix="btnStyle one" type="submit">Crea operatore</Button>
                 </Form>
-            </Card>
         )
     }
 
     render() {
         return (
-            <div>
+            <div className="form">
                 <Alert variant="primary">
                     Vuoi creare una nuova coda?
                         <Button variant="outline-primary" onClick={() => this.setState({ showQeueueCreation: !this.state.showQeueueCreation })}>
