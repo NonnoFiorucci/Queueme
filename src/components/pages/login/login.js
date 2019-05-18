@@ -208,7 +208,7 @@ class Login extends Component{
             </Form.Control>
           </Form.Group>
           <br></br>            
-          <Button type="submit" bsPrefix="btnStyle one" type="submit">
+          <Button type="submit" bsPrefix="btnStyle one">
             Registrati
           </Button>                       
         </Form>
