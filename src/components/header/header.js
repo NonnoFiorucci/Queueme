@@ -11,7 +11,7 @@ class Header extends Component {
     render() {
         return (
             <div>
-                <Navbar fixed="top" bg="secondary" variant="secondary" expand="secondary">
+                <Navbar fixed="top" bg="dark" variant="dark" expand="dark">
                     <Navbar.Brand  href={ROUTES.LANDING}>
                     <img src={logo}
                         width="30"

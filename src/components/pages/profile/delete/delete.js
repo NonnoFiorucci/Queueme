@@ -87,7 +87,7 @@ class deleteProfile extends Component {
         </div>
 
         <h1>Elimina il tuo profilo</h1>
-        <h4><strong>Una volta eliminato l'account non potrai più leggere alcuna delle tue conversazioni.</strong></h4>
+        
 
         <OverlayTrigger
           trigger="click"

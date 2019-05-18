@@ -3,10 +3,11 @@
 
 import React, { Component } from 'react';
 
-import { Button } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 import * as ROUTES from '../../../constants/routes';
-import '../../style.css';
+import '../../../styles/style.css';
+import '../../../styles/btnStyle.css';
 
 class Profile extends Component {
 
@@ -14,7 +15,6 @@ class Profile extends Component {
     super();
     this.state = {
       nome: null,
-      email: null,
       ruolo: null
     }
   }
@@ -22,18 +22,23 @@ class Profile extends Component {
 
   render() {
     return (
-      <div>
-        <h3>Profilo {this.state.ruolo}</h3>
-
-        <Button href={ROUTES.MYQUEUE} variant="secondary" >
-          Le mie Code
-        </Button>
-        <Button href={ROUTES.DELPRO} variant="secondary"  >
-          Elimina profilo
-        </Button>
-        <Button href={ROUTES.LOGOUT} variant="secondary" >
-          Esci
-        </Button>
+      <div class="formAccesso">
+        <h3>Bentornato </h3>
+        <Col>
+          <Row>
+            <a href={ROUTES.MYQUEUE} class="btnThar one">
+              Le mie Code
+          </a>
+            <a href={ROUTES.DELPRO} class="btnThar one">
+              Elimina
+          </a>
+          </Row>
+          <Row>
+            <a href={ROUTES.LOGOUT} class="btnThar one">
+              Logout
+          </a>
+          </Row>
+        </Col>
       </div>
     );
   }

@@ -4,9 +4,6 @@ import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import { fire } from './config/FirebaseConfig';
 import { Spinner } from 'react-bootstrap'
 
-//eslint-disable-next-line
-import Style from './components/style.css';
-
 import Header from './components/header/header';
 import Footer from './components/footer/footer';
 import Login from './components/pages/login/login';
@@ -22,7 +19,8 @@ import QueueView from './components/queue/queueView';
 
 import Faq from './components/pages/faq/faq';
 
-import './components/style.css';
+import './styles/style.css';
+import './styles/btnStyle.css';
 
 
 
@@ -116,10 +114,6 @@ class App extends React.Component {
     if (this.state.loading === true) {
       return (
         <div className="loading">
-          <Spinner animation="grow" />
-          <Spinner animation="grow" />
-          <Spinner animation="grow" />
-          <Spinner animation="grow" />
           <Spinner animation="grow" />
         </div>
       )

@@ -1,0 +1,196 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:300,400,700);
+
+body {
+	font-family: 'Lato', sans-serif;
+	background: #353535;
+    color: #FFF;
+    justify-content: center;
+}
+
+/* APP */
+.mainStyle {
+    margin-bottom : 70px;
+    margin-top: 0px;
+    margin-left: 10%;
+    margin-right: 10%;
+    
+    justify-content: center;
+    display: flex;    
+}
+
+.loading{
+    margin-top: 300px;
+    display: flex;
+    justify-content: center;
+}
+
+.headerStyle {
+    margin-bottom: 70px;
+    
+}
+.pageStyle{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom : auto;
+    margin-top: auto;
+    border-left: solid;
+    border-left-color: #4F4F4F;
+    border-right: solid;
+    border-right-color: #4F4F4F;
+    
+}
+.pageStyle:hover{
+    width: 51%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom : auto;
+    margin-top: auto; 
+    -webkit-transition: all .2s ease-out;
+    -moz-transition: all .2s ease-out;
+    -ms-transition: all .2s ease-out;
+    -o-transition: all .2s ease-out;
+    transition: all .2s ease-out;
+}
+
+.pageStyle:hover::after{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom : auto;
+    margin-top: auto; 
+    -webkit-transition: all .2s ease-in;
+    -moz-transition: all .2s ease-in;
+    -ms-transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    transition: all .2s ease-in;
+}
+
+h2.title{
+    text-align: left;
+    text-emphasis: inherit;
+    border-bottom: solid;
+    border-bottom-color: #4F4F4F;
+    margin: 10rem;
+}
+h2.text{
+    text-align: left;
+    margin: 12rem;
+    border-bottom: solid;
+    border-bottom-color: #4F4F4F;
+}
+
+
+.hStl{
+    margin-top: 3%;
+    justify-content: center;
+}
+
+
+.formAccesso {
+    /* border-style: #474748;
+    background-color:#333333; */
+    justify-content: center;
+    text-align: center;
+    margin-bottom : 30px;
+    margin-top: 10px;
+}
+
+/* profile */
+.formDati {
+    margin-top: 3rem;
+    margin-left: 3rem;
+    margin-right: 3rem;
+    margin-bottom: 10rem;
+}
+.formDatiLabel {
+    justify-content: center;
+}
+
+
+/* footer */
+
+.footBtn {
+    margin-top: -5px;
+    margin-bottom: -2px;
+}
+
+.footIco{
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    margin-bottom: 0px;
+}
+
+.footTxt {
+    margin-top: -5px;
+    margin-bottom: -10px;
+    color: antiquewhite;
+}
+
+
+.headNavBar{
+    text-align: center;
+}
+.navbar{
+    margin-bottom: 0px;
+
+}
+
+::-webkit-input-placeholder {
+    text-align: center;
+ }
+
+
+input[type]{ 
+    width: 40rem;
+    display: block;
+    margin: auto;
+} 
+
+input[type]:focus{
+    border-color: cornflowerblue;
+    border-style: solid;
+}
+.customSelect{
+    width: 40rem;
+    display: block;
+    margin: auto;
+}
+
+.sltForm{
+    width: 50rem;
+    display: block;
+    margin: auto;
+}
+
+
+.layoutCol{
+    width: 10rem;
+
+}
+
+.googleCentrato{
+    display: flex;
+    justify-content: center
+}
+
+.QCard{
+    width: 20rem;
+    margin-left: 5rem;
+    margin-right: 5rem;
+    margin-bottom: 5rem;
+    margin-top: 5rem;
+
+}
+
+.QueueForm {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+
+
+

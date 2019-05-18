@@ -11,7 +11,8 @@ import { Card, Button, CardGroup } from 'react-bootstrap';
 
 
 
-import '../../style.css';
+import '../../../styles/style.css';
+import '../../../styles/btnStyle.css';
 
 
 

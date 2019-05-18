@@ -5,7 +5,8 @@ import { GoogleLoginButton } from "react-social-login-buttons";
 import { fire, providerGoogle } from '../../../config/FirebaseConfig';
 
 
-import '../../style.css';
+import '../../../styles/style.css';
+import '../../../styles/btnStyle.css';
 
 
 class Login extends Component{

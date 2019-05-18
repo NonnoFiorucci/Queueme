@@ -4,8 +4,8 @@ import { Card, Button } from 'react-bootstrap';
 
 import { TiPlus, TiDeleteOutline } from 'react-icons/ti';
 
-import '../style.css';
-
+import '../../styles/style.css';
+import '../../styles/btnStyle.css';
 
 class SimpleQueue extends React.Component {
     constructor(props) {
