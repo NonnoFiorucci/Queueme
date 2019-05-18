@@ -1,4 +1,4 @@
-a.btnStyle:link, a.btnThar:visited {
+.btnStyle:link, .btnStyle:visited {
 	position: relative;
 	display: block;
 	margin: 30px auto 0;
@@ -18,7 +18,7 @@ a.btnStyle:link, a.btnThar:visited {
 	-o-transition: all 1s ease;
 	transition: all 1s ease;
 }
-a.btnStyle:link:after, a.btnThar:visited:after {
+.btnStyle:link:after, .btnStyle:visited:after {
 	content: "";
 	position: absolute;
 	height: 0%;
@@ -31,14 +31,76 @@ a.btnStyle:link:after, a.btnThar:visited:after {
 	-o-transition: all 0.75s ease 0s;
 	transition: all 0.75s ease 0s;
 }
-a.btnStyle:link:hover, a.btnThar:visited:hover {
+.btnStyle:link:hover, .btnStyle:visited:hover {
 	color: #000000;
 	text-shadow: none;
 }
-a.btnStyle:link:hover:after, a.btnThar:visited:hover:after {
+.btnStyle:link:hover:after, .btnStyle:visited:hover:after {
 	height: 450%;
 }
-a.btnStyle:link, a.btnThar:visited {
+.btnStyle:link, .btnStyle:visited {
+	position: relative;
+	display: block;
+	margin: 30px auto 0;
+	padding: 14px 15px;
+	color: #1E1E1E;
+	font-size:14px;
+	border-radius: 0;
+	font-weight: bold;
+	text-align: center;
+	text-decoration: none;
+	text-transform: uppercase;
+	overflow: hidden;
+	letter-spacing: .08em;
+	text-shadow: 0 0 1px rgba(255, 255, 255, 0.2), 0 1px 0 rgba(255, 255, 255, 0.2);
+	-webkit-transition: all 1s ease;
+	-moz-transition: all 1s ease;
+	-o-transition: all 1s ease;
+	transition: all 1s ease;
+}
+.btnStyle:link, .btnStyle:visited {
+	position: relative;
+	display: block;
+	margin: 30px auto 0;
+	padding: 14px 15px;
+	color: #1E1E1E;
+	font-size:14px;
+	font-weight: bold;
+	text-align: center;
+	text-decoration: none;
+    text-transform: uppercase;
+	overflow: hidden;
+	letter-spacing: .08em;
+	border-radius: 0;
+	text-shadow: 0 0 1px rgba(255, 255, 255, 0.2), 0 1px 0 rgba(255, 255, 255, 0.2);
+	-webkit-transition: all 1s ease;
+	-moz-transition: all 1s ease;
+	-o-transition: all 1s ease;
+	transition: all 1s ease;
+}
+
+
+.btnStyle:after, .btnStyle:visited:after {
+	content: "";
+	position: absolute;
+	height: 0%;
+	left: 50%;
+	top: 50%;
+	width: 150%;
+	z-index: -1;
+	-webkit-transition: all 0.75s ease 0s;
+	-moz-transition: all 0.75s ease 0s;
+	-o-transition: all 0.75s ease 0s;
+	transition: all 0.75s ease 0s;
+}
+.btnStyle:hover, .btnStyle:visited:hover {
+	color: #000000;
+	text-shadow: none;
+}
+.btnStyle:hover:after, .btnStyle:visited:hover:after {
+	height: 450%;
+}
+.btnStyle, .btnStyle:visited {
 	position: relative;
 	display: block;
 	margin: 30px auto 0;
@@ -62,7 +124,7 @@ a.btnStyle:link, a.btnThar:visited {
 
 
 
-a.btnStyle.one {
+.btnStyle.one {
 	color: #000;
 	cursor: pointer;
 	display: block;
@@ -70,17 +132,17 @@ a.btnStyle.one {
 	border: 2px solid #1E1E1E;
 	transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
 }
-a.btnStyle.one:hover {
+.btnStyle.one:hover {
 	color: #fff !important;
 	background-color: transparent;
 	text-shadow: none;
 }
-a.btnStyle.one:hover:before {
+.btnStyle.one:hover:before {
 	bottom: 0%;
 	top: auto;
 	height: 100%;
 }
-a.btnStyle.one:before {
+.btnStyle.one:before {
 	display: block;
 	position: absolute;
 	left: 0px;
@@ -188,5 +250,3 @@ a.btnStyle.four:before {
 	background: #1E1E1E;
 	transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
 }
-
-a.btnStyle.roundOne()

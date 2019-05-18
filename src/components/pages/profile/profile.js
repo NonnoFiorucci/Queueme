@@ -26,15 +26,15 @@ class Profile extends Component {
         <h3>Bentornato </h3>
         <Col>
           <Row>
-            <a href={ROUTES.MYQUEUE} class="btnThar one">
+            <a href={ROUTES.MYQUEUE} class="btnStyle one">
               Le mie Code
           </a>
-            <a href={ROUTES.DELPRO} class="btnThar one">
+            <a href={ROUTES.DELPRO} class="btnStyle one">
               Elimina
           </a>
           </Row>
           <Row>
-            <a href={ROUTES.LOGOUT} class="btnThar one">
+            <a href={ROUTES.LOGOUT} class="btnStyle one">
               Logout
           </a>
           </Row>

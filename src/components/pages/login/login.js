@@ -172,20 +172,16 @@ class Login extends Component{
           <Form onSubmit={(event) => this.autenticaEmailPassword(event)}>
             <Form.Group >
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" placeholder="Inserisci Email" ref={(input) => { this.emailInputAccesso = input }}/>
-            </Form.Group>
-            <Form.Group>
+              <Form.Control type="email" placeholder="Inserisci Email" ref={(input) => { this.emailInputAccesso = input }} required/>
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Inserisci Password" ref={(input) => { this.passwordInputAccesso = input }}/>
+              <Form.Control type="password" placeholder="Inserisci Password" ref={(input) => { this.passwordInputAccesso = input }} required/>
             </Form.Group>
             <Form.Group controlId="formBasicChecbox">
             </Form.Group>
-            <br></br>            
-            <Button variant="secondary" type="submit" >
-              Accedi
-            </Button>                       
+            <Button type="submit" bsPrefix="btnStyle one">
+                Accedi
+            </Button>                            
           </Form>
-          <br></br>
           <p>Oppure</p>
           <div className="googleCentrato">
             <br/>
@@ -200,25 +196,19 @@ class Login extends Component{
       return (
         <div>
           <Form className="formLogin" onSubmit={(event) => this.registraEmailPassword(event)}>
-          <Form.Group controlId="formBasicEmail">
             <Form.Label>Email</Form.Label>
-            <Form.Control type="email" placeholder="Inserisci Email" ref={(input) => { this.emailInputRegistrazione = input }}/>
-          </Form.Group>
-          <Form.Group controlId="formBasicPassword">
+            <Form.Control type="email" placeholder="Inserisci Email" ref={(input) => { this.emailInputRegistrazione = input }} require/>
             <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Inserisci Password" ref={(input) => { this.passwordInputRegistrazione = input }}/>
-          </Form.Group>
-          <Form.Group controlId="formBasicChecbox">
-          </Form.Group>
+            <Form.Control type="password" placeholder="Inserisci Password" ref={(input) => { this.passwordInputRegistrazione = input }} required/>
           <Form.Group controlId="exampleForm.ControlSelect1">
           <Form.Label>Sono uno</Form.Label>
-            <Form.Control id="sltForm"as="select" ref={(input) => { this.tipoInputRegistrazione = input }}>              
+            <Form.Control id="sltForm"as="select" ref={(input) => { this.tipoInputRegistrazione = input }} required>              
               <option>Utente</option>
               <option>Azienda</option>
             </Form.Control>
           </Form.Group>
           <br></br>            
-          <Button variant="secondary" type="submit" style={{fontWeight:'bold'}}>
+          <Button type="submit" bsPrefix="btnStyle one" type="submit">
             Registrati
           </Button>                       
         </Form>
@@ -232,11 +222,10 @@ class Login extends Component{
       }
       const { openAccesso, openRegistrazione } = this.state;
       return (
-        <div className="loginStyle">
-        <h3>Login/Registrazione</h3>
-        <br></br>
-        <h5>Hai già un account QueueMe?</h5>
-        <Button variant="secondary"
+        <div className="">
+        <h2 class="title">Login/Registrazione</h2>
+        <h4 class="text">Hai già un account QueueMe?</h4>
+        <Button bsPrefix="btnStyle one"
           onClick={() => this.setState({ openRegistrazione: false , openAccesso: !openAccesso})}
           aria-controls="collapse-accedi"
           aria-expanded={openAccesso}>
@@ -244,14 +233,11 @@ class Login extends Component{
         </Button>
         <br></br>
         <Collapse in={this.state.openAccesso}>
-          <div className="" id="collapse-accedi">
             {this.formAccesso()}
-          </div>
-        </Collapse>
-        
+        </Collapse>        
         <br></br>
         <h5>Oppure Registrati, ci vuole un attimo!</h5>
-        <Button  variant="secondary"
+        <Button bsPrefix="btnStyle one"
           onClick={() => this.setState({ openAccesso: false , openRegistrazione: !openRegistrazione})}
           aria-controls="collapse-registrazione"
           aria-expanded={openRegistrazione}>
@@ -259,9 +245,7 @@ class Login extends Component{
         </Button>
         <br></br>
         <Collapse in={this.state.openRegistrazione}>
-          <div className="" id="collapse-registrazione">
           {this.formRegistrazione()}
-          </div>
         </Collapse>
         <br></br>
       </div>   

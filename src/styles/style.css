@@ -29,53 +29,24 @@ body {
     
 }
 .pageStyle{
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom : auto;
-    margin-top: auto;
     border-left: solid;
     border-left-color: #4F4F4F;
     border-right: solid;
-    border-right-color: #4F4F4F;
-    
-}
-.pageStyle:hover{
-    width: 51%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom : auto;
-    margin-top: auto; 
-    -webkit-transition: all .2s ease-out;
-    -moz-transition: all .2s ease-out;
-    -ms-transition: all .2s ease-out;
-    -o-transition: all .2s ease-out;
-    transition: all .2s ease-out;
+    border-right-color: #4F4F4F;    
 }
 
-.pageStyle:hover::after{
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom : auto;
-    margin-top: auto; 
-    -webkit-transition: all .2s ease-in;
-    -moz-transition: all .2s ease-in;
-    -ms-transition: all .2s ease-in;
-    -o-transition: all .2s ease-in;
-    transition: all .2s ease-in;
-}
 
 h2.title{
-    text-align: left;
-    text-emphasis: inherit;
+    text-align: center;
     border-bottom: solid;
     border-bottom-color: #4F4F4F;
-    margin: 10rem;
+    margin-left: 3%;
+    margin-right: 3%;
 }
-h2.text{
+h4.text{
     text-align: left;
-    margin: 12rem;
+    margin-left: 4%;
+    margin-right: 4%;
     border-bottom: solid;
     border-bottom-color: #4F4F4F;
 }
@@ -97,15 +68,14 @@ h2.text{
 }
 
 /* profile */
-.formDati {
-    margin-top: 3rem;
-    margin-left: 3rem;
-    margin-right: 3rem;
-    margin-bottom: 10rem;
-}
-.formDatiLabel {
+.form {
     justify-content: center;
+    margin-top: 10%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 10%;
 }
+
 
 
 /* footer */
@@ -142,20 +112,21 @@ h2.text{
  }
 
 
-input[type]{ 
-    width: 40rem;
+input[type]{
     display: block;
-    margin: auto;
+    border: solid;
+    border-color: black;
 } 
 
 input[type]:focus{
-    border-color: cornflowerblue;
+    border-color: black;
     border-style: solid;
 }
+
 .customSelect{
-    width: 40rem;
     display: block;
-    margin: auto;
+    border: solid;
+    border-color: black;
 }
 
 .sltForm{
@@ -176,11 +147,21 @@ input[type]:focus{
 }
 
 .QCard{
-    width: 20rem;
     margin-left: 5rem;
     margin-right: 5rem;
     margin-bottom: 5rem;
     margin-top: 5rem;
+}
+.QCard:hover{
+    margin-left: 4rem;
+    margin-right: 4rem;
+    margin-bottom: 4rem;
+    margin-top: 4rem;
+    -webkit-transition: all .4s ease-in-out;
+    -moz-transition: all .4s ease-in-out;
+    -ms-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
 
 }
 

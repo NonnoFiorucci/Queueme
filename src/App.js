@@ -2,7 +2,7 @@ import React from 'react';
 
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import { fire } from './config/FirebaseConfig';
-import { Spinner } from 'react-bootstrap'
+import { Spinner, Container, Col } from 'react-bootstrap'
 
 import Header from './components/header/header';
 import Footer from './components/footer/footer';
@@ -128,7 +128,8 @@ class App extends React.Component {
           </div>
           : null
         }
-        <div className="mainStyle">
+        <Container>
+          <Col lg="true" >
           <BrowserRouter>
             <div className="pageStyle">
               <Switch>
@@ -256,10 +257,12 @@ class App extends React.Component {
               </Switch>
             </div>
           </BrowserRouter>
+           </Col>
+        </Container >
           <div className="footerstyle">
             <Footer authenticated={this.state.authenticated} />
           </div>
-        </div>
+         
       </div>
     );
   }

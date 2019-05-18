@@ -1,19 +1,17 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 
 import * as ROUTES from '../../../constants/routes';
-
+import '../../../styles/style.css';
+import '../../../styles/btnStyle.css';
 
 function Landing() {
     return (
         <div>
-            <h3 >Benvenuto!</h3>
-            
-            <h2>Non sprecare il tuo tempo, la vita è troppo breve!</h2>
-            
-            <Button variant="secondary" type="submit" href={ROUTES.LOGIN}>
-                ENTRA !
-            </Button>
+            <h2 class="title">Benvenuto!</h2>            
+            <h4 class="text">Non sprecare il tuo tempo, la vita è troppo breve!</h4>
+            <a href={ROUTES.LOGIN} class="btnStyle one">
+                        Entra
+            </a>
         </div>
     );
 }
