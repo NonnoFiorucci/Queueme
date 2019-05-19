@@ -155,14 +155,11 @@ input[type]:focus{
 .QCard:hover{
     margin-left: 4rem;
     margin-right: 4rem;
-    margin-bottom: 4rem;
-    margin-top: 4rem;
     -webkit-transition: all .4s ease-in-out;
     -moz-transition: all .4s ease-in-out;
     -ms-transition: all .4s ease-in-out;
     -o-transition: all .4s ease-in-out;
     transition: all .4s ease-in-out;
-
 }
 
 .QueueForm {

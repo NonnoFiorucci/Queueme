@@ -16,15 +16,15 @@ class Footer extends Component {
                     ?
                     <Navbar fixed="bottom" expand="secondary"  >
                         <Nav.Item>                     
-                        <a href={ROUTES.MYQUEUE} class="btnStyle one">
-                            <FaUserCircle/> 
-                            Le mie Code
+                        <a href={ROUTES.PROFILE} className="btnStyle one">
+                            <FaUserCircle size={30}/> 
+                            Profilo
                         </a>
                         </Nav.Item>
                         <Nav.Item>
-                          <a href={ROUTES.QUEUES} class="btnStyle one">
-                            <IoMdContacts/>
-                            Code disponibili
+                          <a href={ROUTES.QUEUES} className="btnStyle one">
+                            <IoMdContacts size={30}/>
+                            Code
                             </a>
                         </Nav.Item>                     
                      

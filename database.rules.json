@@ -5,6 +5,9 @@
     "queues": {
         ".indexOn": ["idCompany"]
       }
+    },
+    "Azienda":{
+      ".indexOn": ".value"
     }
   
 }

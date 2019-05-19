@@ -26,8 +26,8 @@ class Profile extends Component {
         <h3>Bentornato </h3>
         <Col>
           <Row>
-            <a href={ROUTES.MYQUEUE} class="btnStyle one">
-              Le mie Code
+            <a href={ROUTES.QUEUES} class="btnStyle one">
+              Code disponibili
           </a>
             <a href={ROUTES.DELPRO} class="btnStyle one">
               Elimina

@@ -63,17 +63,15 @@ class Login extends Component{
     }
 
     addUserGoogle() {
-      const rootUtente = fire.database().ref("Utente/" + this.props.userID);
+      const rootUtente = fire.database().ref("users/" + this.props.userID);
 
       rootUtente.on("value", snap => {
         //verifico se utente esiste
         if (snap.val() === null) {
           //se non esiste lo aggiungo nel database
-          fire.database().ref('Utente/' + this.state.user.uid).set({
+          fire.database().ref('users/' + this.state.user.uid).set({
             nome: this.state.user.displayName,
             email: this.state.user.email,
-            istituto: "",
-            telefono: ""
           }).then((data)=>{
               //success callback
               console.log('data ' , data)
@@ -104,21 +102,22 @@ class Login extends Component{
     }
 
     getUserType() {
-        const rootUtente = fire.database().ref('Utente/'+this.state.user.uid);
-        const rootPsicologo = fire.database().ref('Psicologo/'+this.state.user.uid);        
+        const rootUtente = fire.database().ref('users/'+this.state.user.uid);
+        //const rootPsicologo = fire.database().ref('Psicologo/'+this.state.user.uid);        
         
         rootUtente.on('value', snap => {  //verifico se utente
             if (snap.val() !== null) {  //utente
               this.setScopo('utente')
-            } else if (snap.val() === null) {  //se non è utente
-              rootPsicologo.on('value', snapshot => { //verifico se psicologo
-                if (snapshot.val() !== null) {  //se psicologo
-                  this.setScopo('psicologo')
-                } else if (snapshot.val() === null) {  //altrimenti nulla
-                  alert('problemi lettura dati account')
-                }
-              })  
-            }
+            } 
+            // else if (snap.val() === null) {  //se non è utente
+            //   rootPsicologo.on('value', snapshot => { //verifico se psicologo
+            //     if (snapshot.val() !== null) {  //se psicologo
+            //       this.setScopo('psicologo')
+            //     } else if (snapshot.val() === null) {  //altrimenti nulla
+            //       alert('problemi lettura dati account')
+            //     }
+            //   })  
+            // }
         })
     }
   
@@ -231,23 +230,20 @@ class Login extends Component{
           aria-expanded={openAccesso}>
           Accedi
         </Button>
-        <br></br>
         <Collapse in={this.state.openAccesso}>
             {this.formAccesso()}
         </Collapse>        
-        <br></br>
-        <h5>Oppure Registrati, ci vuole un attimo!</h5>
+        <h4 class="text">Oppure Registrati, ci vuole un attimo!</h4>
         <Button bsPrefix="btnStyle one"
           onClick={() => this.setState({ openAccesso: false , openRegistrazione: !openRegistrazione})}
           aria-controls="collapse-registrazione"
           aria-expanded={openRegistrazione}>
           Registrati ora
         </Button>
-        <br></br>
+        
         <Collapse in={this.state.openRegistrazione}>
           {this.formRegistrazione()}
         </Collapse>
-        <br></br>
       </div>   
       );
     }

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Card, Button } from 'react-bootstrap';
+import { Card, Button, Col, Row } from 'react-bootstrap';
 
-import { TiPlus, TiDeleteOutline } from 'react-icons/ti';
+import { TiPlus, TiTrash } from 'react-icons/ti';
 
 import '../../styles/style.css';
 import '../../styles/btnStyle.css';
@@ -12,45 +12,48 @@ class SimpleQueue extends React.Component {
         super(props);
         this.state = {
             enqueued: this.props.queue.currentUserEnqueue
-            //enqueued: false,
         };
     }
-    componentWillMount(){
-        console.log(this.props.queue.currentUserEnqueue);
+    componentWillMount() {
     }
-    onToggleAddUserQueue= () =>{
+    onToggleAddUserQueue = () => {
         this.setState({
             enqueued: true
         });
         //punta alla lista di coda
-        this.props.onAddUser( this.props.queue.queueId );
+        this.props.onAddUser(this.props.queue.queueId);
     }
-    onToggleRemoveUserQueue= () =>{
+    onToggleRemoveUserQueue = () => {
         this.setState({
             enqueued: false
         });
         //punta alla lista di code
-        this.props.onRemoveUser( this.props.queue.queueId );
+        this.props.onRemoveUser(this.props.queue.queueId);
     }
     render() {
         const { queue } = this.props;
-        // console.log(queueState.active, queueState.enqueued);
+       
+        console.log(queue.currentUserEnqueue);
         return (
-            <Card className="QCard">
-                <Card.Header> {queue.title} </Card.Header>
+            <Card className="QCard text-center">
+                <Card.Header > {queue.title} </Card.Header>
                 {/* <Card.Img variant="top" src={this.state.image[index]} /> */}
-                <Card.Body className="text-left">
+                <Card.Body className="text-center">
                     <Card.Subtitle> {queue.description}</Card.Subtitle>
-                    <Card.Text> {queue.numWait} </Card.Text>                  
-                </Card.Body>  
+                    <Card.Text> {queue.numWait} </Card.Text>
+                </Card.Body>
                 <Card.Footer>
-                        <Button className='btnAdd' size="lg" block onClick={this.onToggleAddUserQueue} disabled={(!queue.active || queue.currentUserEnqueue)}>
-                            < TiPlus />
-                        </Button>
-                        <Button className='btnDel' size="lg" block onClick={this.onToggleRemoveUserQueue} disable={!queue.currentUserEnqueue} >
-                            < TiDeleteOutline />
-                        </Button>
-                    </Card.Footer>
+                    <Row>
+                        <Col md={{ span: 3, offset: 3 }}>
+                            <Button block variant="outline-success" size="sl" onClick={this.onToggleAddUserQueue} disabled={(!queue.active || queue.currentUserEnqueue)}>
+                                < TiPlus size={40}/>
+                            </Button></Col>
+                        <Col md={{ span: 3 }}>
+                            <Button block variant="outline-danger" size="sl" onClick={this.onToggleRemoveUserQueue} disabled={queue.currentUserEnqueue} >
+                                < TiTrash size={40} />
+                            </Button></Col>
+                    </Row>
+                </Card.Footer>
             </Card>
         )
     }

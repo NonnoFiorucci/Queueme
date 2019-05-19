@@ -14,7 +14,7 @@ import ModifyProfile from './components/pages/profile/modify/modify';
 import DeleteProfile from './components/pages/profile/delete/delete';
 import Company from './components/pages/profile/company';
 import Info from './components/pages/info/info';
-import QueueList from './components/pages/queuelist/queuelist';
+
 import QueueView from './components/queue/queueView';
 
 import Faq from './components/pages/faq/faq';
@@ -192,7 +192,7 @@ class App extends React.Component {
 
 
 
-                    <Route path="/queuelist" render={() =>
+                    {/* <Route path="/queuelist" render={() =>
                       <QueueList
                         userID={this.state.userID}
                         email={this.state.email}
@@ -207,7 +207,7 @@ class App extends React.Component {
                         setLocalRole={this.setLocalRole}
 
                         setLocalUser={this.setLocalUser} />
-                    } />
+                    } /> */}
                     
                     <Route path="/company" render={() =>
                       <Company
@@ -228,7 +228,7 @@ class App extends React.Component {
                    
 
 
-                    <Route path="/myqueue" render={() =>
+                    <Route path="/queues" render={() =>
                       <QueueView
                         userID={this.state.userID}
                         email={this.state.email}

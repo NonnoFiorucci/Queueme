@@ -1,6 +1,6 @@
 import React from 'react';
 
-import QueueCardList from './queueCardList';
+import SimpleCard from './queueCard';
 import { Spinner } from 'react-bootstrap';
 import { fire } from '../../config/FirebaseConfig';
 
@@ -36,26 +36,27 @@ class QueueView extends React.Component {
         )
     }
     //TODO fixare sta query che non me rileva 
-    onVerifyAlreadyEnqueue = quId =>{        
+    onVerifyAlreadyEnqueue (quId){
+    
         const verify = fire.database().ref('queues/' + quId + '/userList/')
-        verify.orderByChild('userId').equalTo(this.props.userID).on('value', snap => {
-            snap.forEach( n => {
-                if(n.val().userId===this.props.userID)
-                    return true 
-            })
-        })
-        return false
+        verify.orderByChild('userId').equalTo(this.props.userID).once( "value")
+        .then(function(snap){
+            console.log(snap.exists())
+            return snap.exists()
+        }) 
     }
     
     onRemoveUser = quId => {
+        
         const remQuery = fire.database().ref('queues/' + quId + '/userList/')
-        remQuery.orderByChild('userId').equalTo(this.props.userID).on(
-            'value', snap=> {
-                snap.forEach( n =>{
-                    remQuery.child(n.key).remove();
-                })
-            }
-        );
+        remQuery.orderByChild('userId').equalTo(this.props.userID).once('value', snap=> {
+            snap.forEach ( n =>{
+                remQuery.child(n.key).remove();
+            })
+        }
+
+        )
+
     }
     onAddUser = quId => {
         fire.database().ref('queues/'+ quId + '/userList/').push({
@@ -70,16 +71,17 @@ class QueueView extends React.Component {
                 {/*durante il caricamento da realtimedb*/}
                 {loading && (<Spinner color="secondary" />)}
                 {/*se ci sono code*/}
-                {queues && (
-                    <QueueCardList 
-                        queues={queues.map(queue => ({
-                            ...queue,
-                            currentUserEnqueue: this.onVerifyAlreadyEnqueue(queue.queueId)
-                        }))}
-                        onAddUser={this.onAddUser}
-                        onRemoveUser={this.onRemoveUser}
-                        />
-                )}          
+                {queues && 
+                    this.state.queues.map( queue => (
+                        <SimpleCard 
+                            queue={queue}
+                            currentUserEnqueue={this.onVerifyAlreadyEnqueue(queue.queueId)}
+                            onRemoveUser={this.onRemoveUser}
+                            onAddUser={this.onAddUser} />
+                    ) )       
+            
+                        
+                }          
             
             </div>
         )
