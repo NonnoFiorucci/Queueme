@@ -14,8 +14,9 @@ class QueueView extends React.Component {
             limit: 5
         }
         this.onShowQueue = this.onShowQueue.bind(this);
+        this.onVerifyAlreadyEnqueue = this.onVerifyAlreadyEnqueue.bind(this);
     }
-    componentWillMount() {
+    componentDidMount() {
         this.onShowQueue();
     }
     
@@ -36,14 +37,14 @@ class QueueView extends React.Component {
         )
     }
     //TODO fixare sta query che non me rileva 
-    onVerifyAlreadyEnqueue (quId){
-    
+    onVerifyAlreadyEnqueue = quId =>{    
+           
         const verify = fire.database().ref('queues/' + quId + '/userList/')
         verify.orderByChild('userId').equalTo(this.props.userID).once( "value")
         .then(function(snap){
-            console.log(snap.exists())
-            return snap.exists()
-        }) 
+           return (snap.exists())
+        })
+         
     }
     
     onRemoveUser = quId => {
@@ -68,6 +69,7 @@ class QueueView extends React.Component {
         const { queues, loading } = this.state;
         return(
             <div>
+                
                 {/*durante il caricamento da realtimedb*/}
                 {loading && (<Spinner color="secondary" />)}
                 {/*se ci sono code*/}
@@ -75,7 +77,6 @@ class QueueView extends React.Component {
                     this.state.queues.map( queue => (
                         <SimpleCard 
                             queue={queue}
-                            currentUserEnqueue={this.onVerifyAlreadyEnqueue(queue.queueId)}
                             onRemoveUser={this.onRemoveUser}
                             onAddUser={this.onAddUser} />
                     ) )       

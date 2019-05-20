@@ -8,32 +8,35 @@ import '../../styles/style.css';
 import '../../styles/btnStyle.css';
 
 class SimpleQueue extends React.Component {
-    constructor(props) {
+    constructor(props){
         super(props);
         this.state = {
+            numWait: this.props.queue.numWait,
             enqueued: this.props.queue.currentUserEnqueue
-        };
+        }
     }
-    componentWillMount() {
-    }
+
     onToggleAddUserQueue = () => {
         this.setState({
-            enqueued: true
-        });
+            numWait: (this.state.numWait + 1),
+            enqueued: !this.state.enqueued
+        })
+        console.log(this.state.numWait)
         //punta alla lista di coda
         this.props.onAddUser(this.props.queue.queueId);
     }
     onToggleRemoveUserQueue = () => {
         this.setState({
-            enqueued: false
-        });
+            numWait: (this.state.numWait - 1),
+            enqueued: !this.state.enqueued
+        })
+        //console.log(this.state.numWait)
         //punta alla lista di code
         this.props.onRemoveUser(this.props.queue.queueId);
     }
     render() {
         const { queue } = this.props;
-       
-        console.log(queue.currentUserEnqueue);
+        console.log(this.props.queue.queueId)
         return (
             <Card className="QCard text-center">
                 <Card.Header > {queue.title} </Card.Header>
@@ -41,6 +44,7 @@ class SimpleQueue extends React.Component {
                 <Card.Body className="text-center">
                     <Card.Subtitle> {queue.description}</Card.Subtitle>
                     <Card.Text> {queue.numWait} </Card.Text>
+
                 </Card.Body>
                 <Card.Footer>
                     <Row>
