@@ -11,39 +11,34 @@ class SimpleQueue extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            numWait: this.props.queue.numWait,
-            enqueued: this.props.queue.currentUserEnqueue
+            enqueued: this.props.queue.currentUserEnqueued
         }
     }
 
     onToggleAddUserQueue = () => {
         this.setState({
-            numWait: (this.state.numWait + 1),
             enqueued: !this.state.enqueued
         })
-        console.log(this.state.numWait)
         //punta alla lista di coda
         this.props.onAddUser(this.props.queue.queueId);
     }
     onToggleRemoveUserQueue = () => {
         this.setState({
-            numWait: (this.state.numWait - 1),
             enqueued: !this.state.enqueued
         })
-        //console.log(this.state.numWait)
         //punta alla lista di code
         this.props.onRemoveUser(this.props.queue.queueId);
     }
     render() {
         const { queue } = this.props;
-        console.log(this.props.queue.queueId)
+        console.log(this.props.queue.currentUserEnqueued)
         return (
             <Card className="QCard text-center">
                 <Card.Header > {queue.title} </Card.Header>
                 {/* <Card.Img variant="top" src={this.state.image[index]} /> */}
                 <Card.Body className="text-center">
                     <Card.Subtitle> {queue.description}</Card.Subtitle>
-                    <Card.Text> {queue.numWait} </Card.Text>
+                    <Card.Text> Persone in coda: {queue.numWait} </Card.Text>
 
                 </Card.Body>
                 <Card.Footer>

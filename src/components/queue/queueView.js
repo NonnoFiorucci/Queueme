@@ -22,11 +22,12 @@ class QueueView extends React.Component {
     
     onShowQueue() {
         this.setState({ loading: true });
-        fire.database().ref().child('queues/').once(
+        fire.database().ref().child('queues/').on(
             'value', snap => {
                 const queueProps = snap.val();
                 const allQueuesGetted = Object.keys(queueProps).map(key => ({
                     ...queueProps[key],
+                    currentUserEnqueued: this.onVerifyAlreadyEnqueue(key),
                     queueId: key
                 }));
                 this.setState({
@@ -37,14 +38,13 @@ class QueueView extends React.Component {
         )
     }
     //TODO fixare sta query che non me rileva 
-    onVerifyAlreadyEnqueue = quId =>{    
-           
+    onVerifyAlreadyEnqueue = quId =>{            
         const verify = fire.database().ref('queues/' + quId + '/userList/')
         verify.orderByChild('userId').equalTo(this.props.userID).once( "value")
         .then(function(snap){
            return (snap.exists())
         })
-         
+        
     }
     
     onRemoveUser = quId => {
