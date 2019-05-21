@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SimpleCard from './queueCard';
+import SimpleQueue from './queueCard';
 import { Spinner } from 'react-bootstrap';
 import { fire } from '../../config/FirebaseConfig';
 
@@ -11,9 +11,14 @@ class QueueView extends React.Component {
             loading: false,
             //code 
             queues: [],
-            limit: 5
+            numWait:[],
+            limit: 5,
+            
         }
         this.onShowQueue = this.onShowQueue.bind(this);
+        
+      
+        
     }
     componentWillMount() {
         this.onShowQueue();
@@ -37,13 +42,14 @@ class QueueView extends React.Component {
     }
     //TODO fixare sta query che non me rileva 
     onVerifyAlreadyEnqueue (quId){
-    
+        
         const verify = fire.database().ref('queues/' + quId + '/userList/')
         verify.orderByChild('userId').equalTo(this.props.userID).once( "value")
         .then(function(snap){
             console.log(snap.exists())
-            return snap.exists()
-        }) 
+           
+        })  
+        return true
     }
     
     onRemoveUser = quId => {
@@ -58,14 +64,35 @@ class QueueView extends React.Component {
         )
 
     }
+
+
+         
+
+
+        
+           
+          
+
+        
+
+
     onAddUser = quId => {
+        this.getQNum(quId);  
         fire.database().ref('queues/'+ quId + '/userList/').push({
-            userId: (this.props.userID)
-        });
+            userId: (this.props.userID),
+             });
+        this.updQNum(quId);
+        
     }
+
+   
+
+    
+
 
     render() {
         const { queues, loading } = this.state;
+     
         return(
             <div>
                 {/*durante il caricamento da realtimedb*/}
@@ -73,15 +100,19 @@ class QueueView extends React.Component {
                 {/*se ci sono code*/}
                 {queues && 
                     this.state.queues.map( queue => (
-                        <SimpleCard 
+                        <SimpleQueue 
                             queue={queue}
+                           
                             currentUserEnqueue={this.onVerifyAlreadyEnqueue(queue.queueId)}
+                            
                             onRemoveUser={this.onRemoveUser}
                             onAddUser={this.onAddUser} />
                     ) )       
-            
+             
+                  
                         
-                }          
+                }  
+                  
             
             </div>
         )
