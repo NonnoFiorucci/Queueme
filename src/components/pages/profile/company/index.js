@@ -50,8 +50,8 @@ class Company extends React.Component {
     //utilizzato nella select del form di creazione di una nuova coda
     /* #region  Query Realtimedatabase da migrare */
     showOperator() {
-        const dbQueryOperator = fire.database().ref('Azienda/' + this.state.idCompany + '/operators/')
-        dbQueryOperator.once('value', snap => {
+        const dbQueryOperator = fire.database().ref('company/' + this.state.idCompany + '/operators/')
+        dbQueryOperator.on('value', snap => {
             snap.forEach(s => {
                 this.setState({
                     listOfOperator: this.state.listOfOperator.concat([s.val().idOperator])
@@ -90,12 +90,13 @@ class Company extends React.Component {
         })
     }
     /* #endregion */
-    
+
     handleNewQueue(event) {
         //alert(this.refs.title.value, this.refs.description.value,this.refs.idOperator.value, this.refs.active.checked);      
         //fino a qui i valori arrivano quindi non é il form
         event.preventDefault();
-        fire.database().ref('queues/').child(this.uniqueIDCode()).set({
+        const keyQueue = this.uniqueIDCode()
+        fire.database().ref('queues/').child(keyQueue).set({
             idCompany: this.props.userID,
             title: this.refs.title.value,
             description: this.refs.description.value,
@@ -109,12 +110,16 @@ class Company extends React.Component {
             .catch((error) => {
                 alert(error);
             });
+        fire.database().ref('operators/' + this.refs.idUserForOperator.value + '/queues/'+ this.props.userID).push({
+                idQueue: keyQueue,
+                idCompany: this.props.userID
+            })
 
 
     }
     handleNewOperator(event) {
         event.preventDefault();
-        fire.database().ref('Azienda/' + this.state.idCompany + '/operators/').push({
+        fire.database().ref('company/' + this.state.idCompany + '/operators/').push({
             idOperator: this.refs.idUserForOperator.value
         })
             .then((data) => {
@@ -123,7 +128,6 @@ class Company extends React.Component {
             .catch((error) => {
                 alert(error);
             });
-
     }
 
     getQueueList() {
@@ -162,49 +166,48 @@ class Company extends React.Component {
     }
     createQueueForm() {
         return (
-                <Form onSubmit={this.handleNewQueue} >
-                    <Form.Group>
-                        <Form.Label>Titolo</Form.Label>
-                        <Form.Control ref='title' type="text" placeholder="Nome coda" required />
-                        <Form.Label>Descrizione</Form.Label>
-                        <Form.Control ref='description' type="text" placeholder="Posizione all'interno della struttura" required />
-                        <Form.Label>Operatore</Form.Label>
-                        {/* <Form.Control custom ref='idOperator' as='select' id={"customSelect"}>
+            <Form onSubmit={this.handleNewQueue} >
+                <Form.Group>
+                    <Form.Label>Titolo</Form.Label>
+                    <Form.Control ref='title' type="text" placeholder="Nome coda" required />
+                    <Form.Label>Descrizione</Form.Label>
+                    <Form.Control ref='description' type="text" placeholder="Posizione all'interno della struttura" required />
+                    <Form.Label>Operatore</Form.Label>
+                    {/* <Form.Control custom ref='idOperator' as='select' id={"customSelect"}>
                             <option value='a1'>Uno</option>
                             <option value={this.state.idCompany}>Due</option>
                         </Form.Control> */}
-                        <Form.Control ref='idOperator' as="select" >
-                            {this.state.listOfOperator.map((codice, index) =>
-                                <option value={this.state.listOfOperator[index]}> {this.state.listOfOperator[index]} </option>
-                            )
-                            }
-                        </Form.Control>
-                        <Form.Check custom ref='active' id={"customCheck"} type="checkbox" label="La lista é attiva?" />
-                    </Form.Group>
+                    <Form.Control ref='idOperator' as="select" >
+                        {this.state.listOfOperator.map((codice, index) =>
+                            <option value={this.state.listOfOperator[index]}> {this.state.listOfOperator[index]} </option>
+                        )
+                        }
+                    </Form.Control>
+                    <Form.Check custom ref='active' id={"customCheck"} type="checkbox" label="La lista é attiva?" />
+                </Form.Group>
 
-                    <Button bsPrefix="btnStyle one" type="submit">Crea</Button>
-                </Form>
+                <Button bsPrefix="btnStyle one" type="submit">Crea</Button>
+            </Form>
         )
     }
     createAnOperator() {
         return (
-                <Form onSubmit={this.handleNewOperator}>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="2">Utente</Form.Label>
-                        <Col sm="6">
-                            <Form.Control as='select' ref='idUserForOperator' required >
-                                {this.state.usersAvailableKey.map((codice, index) => (
-                                    <option value={codice}>
-                                        {this.state.usersAvailableUsername[index]} - {this.state.usersAvailableKey[index]}
-                                    </option>
-
-                                ))
-                                }
-                            </Form.Control>
-                        </Col>
-                    </Form.Group>
-                    <Button bsPrefix="btnStyle one" type="submit">Crea operatore</Button>
-                </Form>
+            <Form onSubmit={this.handleNewOperator}>
+                <Form.Group as={Row}>
+                    <Form.Label column sm="2">Utente</Form.Label>
+                    <Col sm="8">
+                        <Form.Control as='select' ref='idUserForOperator' required >
+                            {this.state.usersAvailableKey.map((codice, index) => (
+                                <option value={codice}>
+                                    {this.state.usersAvailableUsername[index]} - {this.state.usersAvailableKey[index]}
+                                </option>
+                            ))
+                            }
+                        </Form.Control>
+                    </Col>
+                </Form.Group>
+                <Button bsPrefix="btnStyle one" type="submit">Crea operatore</Button>
+            </Form>
         )
     }
 

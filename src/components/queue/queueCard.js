@@ -1,7 +1,7 @@
 import React from 'react';
 import { fire } from '../../config/FirebaseConfig';
 
-import { Card, Button, Col, Row } from 'react-bootstrap';
+import { Card, Button, Col, Row, Spinner } from 'react-bootstrap';
 
 import { TiPlus, TiTrash } from 'react-icons/ti';
 
@@ -60,9 +60,13 @@ class SimpleQueue extends React.Component {
                 <Card.Header > {queue.title} </Card.Header>
                 {/* <Card.Img variant="top" src={this.state.image[index]} /> */}
                 <Card.Body className="text-center">
-                    <Card.Subtitle> {queue.description}</Card.Subtitle>
+                    <Card.Subtitle> 
+                    {queue.description}                         
+                        {queue.active && (<Spinner animation="border" variant="success"/>)} 
+                        {!queue.active && (<Spinner animation="grow" variant="danger"/>)} 
+                    </Card.Subtitle>
                     <Card.Text> Persone in coda: {queue.numWait} </Card.Text>
-
+                    
                 </Card.Body>
                 <Card.Footer>
                     <Row>
