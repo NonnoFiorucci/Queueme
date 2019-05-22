@@ -65,7 +65,7 @@ class Company extends React.Component {
             snapQuery.forEach(snap => {
                 this.setState({
                     usersAvailableKey: this.state.usersAvailableKey.concat([snap.key]),
-                    usersAvailableUsername: this.state.usersAvailableUsername.concat([snap.val().username])
+                    usersAvailableUsername: this.state.usersAvailableUsername.concat([snap.val().nome])
                 })
             })
         })

@@ -8,39 +8,38 @@ import '../../styles/style.css';
 import '../../styles/btnStyle.css';
 
 class SimpleQueue extends React.Component {
-    constructor(props) {
+    constructor(props){
         super(props);
         this.state = {
-            enqueued: this.props.queue.currentUserEnqueue
-        };
+            enqueued: this.props.queue.currentUserEnqueued
+        }
     }
-    componentWillMount() {
-    }
+
     onToggleAddUserQueue = () => {
         this.setState({
-            enqueued: true
-        });
+            enqueued: !this.state.enqueued
+        })
         //punta alla lista di coda
         this.props.onAddUser(this.props.queue.queueId);
     }
     onToggleRemoveUserQueue = () => {
         this.setState({
-            enqueued: false
-        });
+            enqueued: !this.state.enqueued
+        })
         //punta alla lista di code
         this.props.onRemoveUser(this.props.queue.queueId);
     }
     render() {
         const { queue } = this.props;
-       
-        console.log(queue.currentUserEnqueue);
+        console.log(this.props.queue.currentUserEnqueued)
         return (
             <Card className="QCard text-center">
                 <Card.Header > {queue.title} </Card.Header>
                 {/* <Card.Img variant="top" src={this.state.image[index]} /> */}
                 <Card.Body className="text-center">
                     <Card.Subtitle> {queue.description}</Card.Subtitle>
-                    <Card.Text> {queue.numWait} </Card.Text>
+                    <Card.Text> Persone in coda: {queue.numWait} </Card.Text>
+
                 </Card.Body>
                 <Card.Footer>
                     <Row>

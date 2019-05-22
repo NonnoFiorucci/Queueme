@@ -14,18 +14,21 @@ class QueueView extends React.Component {
             limit: 5
         }
         this.onShowQueue = this.onShowQueue.bind(this);
+        this.onVerifyAlreadyEnqueue = this.onVerifyAlreadyEnqueue.bind(this);
     }
-    componentWillMount() {
+    componentDidMount() {
         this.onShowQueue();
     }
     
     onShowQueue() {
         this.setState({ loading: true });
-        fire.database().ref().child('queues/').once(
+        fire.database().ref().child('queues/').on(
             'value', snap => {
                 const queueProps = snap.val();
                 const allQueuesGetted = Object.keys(queueProps).map(key => ({
                     ...queueProps[key],
+                    //TOOD for William
+                    currentUserEnqueued: this.onVerifyAlreadyEnqueue(key),
                     queueId: key
                 }));
                 this.setState({
@@ -35,15 +38,15 @@ class QueueView extends React.Component {
             }
         )
     }
-    //TODO fixare sta query che non me rileva 
-    onVerifyAlreadyEnqueue (quId){
-    
+    //TODO  for William 
+    onVerifyAlreadyEnqueue = quId =>{            
+        
         const verify = fire.database().ref('queues/' + quId + '/userList/')
         verify.orderByChild('userId').equalTo(this.props.userID).once( "value")
-        .then(function(snap){
-            console.log(snap.exists())
-            return snap.exists()
-        }) 
+        .then( snap => {
+            fire.database().ref('users/'+snap.val()+'/queuesHistory').push(quId)
+        }).catch()
+        
     }
     
     onRemoveUser = quId => {
@@ -68,6 +71,7 @@ class QueueView extends React.Component {
         const { queues, loading } = this.state;
         return(
             <div>
+                
                 {/*durante il caricamento da realtimedb*/}
                 {loading && (<Spinner color="secondary" />)}
                 {/*se ci sono code*/}
@@ -75,7 +79,6 @@ class QueueView extends React.Component {
                     this.state.queues.map( queue => (
                         <SimpleCard 
                             queue={queue}
-                            currentUserEnqueue={this.onVerifyAlreadyEnqueue(queue.queueId)}
                             onRemoveUser={this.onRemoveUser}
                             onAddUser={this.onAddUser} />
                     ) )       
