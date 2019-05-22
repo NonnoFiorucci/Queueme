@@ -1,24 +1,25 @@
 import React from 'react';
-import { fire } from '../../config/FirebaseConfig';
-import { Row, Form, Col} from 'react-bootstrap';
+import { fire } from '../../../config/FirebaseConfig';
+import { Row, Form, Col, Button } from 'react-bootstrap';
 import WorkingQueue from './operatorWorkingView';
 
-import '../../styles/style.css';
-import '../../styles/btnStyle.css';
+import '../../../styles/style.css';
+import '../../../styles/btnStyle.css';
 
 
 class OperatorView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            workingQueueId: null,
+            workingQueueId: '',
             workingStatus: false,
-            workingQueue: null,
+            workingQueue: '',
 
             queues: []
         }
         this.onMountQueues = this.onMountQueues.bind(this)
-
+        this.onRenderSelect = this.onRenderSelect.bind(this)
+        this.setWorkingQueue = this.setWorkingQueue.bind(this)
     }
 
     componentDidMount() {
@@ -26,19 +27,16 @@ class OperatorView extends React.Component {
     }
 
     setWorkingQueue(event){
-        event.preventDefault();
-        this.setState({
-            workingQueueId: this.refs.wQueue,
-            workingStatus: true
-        })
+        console.log(this.state.workingStatus)
         this.onMountWorkingQueue()
+        event.preventDefault();
     }
 
     onRenderSelect = () => {
         return (
             <Form onSubmit={this.setWorkingQueue}>
                 <Form.Group as={Row}>
-                    <Form.Label column sm="2">Utente</Form.Label>
+                    <Form.Label column sm="2">Scegli coda</Form.Label>
                         <Col sm="8">
                             <Form.Control as='select' ref='wQueue' required >
                                 {this.state.queues.map(queue=> (
@@ -56,7 +54,11 @@ class OperatorView extends React.Component {
     }
 
     onMountQueues= () => {
-        fire.database().ref('operators/'+ this.props.userID +'/queues/').on(
+        this.setState({
+            workingQueueId: this.refs.wQueue.value,
+            workingStatus: true
+        })
+        fire.database().ref('operators/'+ this.props.userID +'/').on(
             'value', snapQuery => {
                 snapQuery.forEach(snap => {
                     const qProps = snap.val()
@@ -73,10 +75,11 @@ class OperatorView extends React.Component {
     }
 
     onMountWorkingQueue = () => {
-        fire.database().ref('queues/'+ this.workingQueue).on('value', 
+        fire.database().ref('queues/'+ this.state.workingQueue).on('value', 
         snap => {
             this.setState({
-                workingQueue: snap.val()
+                
+                // workingQueue: snap.val()
             })
         })
         // TODO update query active: true
@@ -96,6 +99,7 @@ class OperatorView extends React.Component {
     render() {
         return (
             <div className="form">
+                {this.onRenderSelect()}
                 {this.state.workingStatus &&
                     <WorkingQueue 
                         queue= {this.state.workingQueue}

@@ -14,10 +14,11 @@ import ModifyProfile from './components/pages/profile/modify/modify';
 import DeleteProfile from './components/pages/profile/delete/delete';
 import Company from './components/pages/profile/company';
 import Info from './components/pages/info/info';
-
+import OperatorView from './components/pages/operator';
 import QueueView from './components/queue/queueView';
 
-import Faq from './components/pages/faq/faq';
+import * as ROUTES from './constants/routes';
+
 
 import './styles/style.css';
 import './styles/btnStyle.css';
@@ -130,139 +131,130 @@ class App extends React.Component {
         }
         <Container>
           <Col lg="true" >
-          <BrowserRouter>
-            <div className="pageStyle">
-              <Switch>
-                <Route exact path="/" component={Landing} />
-                <Route path="/login" render={() =>
-                  <Login
-                    userID={this.state.userID}
-                    setAuthenticated={this.setAuthenticated}
-                    authenticated={this.state.authenticated}
-                    setStateUser={this.setStateUser}
-                    setLocalUser={this.setLocalUser} />
-                } />
+            <BrowserRouter>
+              <div className="pageStyle">
+                <Switch>
+                  <Route exact path={ROUTES.LANDING}component={Landing} />
+                  <Route path={ROUTES.LOGIN} render={() =>
+                    <Login
+                      userID={this.state.userID}
+                      setAuthenticated={this.setAuthenticated}
+                      authenticated={this.state.authenticated}
+                      setStateUser={this.setStateUser}
+                      setLocalUser={this.setLocalUser} />
+                  } />
 
-                {this.state.authenticated
-                  ? <>
-                    <Route path="/logout" render={() =>
-                      <Logout
-                        userID={this.state.userID} />
-                    } />
+                  {this.state.authenticated
+                    ? <>
+                      <Route path={ROUTES.LOGOUT}render={() =>
+                        <Logout
+                          userID={this.state.userID} />
+                      } />
 
-                    <Route path="/profile" render={() =>
-                      <Profile />
-                    } />
-
-
-                    <Route path="/modifyProfile" render={() =>
-                      <ModifyProfile
-                        userID={this.state.userID}
-                        email={this.state.email}
-                        name={this.state.name}
-
-                        ruolo={this.state.ruolo}
-                        istituto={this.state.istituto}
-
-                        setRuolo={this.state.setRuolo}
-                        setStateUser={this.setStateUser}
-
-                        setLocalName={this.setLocalName}
-                        setLocalRole={this.setLocalRole}
-
-                        setLocalUser={this.setLocalUser} />
-                    } />
-
-                    <Route path="/deleteProfile" render={() =>
-                      <DeleteProfile
-                        userID={this.state.userID}
-                        email={this.state.email}
-                        name={this.state.name}
-
-                        ruolo={this.state.ruolo}
-
-                        setRuolo={this.state.setRuolo}
-                        setStateUser={this.setStateUser}
-
-                        setLocalName={this.setLocalName}
-                        setLocalRole={this.setLocalRole}
-
-                        setLocalUser={this.setLocalUser} />
-                    } />
+                      <Route path={ROUTES.PROFILE} render={() =>
+                        <Profile
+                         userID={this.state.userID}  
+                         />
+                      } />
 
 
+                      <Route path={ROUTES.MODPRO} render={() =>
+                        <ModifyProfile
+                          userID={this.state.userID}
+                          email={this.state.email}
+                          name={this.state.name}
 
-                    {/* <Route path="/queuelist" render={() =>
-                      <QueueList
-                        userID={this.state.userID}
-                        email={this.state.email}
-                        name={this.state.name}
+                          ruolo={this.state.ruolo}
+                          istituto={this.state.istituto}
 
-                        ruolo={this.state.ruolo}
+                          setRuolo={this.state.setRuolo}
+                          setStateUser={this.setStateUser}
 
-                        setRuolo={this.state.setRuolo}
-                        setStateUser={this.setStateUser}
+                          setLocalName={this.setLocalName}
+                          setLocalRole={this.setLocalRole}
 
-                        setLocalName={this.setLocalName}
-                        setLocalRole={this.setLocalRole}
+                          setLocalUser={this.setLocalUser} />
+                      } />
 
-                        setLocalUser={this.setLocalUser} />
-                    } /> */}
-                    
-                    <Route path="/company" render={() =>
-                      <Company
-                        userID={this.state.userID}
-                        email={this.state.email}
-                        name={this.state.name}
+                      <Route path={ROUTES.DELPRO} render={() =>
+                        <DeleteProfile
+                          userID={this.state.userID}
+                          email={this.state.email}
+                          name={this.state.name}
 
-                        ruolo={this.state.ruolo}
+                          ruolo={this.state.ruolo}
 
-                        setRuolo={this.state.setRuolo}
-                        setStateUser={this.setStateUser}
+                          setRuolo={this.state.setRuolo}
+                          setStateUser={this.setStateUser}
 
-                        setLocalName={this.setLocalName}
-                        setLocalRole={this.setLocalRole}
+                          setLocalName={this.setLocalName}
+                          setLocalRole={this.setLocalRole}
 
-                        setLocalUser={this.setLocalUser} />
-                    } />
-                   
+                          setLocalUser={this.setLocalUser} />
+                      } />
 
+                      <Route path={ROUTES.COMPANY} render={() =>
+                        <Company
+                          userID={this.state.userID}
+                          email={this.state.email}
+                          name={this.state.name}
 
-                    <Route path="/queues" render={() =>
-                      <QueueView
-                        userID={this.state.userID}
-                        email={this.state.email}
-                        name={this.state.name}
+                          ruolo={this.state.ruolo}
 
-                        ruolo={this.state.ruolo}
+                          setRuolo={this.state.setRuolo}
+                          setStateUser={this.setStateUser}
 
-                        setRuolo={this.state.setRuolo}
-                        setStateUser={this.setStateUser}
+                          setLocalName={this.setLocalName}
+                          setLocalRole={this.setLocalRole}
 
-                        setLocalName={this.setLocalName}
-                        setLocalRole={this.setLocalRole}
-
-                        setLocalUser={this.setLocalUser} />
-                    } />
-
-                    <Route path="/info" component={Info} />
+                          setLocalUser={this.setLocalUser} />
+                      } />
 
 
-                    <Route path="/faq" component={Faq} />
+
+                      <Route path={ROUTES.QUEUES} render={() =>
+                        <QueueView
+                          userID={this.state.userID}
+                          email={this.state.email}
+                          name={this.state.name}
+
+                          ruolo={this.state.ruolo}
+
+                          setRuolo={this.state.setRuolo}
+                          setStateUser={this.setStateUser}
+
+                          setLocalName={this.setLocalName}
+                          setLocalRole={this.setLocalRole}
+
+                          setLocalUser={this.setLocalUser} />
+                      } />
+                      <Route path={ROUTES.OPERATOR} render={() =>
+                        <OperatorView
+                          userID={this.state.userID}
+                          name={this.state.name}
+                        />
+                      } />
 
 
-                  </>
-                  : <Redirect to='/login' />
-                }
-              </Switch>
-            </div>
-          </BrowserRouter>
-           </Col>
+
+                      <Route path={ROUTES.INFO} component={Info} />
+
+
+
+
+
+                    </>
+                    : <Redirect to={ROUTES.LOGIN} />
+                  }
+                </Switch>
+              </div>
+            </BrowserRouter>
+          </Col>
         </Container >
-          <div className="footerstyle">
-            <Footer authenticated={this.state.authenticated} />
-          </div>
-         
+        <div className="footerstyle">
+          <Footer authenticated={this.state.authenticated} />
+        </div>
+
       </div>
     );
   }

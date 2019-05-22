@@ -1,20 +1,20 @@
 import React from 'react';
-import { fire } from '../../config/FirebaseConfig';
+import { fire } from '../../../config/FirebaseConfig';
 import { Card, Row, Col, Button } from 'react-bootstrap';
 
 import { TiArrowShuffle, TiDelete } from 'react-icons/ti';
 
-import '../../styles/style.css';
-import '../../styles/btnStyle.css';
+import '../../../styles/style.css';
+import '../../../styles/btnStyle.css';
 
 class WorkingQueue extends React.Component {
     constructor(props){
         super(props)
-        this.state({
+        this.state = {
             currentUser: null,
             busy: false,
             queue: this.props.queue
-        })
+        }
         this.getCurrentUser = this.getCurrentUser.bind(this)
     }
     componentDidMount(){
@@ -39,11 +39,11 @@ class WorkingQueue extends React.Component {
 
 
     render() {
-        const { queue } = this.props;
+        const { queue } = this.state;
         return(
             <Card className="QCard text-center">
                 <Card.Body>
-                    <Card.Header> {queue.Subtitle} </Card.Header>
+                    <Card.Header> {queue.title} </Card.Header>
                     <Card.Subtitle>
                         {queue.description}
                     </Card.Subtitle>

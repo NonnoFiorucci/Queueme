@@ -110,7 +110,7 @@ class Company extends React.Component {
             .catch((error) => {
                 alert(error);
             });
-        fire.database().ref('operators/' + this.refs.idUserForOperator.value + '/queues/'+ this.props.userID).push({
+        fire.database().ref('operators/' + this.refs.idUserForOperator.value + '/queues/').push({
                 idQueue: keyQueue,
                 idCompany: this.props.userID
             })
