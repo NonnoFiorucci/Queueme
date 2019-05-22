@@ -1,4 +1,5 @@
 import React from 'react';
+import { fire } from '../../config/FirebaseConfig';
 
 import { Card, Button, Col, Row } from 'react-bootstrap';
 
@@ -8,11 +9,15 @@ import '../../styles/style.css';
 import '../../styles/btnStyle.css';
 
 class SimpleQueue extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            enqueued: this.props.queue.currentUserEnqueued
+            enqueued: ""
         }
+        this.onRenderVerifyEnqueue = this.onRenderVerifyEnqueue.bind(this);
+    }
+    componentDidMount() {
+        this.onRenderVerifyEnqueue();
     }
 
     onToggleAddUserQueue = () => {
@@ -29,9 +34,27 @@ class SimpleQueue extends React.Component {
         //punta alla lista di code
         this.props.onRemoveUser(this.props.queue.queueId);
     }
+    onRenderVerifyEnqueue = () => {
+    
+        fire.database().ref('users/' + this.props.userId + '/queuesStatus/')
+        .orderByChild('queueId').equalTo(this.props.queue.queueId).on('value',s => {
+            if (s.val()){
+                this.setState({
+                    enqueued: true
+                })
+            }
+            else{
+                this.setState({
+                    enqueued: false
+                })
+            }
+        })
+    
+
+    }
     render() {
         const { queue } = this.props;
-        console.log(this.props.queue.currentUserEnqueued)
+
         return (
             <Card className="QCard text-center">
                 <Card.Header > {queue.title} </Card.Header>
@@ -44,11 +67,11 @@ class SimpleQueue extends React.Component {
                 <Card.Footer>
                     <Row>
                         <Col md={{ span: 3, offset: 3 }}>
-                            <Button block variant="outline-success" size="sl" onClick={this.onToggleAddUserQueue} disabled={(!queue.active || queue.currentUserEnqueue)}>
-                                < TiPlus size={40}/>
+                            <Button block variant="outline-success" size="sl" onClick={this.onToggleAddUserQueue} disabled={(!queue.active || this.state.enqueued)}>
+                                < TiPlus size={40} />
                             </Button></Col>
                         <Col md={{ span: 3 }}>
-                            <Button block variant="outline-danger" size="sl" onClick={this.onToggleRemoveUserQueue} disabled={queue.currentUserEnqueue} >
+                            <Button block variant="outline-danger" size="sl" onClick={this.onToggleRemoveUserQueue} disabled={!this.state.enqueued} >
                                 < TiTrash size={40} />
                             </Button></Col>
                     </Row>
