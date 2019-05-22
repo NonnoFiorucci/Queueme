@@ -27,6 +27,7 @@ class QueueView extends React.Component {
                 const queueProps = snap.val();
                 const allQueuesGetted = Object.keys(queueProps).map(key => ({
                     ...queueProps[key],
+                    //TOOD for William
                     currentUserEnqueued: this.onVerifyAlreadyEnqueue(key),
                     queueId: key
                 }));
@@ -37,13 +38,14 @@ class QueueView extends React.Component {
             }
         )
     }
-    //TODO fixare sta query che non me rileva 
+    //TODO  for William 
     onVerifyAlreadyEnqueue = quId =>{            
+        
         const verify = fire.database().ref('queues/' + quId + '/userList/')
         verify.orderByChild('userId').equalTo(this.props.userID).once( "value")
-        .then(function(snap){
-           return (snap.exists())
-        })
+        .then( snap => {
+            fire.database().ref('users/'+snap.val()+'/queuesHistory').push(quId)
+        }).catch()
         
     }
     
