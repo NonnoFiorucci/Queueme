@@ -11,13 +11,9 @@ class SimpleQueue extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            enqueued: this.props.currentUserEnqueue
+            enqueued: this.props.queue.currentUserEnqueue
         };
     }
-
-
-    
-
     componentWillMount() {
     }
     onToggleAddUserQueue = () => {
@@ -37,7 +33,7 @@ class SimpleQueue extends React.Component {
     render() {
         const { queue } = this.props;
        
-        console.log(this.state.enqueued);
+        console.log(queue.currentUserEnqueue);
         return (
             <Card className="QCard text-center">
                 <Card.Header > {queue.title} </Card.Header>
