@@ -11,13 +11,14 @@ class WorkingQueue extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            currentUser: null,
+            queue: null,
+            currentUser: '',
             busy: false,
-            queue: this.props.queue
         }
         this.getCurrentUser = this.getCurrentUser.bind(this)
     }
     componentDidMount(){
+        this.showQueue(this.props.queueId)
         this.getCurrentUser()
     }
     onToggleNextUser(){
@@ -33,21 +34,22 @@ class WorkingQueue extends React.Component {
             })
         })
     }
+
     
 
 
 
 
     render() {
-        const { queue } = this.state;
+    
         return(
             <Card className="QCard text-center">
                 <Card.Body>
-                    <Card.Header> {queue.title} </Card.Header>
+                    <Card.Header> {this.state.queue.title} </Card.Header>
                     <Card.Subtitle>
-                        {queue.description}
+                        {this.state.queue.description}
                     </Card.Subtitle>
-                    <Card.Text> Persone in coda: {queue.numWait} </Card.Text>
+                    <Card.Text> Persone in coda: {this.state.queue.numWait} </Card.Text>
                     <Row>
                         <Col md={{ span: 3, offset: 3 }}>
                             <Button block variant="outline-success" size="sl" onClick={this.onToggleNextUser} >

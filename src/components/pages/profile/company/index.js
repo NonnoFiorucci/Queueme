@@ -130,6 +130,8 @@ class Company extends React.Component {
             });
     }
 
+
+    
     getQueueList() {
         return (
             <Table striped bordered hover variant="dark">
