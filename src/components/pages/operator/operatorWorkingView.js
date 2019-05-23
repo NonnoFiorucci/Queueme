@@ -8,63 +8,66 @@ import '../../../styles/style.css';
 import '../../../styles/btnStyle.css';
 
 class WorkingQueue extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
-            queue: null,
-            currentUser: '',
+            queue: this.props.queue,
+            currentUser: null,
             busy: false,
         }
-        this.getCurrentUser = this.getCurrentUser.bind(this)
+        this.showCurrentUser = this.showCurrentUser.bind(this)
     }
-    componentDidMount(){
-        this.showQueue(this.props.queueId)
-        this.getCurrentUser()
+    componentDidMount() {
+        this.showCurrentUser()
     }
-    onToggleNextUser(){
-        fire.database().ref('queues/'+ this.props.queueId+ '/userList').limitToFirst(1).remove()
-        
+    onToggleNextUser() {
+        fire.database().ref('queues/' + this.props.queueId + '/userList').limitToFirst(1).remove()
+
     }
 
-    getCurrentUser(){
-        fire.database().ref('queues/'+ this.props.queueId+ '/userList').limitToFirst(1).on('value',
-        s =>{
-            this.setState({
-                currentUser: s.val()
+    showCurrentUser() {
+        fire.database().ref('queues/' + this.props.queueId + '/userList').limitToFirst(1).on('value',
+            s => {
+                this.setState({
+                    currentUser: s.val()
+                })
             })
-        })
     }
 
-    
+
 
 
 
 
     render() {
-    
-        return(
-            <Card className="QCard text-center">
-                <Card.Body>
-                    <Card.Header> {this.state.queue.title} </Card.Header>
-                    <Card.Subtitle>
-                        {this.state.queue.description}
-                    </Card.Subtitle>
-                    <Card.Text> Persone in coda: {this.state.queue.numWait} </Card.Text>
-                    <Row>
-                        <Col md={{ span: 3, offset: 3 }}>
-                            <Button block variant="outline-success" size="sl" onClick={this.onToggleNextUser} >
-                                < TiArrowShuffle size={40} />
-                            </Button></Col>
-                        <Col md={{ span: 3 }}>
-                            <Button block variant="outline-danger" size="sl" onClick={this.props.unmountQueue}  >
-                                < TiDelete size={40} />
-                            </Button></Col>
-                    </Row>
-                </Card.Body>                
-                <Card.Footer>
-                    {this.state.currentUser}
-                </Card.Footer>
-            </Card>
+
+        return (
+            <div>
+                {this.state.queue && (
+                    <Card className="QCard text-center">
+                        <Card.Body>
+                            <Card.Header> {this.state.queue.title} </Card.Header>
+                            <Card.Subtitle>
+                                {this.state.queue.description}
+                            </Card.Subtitle>
+                            <Card.Text> Persone in coda: {this.state.queue.numWait} </Card.Text>
+                            <Row>
+                                <Col md={{ span: 3, offset: 3 }}>
+                                    <Button block variant="outline-success" size="sl" onClick={this.onToggleNextUser} >
+                                        < TiArrowShuffle size={40} />
+                                    </Button></Col>
+                                <Col md={{ span: 3 }}>
+                                    <Button block variant="outline-danger" size="sl" onClick={this.props.unmountQueue}  >
+                                        < TiDelete size={40} />
+                                    </Button></Col>
+                            </Row>
+                        </Card.Body>
+                        <Card.Footer>
+                            {this.state.currentUser}
+                        </Card.Footer>
+                    </Card>
+                )}
+            </div>
 
         )
     }

@@ -12,26 +12,27 @@ class OperatorView extends React.Component {
         super(props)
         this.state = {
             workingQueueId: '',
+            workingStatus: false,
             workingQueue: null,
 
             queues: []
         }
         this.showQueue = this.showQueue.bind(this) 
-        this.setWorkingQueue = this.setWorkingQueue.bind(this)
+        this.showOperatorQueues = this.showOperatorQueues.bind(this)
     }
 
     componentDidMount() {
         this.showOperatorQueues()
+        this.showQueue()
     }
 
 
     setWorkingQueue = event => {
-
         this.setState({
-            workingQueueId: this.refs.choosedQueueId.value
+            workingQueueId: this.refs.choosedQueueId.value,
+            workingStatus: true
         })
-        console.log(this.refs.choosedQueueId.value)
-        console.log(this.state.workingQueueId)
+        
         event.preventDefault()
     }
 
@@ -56,15 +57,15 @@ class OperatorView extends React.Component {
             </Form>
         )
     }
-    showQueue(quId) {
-        
-        fire.database().ref('queues/'+ quId +'/').on(
+    showQueue() {        
+        fire.database().ref('queues/'+ this.state.workingQueueId +'/').on(
             'value', snapQuery => {
-                
+                this.setState({
+                    workingQueue: snapQuery.val()
+                })            
                 
             }
-        )
-        
+        )        
     }
 
     showOperatorQueues = () => {
@@ -84,27 +85,27 @@ class OperatorView extends React.Component {
         )
 
     }
+    
     unmountWorkingQueue = () => {
         this.setState({
             workingQueueId: null,
             workingStatus: false,
             workingQueue: null,
         })
-        // TODO update query active: false
+        // TODO update queue active: false
 
     }
 
     render() {
         return (
             <div className="form">
-                {this.onRenderSelect()}
-                {this.state.workingQueue &&(
-                    <WorkingQueue
+                {this.onRenderSelect()}                
+                <WorkingQueue
                         queueId={this.state.workingQueueId}
                         queue={this.state.workingQueue}
-                        unmountQueue={this.unmountWorkingQueue()}
-                    />
-                )}
+                        unmountQueue={this.unmountWorkingQueue}
+                />
+            
 
             </div>
         )

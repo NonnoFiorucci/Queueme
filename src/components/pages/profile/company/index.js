@@ -131,7 +131,7 @@ class Company extends React.Component {
     }
 
 
-    
+
     getQueueList() {
         return (
             <Table striped bordered hover variant="dark">
@@ -155,7 +155,7 @@ class Company extends React.Component {
                                 <th>{this.state.idOperator[index]}</th>
                                 <th>{this.state.numWait[index]}</th>
                                 <th> {
-                                    this.state.active[index] ? <IoIosCheckmark /> : <IoIosClose />
+                                    this.state.active[index] ? <IoIosCheckmark size={30} /> : <IoIosClose size={30}/>
                                 }
                                 </th>
                             </tr>
