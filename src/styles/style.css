@@ -29,10 +29,7 @@ body {
     
 }
 .pageStyle{
-    border-left: solid;
-    border-left-color: #4F4F4F;
-    border-right: solid;
-    border-right-color: #4F4F4F;    
+     
 }
 
 
@@ -170,5 +167,21 @@ input[type]:focus{
 
 
 
+.navbar-collapse{
+    text-align:center;
+    
+}
+
+.dropdown-menu.show{
+    background-color: #41484ef5;
+    
+}
 
 
+
+
+.navbar.navbar-expand-secondary.navbar-light.bg-light.fixed-bottom{
+    background-color: #d8d8d8!important;
+    height: 70px;
+    
+}

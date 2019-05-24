@@ -14,19 +14,22 @@ class Footer extends Component {
             <div>
                 {this.props.authenticated
                     ?
-                    <Navbar fixed="bottom" expand="secondary"  >
-                        <Nav.Item>                     
-                        <a href={ROUTES.PROFILE} className="btnStyle one">
-                            <FaUserCircle size={30}/> 
-                            Profilo
+                    <Navbar bg="dark" fixed="bottom" expand="secondary"  >
+                        <Nav.Item style={{marginTop:'-30px', fontSize:'13px', fontWeight: 'bold', color:'#c3c3c3'}}>                     
+                        <a  href={ROUTES.PROFILE} className="btnStyle foot">
+                            <FaUserCircle size={25}/><br/>
+                            
                         </a>
+                        PROFILO
                         </Nav.Item>
-                        <Nav.Item>
-                          <a href={ROUTES.QUEUES} className="btnStyle one">
-                            <IoMdContacts size={30}/>
-                            Code
+                        <Nav.Item style={{marginTop:'-30px' , fontSize:'13px', fontWeight: 'bold', color:'#c3c3c3', textAlign:'center' }}>                     
+                          <a href={ROUTES.QUEUES} className="btnStyle foot">
+                            <IoMdContacts size={25}/><br/>
+                            
                             </a>
-                        </Nav.Item>                     
+                            CODE
+                        </Nav.Item>    
+                                   
                      
                     </Navbar>
                     :
