@@ -38,9 +38,7 @@ class App extends React.Component {
       loading: true,
       userID: null,
       email: null,
-      name: null,
-
-      telefono: null,
+      name: null, 
     }
     this.setAuthenticated = this.setAuthenticated.bind(this)
     this.setRuolo = this.setRuolo.bind(this)
@@ -51,8 +49,6 @@ class App extends React.Component {
     localStorage.setItem('userID', id);
     localStorage.setItem('userEmail', em);
     localStorage.setItem('userName', na);
-    localStorage.setItem('userPicture', pic);
-    //localStorage.setItem('userRole', ru);
   }
 
   setLocalRole(r) {
@@ -63,23 +59,13 @@ class App extends React.Component {
     localStorage.setItem('userName', na);
   }
 
-  setLocalTelefono(tel) {
-    localStorage.setItem('userTelefono', tel);
-  }
-
-  setLocalIstituto(is) {
-    localStorage.setItem('userIstituto', is);
-  }
 
   setStateUser() {
     this.setState({
       userID: localStorage.getItem('userID'),
       email: localStorage.getItem('userEmail'),
       name: localStorage.getItem('userName'),
-      picture: localStorage.getItem('userPicture'),
-      ruolo: localStorage.getItem('userRole'),
-      telefono: localStorage.getItem('userTelefono'),
-      istituto: localStorage.getItem('userIstituto')
+      ruolo: localStorage.getItem('userRole')
     })
   }
 
@@ -197,52 +183,21 @@ class App extends React.Component {
                       <Route path={ROUTES.COMPANY} render={() =>
                         <Company
                           userID={this.state.userID}
-                          email={this.state.email}
-                          name={this.state.name}
-
-                          ruolo={this.state.ruolo}
-
-                          setRuolo={this.state.setRuolo}
-                          setStateUser={this.setStateUser}
-
-                          setLocalName={this.setLocalName}
-                          setLocalRole={this.setLocalRole}
-
-                          setLocalUser={this.setLocalUser} />
+                           />
                       } />
-
-
 
                       <Route path={ROUTES.QUEUES} render={() =>
                         <QueueView
                           userID={this.state.userID}
-                          email={this.state.email}
-                          name={this.state.name}
-
-                          ruolo={this.state.ruolo}
-
-                          setRuolo={this.state.setRuolo}
-                          setStateUser={this.setStateUser}
-
-                          setLocalName={this.setLocalName}
-                          setLocalRole={this.setLocalRole}
-
-                          setLocalUser={this.setLocalUser} />
+                          />
                       } />
+                      
                       <Route path={ROUTES.OPERATOR} render={() =>
                         <OperatorView
                           userID={this.state.userID}
                           name={this.state.name}
-                        />
-                      } />
-                      <Route path={ROUTES.OPERATOR+`/:queueId` } render={({match}) =>
-                        <WorkingQueue 
-                            queueId={match.params.queueId}
-                        />                  
-                      
+                        />    
                       }/>
-
-
 
                       <Route path={ROUTES.INFO} component={Info} />
 

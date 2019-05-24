@@ -1,7 +1,8 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+// import { Redirect } from 'react-router-dom';
 import { fire } from '../../../config/FirebaseConfig';
-import { Row, Form, Col, Button} from 'react-bootstrap';
+import { Row, Form, Col} from 'react-bootstrap';
+import WorkingQueue  from './operatorWorkingView';
 
 import '../../../styles/style.css';
 import '../../../styles/btnStyle.css';
@@ -28,20 +29,23 @@ class OperatorView extends React.Component {
         this.setState({
             workingQueueId: this.refs.choosedQueueId.value,
             workingStatus: true
-        })
-
-        
+        })        
         event.preventDefault()
     }
+    // shouldComponentUpdate(nextProps) {
+    //     const workingStatus = this.props.workingStatus !== nextProps.workingStatus;
+    //     return workingStatus;
+    // }
 
 
     onRenderSelect = () => {
         return (
-            <Form onSubmit={this.setWorkingQueue}>
+            // onSubmit={this.setWorkingQueue}
+            <Form >
                 <Form.Group as={Row}>
                     <Form.Label column sm="2">Scegli coda</Form.Label>
                     <Col sm="8">
-                        <Form.Control as='select' ref='choosedQueueId' required >
+                        <Form.Control as='select' ref='choosedQueueId' onChange={this.setWorkingQueue} required disabled={this.state.workingStatus} >
                             {this.state.queues.map(queue => (
                                 <option value={queue.idQueue}>
                                     {queue.idQueue} [{queue.idCompany}]
@@ -51,7 +55,7 @@ class OperatorView extends React.Component {
                         </Form.Control>
                     </Col>
                 </Form.Group>
-                <Button bsPrefix="btnStyle one" type="submit">Lavora la coda</Button> 
+                {/* <Button bsPrefix="btnStyle one" type="submit">Lavora la coda</Button>  */}
             </Form>
         )
     }
@@ -88,8 +92,15 @@ class OperatorView extends React.Component {
     render() {
         return (
             <div className="form">
-                {!this.state.workingStatus&&this.onRenderSelect()}                
-                {this.state.workingQueueId&&<Redirect to={`/operator/${this.state.workingQueueId}`} />}
+                {this.onRenderSelect()}                
+                {this.state.workingQueueId&&
+                    (
+                        <WorkingQueue 
+                            queueId={this.state.workingQueueId}
+                            unmountQueue={this.unmountWorkingQueue}
+                            />
+                    )} 
+                {/* <Redirect to={`/operator/${this.state.workingQueueId}`} /> */}
             
 
             </div>

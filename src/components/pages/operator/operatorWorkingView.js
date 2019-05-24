@@ -12,12 +12,12 @@ class WorkingQueue extends React.Component {
         super(props)
         this.state = {
             queue: {},
-            currentUser: null,
-            busy: false,
+            currentUser: null
         }
         this.showCurrentUser = this.showCurrentUser.bind(this)
     }
     componentDidMount() {
+
         this.showQueue()
         this.showCurrentUser()
     }
@@ -37,7 +37,9 @@ class WorkingQueue extends React.Component {
         cUser.limitToFirst(1)
         .on('value', s=> {
             s.forEach( n => {
-              if(n){this.setState({currentUser: n.val().userId})}
+              if(n){
+                  this.setState({currentUser: n.val().userId})
+                }
             })
         })
     }
@@ -52,16 +54,12 @@ class WorkingQueue extends React.Component {
             }
         )
     }
-
-
-
-
-
-
     render() {
 
         return (
-            <div>
+          
+            <div>  
+           
                 {this.state.queue && (
                     <Card className="QCard text-center">
                         <Card.Header> {this.state.queue.title} </Card.Header>
@@ -76,7 +74,7 @@ class WorkingQueue extends React.Component {
                                     < TiArrowShuffle size={40} />
                                 </Button></Col>
                             <Col md={{ span: 3 }}>
-                                <Button block variant="outline-danger" size="sl" >
+                                <Button block variant="outline-danger" size="sl" onClick={this.props.unmountQueue} >
                                     < TiDelete size={40} />
                                 </Button></Col>
                         </Row>
