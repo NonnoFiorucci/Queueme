@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { fire } from '../../../config/FirebaseConfig';
 import { Row, Form, Col, Button} from 'react-bootstrap';
 import WorkingQueue from './operatorWorkingView';
@@ -13,8 +14,6 @@ class OperatorView extends React.Component {
         this.state = {
             workingQueueId: '',
             workingStatus: false,
-            workingQueue: null,
-
             queues: []
         }
         this.showQueue = this.showQueue.bind(this) 
@@ -32,6 +31,7 @@ class OperatorView extends React.Component {
             workingQueueId: this.refs.choosedQueueId.value,
             workingStatus: true
         })
+
         
         event.preventDefault()
     }
@@ -57,16 +57,7 @@ class OperatorView extends React.Component {
             </Form>
         )
     }
-    showQueue() {        
-        fire.database().ref('queues/'+ this.state.workingQueueId +'/').on(
-            'value', snapQuery => {
-                this.setState({
-                    workingQueue: snapQuery.val()
-                })            
-                
-            }
-        )        
-    }
+
 
     showOperatorQueues = () => {
 
@@ -100,11 +91,7 @@ class OperatorView extends React.Component {
         return (
             <div className="form">
                 {this.onRenderSelect()}                
-                <WorkingQueue
-                        queueId={this.state.workingQueueId}
-                        queue={this.state.workingQueue}
-                        unmountQueue={this.unmountWorkingQueue}
-                />
+                {this.state.workingQueueId&&<Redirect to={`/operator/${this.state.workingQueueId}`} />}
             
 
             </div>

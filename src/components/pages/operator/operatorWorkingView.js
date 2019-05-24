@@ -11,7 +11,7 @@ class WorkingQueue extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            queue: this.props.queue,
+            queue: null,
             currentUser: null,
             busy: false,
         }
@@ -32,6 +32,17 @@ class WorkingQueue extends React.Component {
                     currentUser: s.val()
                 })
             })
+    }
+    
+    showQueue() {        
+        fire.database().ref('queues/'+ this.props.queueId +'/').on(
+            'value', snapQuery => {
+                this.setState({
+                    queue: snapQuery.val()
+                })            
+                
+            }
+        )        
     }
 
 
