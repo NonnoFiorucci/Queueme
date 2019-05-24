@@ -15,7 +15,6 @@ import DeleteProfile from './components/pages/profile/delete/delete';
 import Company from './components/pages/profile/company';
 import Info from './components/pages/info/info';
 import OperatorView from './components/pages/operator';
-import WorkingQueue from './components/pages/operator/operatorWorkingView';
 import QueueView from './components/queue/queueView';
 
 import * as ROUTES from './constants/routes';
@@ -200,11 +199,6 @@ class App extends React.Component {
                       }/>
 
                       <Route path={ROUTES.INFO} component={Info} />
-
-
-
-
-
                     </>
                     : <Redirect to={ROUTES.LOGIN} />
                   }

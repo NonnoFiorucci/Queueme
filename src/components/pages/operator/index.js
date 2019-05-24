@@ -32,15 +32,10 @@ class OperatorView extends React.Component {
         })        
         event.preventDefault()
     }
-    // shouldComponentUpdate(nextProps) {
-    //     const workingStatus = this.props.workingStatus !== nextProps.workingStatus;
-    //     return workingStatus;
-    // }
 
 
     onRenderSelect = () => {
         return (
-            // onSubmit={this.setWorkingQueue}
             <Form >
                 <Form.Group as={Row}>
                     <Form.Label column sm="2">Scegli coda</Form.Label>
@@ -55,14 +50,12 @@ class OperatorView extends React.Component {
                         </Form.Control>
                     </Col>
                 </Form.Group>
-                {/* <Button bsPrefix="btnStyle one" type="submit">Lavora la coda</Button>  */}
             </Form>
         )
     }
 
 
     showOperatorQueues = () => {
-
         fire.database().ref('operators/' + this.props.userID + '/').on(
             'value', snapQuery => {
                 snapQuery.forEach(snap => {
