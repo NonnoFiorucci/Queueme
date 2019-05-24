@@ -2,7 +2,7 @@ import React from 'react';
 
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import { fire } from './config/FirebaseConfig';
-import { Spinner, Container, Col } from 'react-bootstrap'
+import { Spinner, Container, Col } from 'react-bootstrap';
 
 import Header from './components/header/header';
 import Footer from './components/footer/footer';
@@ -235,11 +235,12 @@ class App extends React.Component {
                           name={this.state.name}
                         />
                       } />
-                      <Route path={ROUTES.OPERATOR} render={()=>
-                        <WorkingQueue
-                          queue={}
+                      <Route path={ROUTES.OPERATOR+`/:queueId` } render={({match}) =>
+                        <WorkingQueue 
+                            queueId={match.params.queueId}
+                        />                  
                       
-                    }
+                      }/>
 
 
 

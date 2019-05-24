@@ -2,7 +2,6 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { fire } from '../../../config/FirebaseConfig';
 import { Row, Form, Col, Button} from 'react-bootstrap';
-import WorkingQueue from './operatorWorkingView';
 
 import '../../../styles/style.css';
 import '../../../styles/btnStyle.css';
@@ -16,13 +15,12 @@ class OperatorView extends React.Component {
             workingStatus: false,
             queues: []
         }
-        this.showQueue = this.showQueue.bind(this) 
+        
         this.showOperatorQueues = this.showOperatorQueues.bind(this)
     }
 
     componentDidMount() {
         this.showOperatorQueues()
-        this.showQueue()
     }
 
 
@@ -90,7 +88,7 @@ class OperatorView extends React.Component {
     render() {
         return (
             <div className="form">
-                {this.onRenderSelect()}                
+                {!this.state.workingStatus&&this.onRenderSelect()}                
                 {this.state.workingQueueId&&<Redirect to={`/operator/${this.state.workingQueueId}`} />}
             
 
