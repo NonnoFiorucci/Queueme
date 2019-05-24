@@ -202,8 +202,8 @@ class Login extends Component{
           <Form.Group controlId="exampleForm.ControlSelect1">
           <Form.Label>Sono uno</Form.Label>
             <Form.Control id="sltForm"as="select" ref={(input) => { this.tipoInputRegistrazione = input }} required>              
-              <option>Utente</option>
-              <option>Azienda</option>
+              <option>users</option>
+              <option>company</option>
             </Form.Control>
           </Form.Group>
           <br></br>            
