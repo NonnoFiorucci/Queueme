@@ -28,15 +28,15 @@ body {
     margin-bottom: 70px;
     
 }
-.pageStyle{
-     
-}
+/* .pageStyle{
+    
+    
+} */
 
 
 h2.title{
     text-align: center;
-    border-bottom: solid;
-    border-bottom-color: #4F4F4F;
+    
     margin-left: 3%;
     margin-right: 3%;
 }
@@ -44,8 +44,7 @@ h4.text{
     text-align: left;
     margin-left: 4%;
     margin-right: 4%;
-    border-bottom: solid;
-    border-bottom-color: #4F4F4F;
+
 }
 
 

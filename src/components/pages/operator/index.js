@@ -1,7 +1,8 @@
 import React from 'react';
+// import { Redirect } from 'react-router-dom';
 import { fire } from '../../../config/FirebaseConfig';
-import { Row, Form, Col, Button} from 'react-bootstrap';
-import WorkingQueue from './operatorWorkingView';
+import { Row, Form, Col} from 'react-bootstrap';
+import WorkingQueue  from './operatorWorkingView';
 
 import '../../../styles/style.css';
 import '../../../styles/btnStyle.css';
@@ -13,17 +14,14 @@ class OperatorView extends React.Component {
         this.state = {
             workingQueueId: '',
             workingStatus: false,
-            workingQueue: null,
-
             queues: []
         }
-        this.showQueue = this.showQueue.bind(this) 
+        
         this.showOperatorQueues = this.showOperatorQueues.bind(this)
     }
 
     componentDidMount() {
         this.showOperatorQueues()
-        this.showQueue()
     }
 
 
@@ -31,19 +29,23 @@ class OperatorView extends React.Component {
         this.setState({
             workingQueueId: this.refs.choosedQueueId.value,
             workingStatus: true
-        })
-        
+        })        
         event.preventDefault()
     }
+    // shouldComponentUpdate(nextProps) {
+    //     const workingStatus = this.props.workingStatus !== nextProps.workingStatus;
+    //     return workingStatus;
+    // }
 
 
     onRenderSelect = () => {
         return (
-            <Form onSubmit={this.setWorkingQueue}>
+            // onSubmit={this.setWorkingQueue}
+            <Form >
                 <Form.Group as={Row}>
                     <Form.Label column sm="2">Scegli coda</Form.Label>
                     <Col sm="8">
-                        <Form.Control as='select' ref='choosedQueueId' required >
+                        <Form.Control as='select' ref='choosedQueueId' onChange={this.setWorkingQueue} required disabled={this.state.workingStatus} >
                             {this.state.queues.map(queue => (
                                 <option value={queue.idQueue}>
                                     {queue.idQueue} [{queue.idCompany}]
@@ -53,20 +55,11 @@ class OperatorView extends React.Component {
                         </Form.Control>
                     </Col>
                 </Form.Group>
-                <Button bsPrefix="btnStyle one" type="submit">Lavora la coda</Button> 
+                {/* <Button bsPrefix="btnStyle one" type="submit">Lavora la coda</Button>  */}
             </Form>
         )
     }
-    showQueue() {        
-        fire.database().ref('queues/'+ this.state.workingQueueId +'/').on(
-            'value', snapQuery => {
-                this.setState({
-                    workingQueue: snapQuery.val()
-                })            
-                
-            }
-        )        
-    }
+
 
     showOperatorQueues = () => {
 
@@ -100,11 +93,14 @@ class OperatorView extends React.Component {
         return (
             <div className="form">
                 {this.onRenderSelect()}                
-                <WorkingQueue
-                        queueId={this.state.workingQueueId}
-                        queue={this.state.workingQueue}
-                        unmountQueue={this.unmountWorkingQueue}
-                />
+                {this.state.workingQueueId&&
+                    (
+                        <WorkingQueue 
+                            queueId={this.state.workingQueueId}
+                            unmountQueue={this.unmountWorkingQueue}
+                            />
+                    )} 
+                {/* <Redirect to={`/operator/${this.state.workingQueueId}`} /> */}
             
 
             </div>
