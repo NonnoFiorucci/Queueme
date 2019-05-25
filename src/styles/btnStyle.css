@@ -192,6 +192,7 @@
 .btnStyle.one {
     color: #000;
     cursor: pointer;
+    width: 50%;
     display: block;
     position: relative;
     border: 2px solid #1E1E1E;

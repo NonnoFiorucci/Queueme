@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SimpleQueue from './queueCard';
+import SimpleCard from './queueCard';
 import { Spinner } from 'react-bootstrap';
 import { fire } from '../../config/FirebaseConfig';
 
@@ -11,12 +11,10 @@ class QueueView extends React.Component {
             loading: false,
             //code 
             queues: [],
-            numWait:[],
-            limit: 5,
-            
+            limit: 5
         }
         this.onShowQueue = this.onShowQueue.bind(this);
-        this.onVerifyAlreadyEnqueue = this.onVerifyAlreadyEnqueue.bind(this);
+        // this.onVerifyAlreadyEnqueue = this.onVerifyAlreadyEnqueue.bind(this);
     }
     componentDidMount() {
         this.onShowQueue();
@@ -24,7 +22,7 @@ class QueueView extends React.Component {
     
     onShowQueue() {
         this.setState({ loading: true });
-        fire.database().ref().child('queues/').once(
+        fire.database().ref().child('queues/').on(
             'value', snap => {
                 const queueProps = snap.val();
                 const allQueuesGetted = Object.keys(queueProps).map(key => ({
@@ -38,58 +36,37 @@ class QueueView extends React.Component {
             }
         )
     }
-    //TODO fixare sta query che non me rileva 
-    onVerifyAlreadyEnqueue = quId =>{    
-           
-        const verify = fire.database().ref('queues/' + quId + '/userList/')
-        verify.orderByChild('userId').equalTo(this.props.userID).once( "value")
-        .then(function(snap){
-           return (snap.exists())
-        })
-         
-    }
     
-    onRemoveUser = quId => {
-        
-        const remQuery = fire.database().ref('queues/' + quId + '/userList/')
-        remQuery.orderByChild('userId').equalTo(this.props.userID).once('value', snap=> {
+    onRemoveUser = quId => {        
+        const remUserFromQueue = fire.database().ref('queues/' + quId + '/userList/')
+        remUserFromQueue.orderByChild('userId').equalTo(this.props.userID).once('value', snap=> {
             snap.forEach ( n =>{
-                remQuery.child(n.key).remove();
+                remUserFromQueue.child(n.key).remove();
             })
-        }
+        })
+        const remQueueFromUser = fire.database().ref('users/'+this.props.userID+'/queuesStatus/')
+        remQueueFromUser.orderByChild('queueId').equalTo(quId).once('value', s =>{
+            s.forEach ( n =>{
+                remQueueFromUser.child(n.key).remove();
+            })
 
-        )
-
-    }
-
-
-         
-
-
-        
+        })
            
-          
-
-        
-
+    
+    }
 
     onAddUser = quId => {
-        this.getQNum(quId);  
         fire.database().ref('queues/'+ quId + '/userList/').push({
-            userId: (this.props.userID),
-             });
-        this.updQNum(quId);
-        
+            userId: (this.props.userID)
+        });
+        fire.database().ref('users/'+this.props.userID+'/queuesStatus').push({
+            queueId: quId
+        })
+
     }
-
-   
-
-    
-
 
     render() {
         const { queues, loading } = this.state;
-     
         return(
             <div>
                 
@@ -98,16 +75,15 @@ class QueueView extends React.Component {
                 {/*se ci sono code*/}
                 {queues && 
                     this.state.queues.map( queue => (
-                        <SimpleQueue 
+                        <SimpleCard 
                             queue={queue}
+                            userId={this.props.userID}
                             onRemoveUser={this.onRemoveUser}
                             onAddUser={this.onAddUser} />
                     ) )       
-             
-                  
+            
                         
-                }  
-                  
+                }          
             
             </div>
         )
