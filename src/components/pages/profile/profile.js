@@ -26,22 +26,19 @@ class Profile extends Component {
     return (
       <div class="formAccesso">
         <h3>Bentornato </h3>
-        <Col>
-          <Row>
+        
             <a href={ROUTES.QUEUES} class="btnStyle one">
               Code disponibili
           </a>
             <a href={ROUTES.DELPRO} class="btnStyle one">
               Elimina
           </a>
-          </Row>
-          <Row>
+      
             <a href={ROUTES.LOGOUT} class="btnStyle one">
               Logout
           </a>
-          </Row>
-        </Col>
         
+       
       </div>
     );
   }

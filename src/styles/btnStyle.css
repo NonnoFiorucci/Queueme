@@ -138,14 +138,70 @@
     transition: all 1s ease;
 }
 
+
+
+
+
+.btnStyle.foot {
+    color: rgb(195, 195, 195);
+    cursor: pointer;
+    display: block;
+    position: relative;
+    
+    transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+}
+
+.btnStyle.foot:hover {
+    color: #fff !important;
+    background-color: transparent;
+    text-shadow: none;
+}
+
+.btnStyle.foot:hover:before {
+    bottom: 0%;
+    top: auto;
+    height: 100%;
+}
+
+.btnStyle.foot:before {
+    display: block;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    border-radius: 50%;
+    height: 0px;
+    width: 100%;
+    z-index: -1;
+    content: '';
+    color: #fff !important;
+    background: rgb(39, 38, 38);
+    transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 .btnStyle.one {
     color: #000;
     cursor: pointer;
+    width: 50%;
     display: block;
     position: relative;
     border: 2px solid #1E1E1E;
     transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
 }
+
+
+
+
 
 .btnStyle.one:hover {
     color: #fff !important;

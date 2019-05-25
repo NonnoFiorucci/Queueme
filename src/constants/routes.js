@@ -1,6 +1,7 @@
 export const LANDING = '/';
 export const LOGIN = '/login';
 export const QUEUES = '/queues';
+export const MYQUEUES ='/myqueues';
 export const COMPANY = '/company';
 export const OPERATOR = '/operator';
 

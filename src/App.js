@@ -10,6 +10,7 @@ import Login from './components/pages/login/login';
 import Logout from './components/pages/logout/logout';
 import Landing from './components/pages/landing/landing';
 import Profile from './components/pages/profile/profile';
+
 import ModifyProfile from './components/pages/profile/modify/modify';
 import DeleteProfile from './components/pages/profile/delete/delete';
 import Company from './components/pages/profile/company';
