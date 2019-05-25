@@ -7,9 +7,9 @@ import '../../../styles/btnStyle.css';
 function Landing() {
     return (
         <div>
-            <h2 class="title">Benvenuto!</h2>            
-            <h4 class="text">Non sprecare il tuo tempo, la vita è troppo breve!</h4>
-            <a href={ROUTES.LOGIN} class="btnStyle one">
+            <h2 className="title">Benvenuto!</h2>            
+            <h4 className="text">Non sprecare il tuo tempo, la vita è troppo breve!</h4>
+            <a href={ROUTES.LOGIN} className="btnStyle one">
                         Entra
             </a>
         </div>

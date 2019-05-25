@@ -15,9 +15,6 @@ class deleteProfile extends Component {
     this.state = {
       nome: null,
       email: null,
-      // AGGIUNGERE ROBA
-
-
       ruolo: null
     }
     this.deleteaccount = this.deleteaccount.bind(this);
@@ -25,45 +22,26 @@ class deleteProfile extends Component {
 
   readUserData() {
     const rootUtente = fire.database().ref('users/' + this.props.userID);
-    const rootAzienda = fire.database().ref('company/' + this.props.userID);
-
-    rootUtente.on('value', snap => {  //verifico se utente
-      if (snap.val() !== null) {  //utente
+    rootUtente.on('value', snap => { 
+      if (snap.val() !== null) { 
         this.setState({
           nome: snap.val().nome,
-
-          ruolo: 'Utente'
+          email: snap.val().email,
+          ruolo: snap.val().role
         })
         //imposto ruolo e state App
-
         this.props.setLocalRole(this.state.ruolo)
         this.props.setStateUser()
-      } else if (snap.val() === null) {  //se non è utente
-        rootAzienda.on('value', snapshot => { //verifico se aziendao
-          if (snapshot.val() !== null) {  //se azienda
-            this.setState({
-              nome: snapshot.val().nome,
-              email: snapshot.val().email,
-
-              ruolo: 'Azienda'
-            })
-            //imposto ruolo e state App
-            this.props.setLocalName(this.state.nome)
-
-
-            this.props.setLocalRole(this.state.ruolo)
-            this.props.setStateUser()
-          } else if (snapshot.val() === null) {  //altrimenti nulla
-            alert('problemi lettura dati account')
-          }
-        })
+      } else if (snap.val() === null) {  
+        alert('problemi lettura dati account')
       }
     })
   }
 
+
+
   deleteaccount() {
     fire.database().ref('users/' + this.props.userID).remove();
-    //logout
     fire.auth().signOut()
     this.deleteStorage()
   }
@@ -81,13 +59,13 @@ class deleteProfile extends Component {
     return (
       <div>
         <div style={{ display: "flex", justifyContent: "left" }}>
-          <Button variant='secondary' href={ROUTES.PROFILE}> 
-            <FaAngleLeft/> 
+          <Button variant='secondary' href={ROUTES.PROFILE}>
+            <FaAngleLeft />
           </Button>
         </div>
 
         <h1>Elimina il tuo profilo</h1>
-        
+
 
         <OverlayTrigger
           trigger="click"

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import { fire } from './config/FirebaseConfig';
-import { Spinner, Container, Col } from 'react-bootstrap';
+import { Spinner, Container  } from 'react-bootstrap';
 
 import Header from './components/header/header';
 import Footer from './components/footer/footer';
@@ -36,6 +36,7 @@ class App extends React.Component {
       ruolo: null,
       loading: true,
       userID: null,
+      notify: false,
       email: null,
       name: null, 
     }
@@ -44,28 +45,21 @@ class App extends React.Component {
     this.setStateUser = this.setStateUser.bind(this)
   }
 
-  setLocalUser(id, em, na, pic) {
-    localStorage.setItem('userID', id);
-    localStorage.setItem('userEmail', em);
-    localStorage.setItem('userName', na);
+  updateUserInfo( id, email, role , name) {
+    localStorage.setItem('userName', name)
+    localStorage.setItem('userID', id)
+    localStorage.setItem('userEmail', email)
+    localStorage.setItem('userRole', role)    
+    this.setState({
+      userID: id,
+      email: email,
+      name: role,
+      role: name
+    })
   }
-
-  setLocalRole(r) {
-    localStorage.setItem('userRole', r);
-  }
-
-  setLocalName(na) {
-    localStorage.setItem('userName', na);
-  }
-
 
   setStateUser() {
-    this.setState({
-      userID: localStorage.getItem('userID'),
-      email: localStorage.getItem('userEmail'),
-      name: localStorage.getItem('userName'),
-      ruolo: localStorage.getItem('userRole')
-    })
+    
   }
 
   setAuthenticated(param) {
@@ -78,6 +72,13 @@ class App extends React.Component {
     this.setState({
       ruolo: param
     });
+  }
+
+  updateNotifyPermission(accessNotify){
+    this.setState({
+      notify: accessNotify
+    })
+    localStorage.setItem('notify', accessNotify);
   }
 
   componentDidMount() {
@@ -96,6 +97,7 @@ class App extends React.Component {
     })
     this.setStateUser()
   }
+
 
   render() {
     if (this.state.loading === true) {
@@ -116,23 +118,20 @@ class App extends React.Component {
           : null
         }
         <Container>
-          <Col lg="true" >
             <BrowserRouter>
               <div className="pageStyle">
                 <Switch>
-                  <Route exact path={ROUTES.LANDING}component={Landing} />
+                  <Route exact path={ROUTES.LANDING} component={Landing} />
                   <Route path={ROUTES.LOGIN} render={() =>
                     <Login
-                      userID={this.state.userID}
                       setAuthenticated={this.setAuthenticated}
                       authenticated={this.state.authenticated}
-                      setStateUser={this.setStateUser}
-                      setLocalUser={this.setLocalUser} />
+                      updateUserSession={this.updateUserInfo} />
                   } />
 
                   {this.state.authenticated
                     ? <>
-                      <Route path={ROUTES.LOGOUT}render={() =>
+                      <Route path={ROUTES.LOGOUT} render={() =>
                         <Logout
                           userID={this.state.userID} />
                       } />
@@ -205,8 +204,8 @@ class App extends React.Component {
                 </Switch>
               </div>
             </BrowserRouter>
-          </Col>
         </Container >
+
         <div className="footerstyle">
           <Footer authenticated={this.state.authenticated} />
         </div>

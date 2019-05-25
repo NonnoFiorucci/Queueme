@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Redirect } from 'react-router-dom';
 import { fire } from '../../../config/FirebaseConfig';
 import { Row, Form, Col} from 'react-bootstrap';
 import WorkingQueue  from './operatorWorkingView';
