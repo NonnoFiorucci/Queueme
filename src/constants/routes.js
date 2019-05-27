@@ -6,6 +6,7 @@ export const COMPANY = '/company';
 export const OPERATOR = '/operator';
 
 export const PROFILE = '/profile';
+export const FAVORITE ='/favorite';
 export const MODPRO = '/modifyprofile';
 export const DELPRO = '/deleteProfile';
 export const INFO = '/info';

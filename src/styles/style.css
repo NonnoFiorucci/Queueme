@@ -181,6 +181,13 @@ input[type]:focus{
 
 .navbar.navbar-expand-secondary.navbar-light.bg-light.fixed-bottom{
     background-color: #d8d8d8!important;
+    background-image: '../components/media/foot.jpg';
     height: 70px;
     
+}
+
+
+.foot{
+    background-image: '../components/media/foot.jpg';
+    height: 70px;
 }

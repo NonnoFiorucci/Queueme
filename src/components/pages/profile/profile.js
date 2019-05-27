@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 
-import { Row, Col  } from 'react-bootstrap';
 
 import * as ROUTES from '../../../constants/routes'; 
 

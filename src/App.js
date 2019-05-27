@@ -199,6 +199,8 @@ class App extends React.Component {
                       }/>
 
                       <Route path={ROUTES.INFO} component={Info} />
+                      <Route path={ROUTES.FAVORITE} component={Info} />
+                      <Route path={ROUTES.MYQUEUES} component={Info} />
                     </>
                     : <Redirect to={ROUTES.LOGIN} />
                   }
