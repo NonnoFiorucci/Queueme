@@ -1,6 +1,6 @@
 import React from 'react';
 
-
+import SimpleCard from '../../../queue/queueCard';
 import { Spinner } from 'react-bootstrap';
 import { fire } from '../../../../config/FirebaseConfig';
 
@@ -11,7 +11,7 @@ class MyQueueView extends React.Component {
             loading: false,
             //code 
             queues: [],
-          
+            limit: 5
         }
         this.onShowQueue = this.onShowQueue.bind(this);
         // this.onVerifyAlreadyEnqueue = this.onVerifyAlreadyEnqueue.bind(this);
@@ -22,7 +22,7 @@ class MyQueueView extends React.Component {
     
     onShowQueue() {
         this.setState({ loading: true });
-        fire.database().ref().child('users/'+ this.props.userID + '/queuesStatus').on(
+        fire.database().ref().child('users/'+ this.props.userID +'/queuesStatus').on(
             'value', snap => {
                 const queueProps = snap.val();
                 const allQueuesGetted = Object.keys(queueProps).map(key => ({
@@ -73,9 +73,9 @@ class MyQueueView extends React.Component {
                 {/*durante il caricamento da realtimedb*/}
                 {loading && (<Spinner color="secondary" />)}
                 {/*se ci sono code*/}
-               {/*  {queues && 
+                {queues && 
                     this.state.queues.map( queue => (
-                        <MyQueue 
+                        <SimpleCard 
                             queue={queue}
                             userId={this.props.userID}
                             onRemoveUser={this.onRemoveUser}
@@ -83,7 +83,7 @@ class MyQueueView extends React.Component {
                     ) )       
             
                         
-                }      */}     
+                }          
             
             </div>
         )

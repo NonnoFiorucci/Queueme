@@ -2,6 +2,7 @@ import React from 'react';
 import { fire } from '../../../../config/FirebaseConfig';
 import { Form, Table, Button, Collapse, Alert, Col, Row } from 'react-bootstrap';
 import { IoIosCheckmark, IoIosClose, IoIosArrowDropdownCircle } from "react-icons/io";
+import '../../../../styles/btnStyle.css';
 
 
 
@@ -134,7 +135,8 @@ class Company extends React.Component {
 
     getQueueList() {
         return (
-            <Table striped bordered hover variant="dark">
+           
+            <Table size='sm' responsive striped bordered hover variant="dark">
                 <thead>
                     <tr>
                         <th>Codice </th>
@@ -164,6 +166,7 @@ class Company extends React.Component {
                 </tbody>
 
             </Table>
+            
         )
     }
     createQueueForm() {
@@ -218,6 +221,7 @@ class Company extends React.Component {
             <div className="form">
                 <Alert variant="primary">
                     Vuoi creare una nuova coda?
+                    <br/>
                         <Button variant="outline-primary" onClick={() => this.setState({ showQeueueCreation: !this.state.showQeueueCreation })}>
                         <IoIosArrowDropdownCircle />
                     </Button>
@@ -227,7 +231,8 @@ class Company extends React.Component {
                 </Collapse>
                 <Alert variant="secondary">
                     Vuoi creare un nuovo operatore?
-                        <Button variant="outline-secondary" onClick={() => this.setState({ showOperatorAssign: !this.state.showOperatorAssign })}>
+                    <br/>
+                        <Button  className="btnmid" variant="outline-secondary" onClick={() => this.setState({ showOperatorAssign: !this.state.showOperatorAssign })}>
                         <IoIosArrowDropdownCircle />
                     </Button>
                 </Alert>

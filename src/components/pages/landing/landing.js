@@ -8,7 +8,7 @@ import logo from '../../media/LogoQME.png';
 function Landing() {
     return (
         <div>
-            <div className='logo'><img src={logo}  style={{width:'40%' , height:'40%'}}></img></div> 
+            <div className='logo'><img src={logo} alt="Logo"  style={{width:'40%' , height:'40%'}}></img></div> 
             <h2 className="title">Benvenuto!</h2>            
             <h4 className="text">Non sprecare il tuo tempo, la vita è troppo breve!</h4>
             <a href={ROUTES.LOGIN} className="btnStyle one">

@@ -70,7 +70,7 @@ class WorkingQueue extends React.Component {
                             <Card.Text> Persone in coda: {this.state.queue.numWait} </Card.Text>
                             <Row>
                                 <Col md={{ span: 3, offset: 3 }}>
-                                    <Button block variant="outline-success" size="sl" onClick={this.onToggleNextUser} disabled={!this.state.currentUser}>
+                                    <Button  block variant="outline-success" size="sl" onClick={this.onToggleNextUser} disabled={!this.state.currentUser}>
                                         < TiArrowShuffle size={40} />
                                     </Button></Col>
                                 <Col md={{ span: 3 }}>

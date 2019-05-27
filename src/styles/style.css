@@ -179,12 +179,7 @@ input[type]:focus{
 
 
 
-.navbar.navbar-expand-secondary.navbar-light.bg-light.fixed-bottom{
-    background-color: #d8d8d8!important;
-    background-image: '../components/media/foot.jpg';
-    height: 70px;
-    
-}
+
 
 
 .foot{
@@ -201,4 +196,28 @@ input[type]:focus{
     height: 300px;
     width: 300px;
     margin-bottom: -150px;
+}
+
+
+
+
+
+
+/*  INFO */
+
+
+
+.infoIcon {
+    margin-left: 5px;
+}
+
+.infoIconTelefona {
+    margin-left: 5px;
+    transform: rotate(90deg);
+}
+
+.unicamLogo {
+    margin-left: 5px;
+    width: 15px;
+    height: 18px;
 }
