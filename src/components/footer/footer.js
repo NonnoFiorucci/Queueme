@@ -5,7 +5,7 @@ import { IoMdContacts } from "react-icons/io";
 
 import {FaHeart} from 'react-icons/fa';
 
-import bgimage from '../media/foot2.jpg';
+import bgimage from '../media/foot3.jpg';
 
 import * as ROUTES from '../../constants/routes';
 import '../../styles/style.css';

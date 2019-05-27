@@ -11,6 +11,9 @@ import Logout from './components/pages/logout/logout';
 import Landing from './components/pages/landing/landing';
 import Profile from './components/pages/profile/profile';
 
+import Favorite from './components/pages/profile/favorite/favorite';
+import MyQueue from './components/pages/profile/myqueue/myqueue';
+
 import ModifyProfile from './components/pages/profile/modify/modify';
 import DeleteProfile from './components/pages/profile/delete/delete';
 import Company from './components/pages/profile/company';
@@ -23,6 +26,7 @@ import * as ROUTES from './constants/routes';
 
 import './styles/style.css';
 import './styles/btnStyle.css';
+
 
 
 
@@ -199,8 +203,12 @@ class App extends React.Component {
                       }/>
 
                       <Route path={ROUTES.INFO} component={Info} />
-                      <Route path={ROUTES.FAVORITE} component={Info} />
-                      <Route path={ROUTES.MYQUEUES} component={Info} />
+                      <Route path={ROUTES.FAVORITE} component={Favorite} />
+                      <Route path={ROUTES.MYQUEUES} render={() =>
+                        <MyQueue
+                          userID={this.state.userID}
+                          />
+                      } />
                     </>
                     : <Redirect to={ROUTES.LOGIN} />
                   }
