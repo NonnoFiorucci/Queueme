@@ -65,6 +65,31 @@ class QueueView extends React.Component {
 
     }
 
+
+    onAddFavorite = quId => {
+       
+        fire.database().ref('users/'+this.props.userID+'/favoriteQueues').push({
+            queueId: quId
+        })
+
+    }
+
+
+    onRemoveFavorite = quId => {        
+      
+        const remQueueFromUser = fire.database().ref('users/'+this.props.userID+'/favoriteQueues/')
+        remQueueFromUser.orderByChild('queueId').equalTo(quId).once('value', s =>{
+            s.forEach ( n =>{
+                remQueueFromUser.child(n.key).remove();
+            })
+
+        })
+           
+    
+    }
+
+
+
     render() {
         const { queues, loading } = this.state;
         return(
@@ -79,7 +104,12 @@ class QueueView extends React.Component {
                             queue={queue}
                             userId={this.props.userID}
                             onRemoveUser={this.onRemoveUser}
-                            onAddUser={this.onAddUser} />
+                            onAddUser={this.onAddUser}
+                            onAddFavorite={this.onAddFavorite}
+                            onRemoveFavorite={this.onRemoveFavorite}
+                            
+                            
+                            />
                     ) )       
             
                         

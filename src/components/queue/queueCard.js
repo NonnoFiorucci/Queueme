@@ -3,7 +3,7 @@ import { fire } from '../../config/FirebaseConfig';
 
 import { Card, Button, Col, Row, Spinner } from 'react-bootstrap';
 
-import { TiPlus, TiTrash } from 'react-icons/ti';
+import { TiPlus, TiTrash, TiHeartOutline } from 'react-icons/ti';
 
 import '../../styles/style.css';
 import '../../styles/btnStyle.css';
@@ -12,7 +12,8 @@ class SimpleQueue extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            enqueued: ""
+            enqueued: "",
+            favorite:false,
         }
         this.onRenderVerifyEnqueue = this.onRenderVerifyEnqueue.bind(this);
     }
@@ -27,6 +28,21 @@ class SimpleQueue extends React.Component {
         //punta alla lista di coda
         this.props.onAddUser(this.props.queue.queueId);
     }
+
+    onToggleAddFavoriteQueue =() => {
+        this.setState({
+            favorite: !this.state.favorite
+        })
+        this.props.onAddFavorite(this.props.queue.queueId)
+    }
+
+    onToggleRemoveFavoriteQueue =() => {
+        this.setState({
+            favorite: !this.state.favorite
+        })
+        this.props.onRemoveFavorite(this.props.queue.queueId)
+    }
+
     onToggleRemoveUserQueue = () => {
         this.setState({
             enqueued: !this.state.enqueued
@@ -70,13 +86,19 @@ class SimpleQueue extends React.Component {
                 </Card.Body>
                 <Card.Footer>
                     <Row>
-                        <Col md={{ span: 3, offset: 3 }}>
+                        <Col md={{ span: 3, offset: 3  }}>
                             <Button block variant="outline-success" size="sl" onClick={this.onToggleAddUserQueue} disabled={(!queue.active || this.state.enqueued)}>
                                 < TiPlus size={40} />
                             </Button></Col>
+                            <br/>
                         <Col md={{ span: 3 }}>
                             <Button block variant="outline-danger" size="sl" onClick={this.onToggleRemoveUserQueue} disabled={!this.state.enqueued} >
                                 < TiTrash size={40} />
+                            </Button></Col>
+                            <br/>
+                            <Col md={{ span: 3 }}>
+                            <Button block variant="outline-danger" size="sl" onClick={this.onToggleAddFavoriteQueue} disabled={sthis.state.favorite} >
+                                < TiHeartOutline size={40} />
                             </Button></Col>
                     </Row>
                 </Card.Footer>
