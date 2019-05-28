@@ -15,7 +15,7 @@ class Profile extends Component {
     super();
     this.state = {
       nome: null,
-      statusNotify: false,
+      // statusNotify: false,
       ruolo: null
     }
   }

@@ -18,7 +18,9 @@ class Login extends Component {
       email: null,
       name: null,
       userId: null,
-      role: null,
+      role: ROLES.USER,
+
+      userAuthProvider: null,
 
       openAccesso: false,
       openRegistrazione: false,
@@ -26,102 +28,62 @@ class Login extends Component {
     this.authGoogleProvider = this.authGoogleProvider.bind(this)
     this.authEmailPassword = this.authEmailPassword.bind(this)
     this.registrationEmailPassword = this.registrationEmailPassword.bind(this)
-    this.setUserInfo = this.setUserInfo.bind(this)
+    this.updateStateUser = this.updateStateUser.bind(this)
   }
 
-  setRedirect(param) {
-    this.setState({
-      redirect: param
-    })
-  }
-
-  getUserDetailsFromAuth(name,email) {
-    this.setState({
-      name: name,
-      email: email
-    })
-  }
-
-  setUserInfo() {
+  updateStateUser() {
     this.props.updateUserSession(this.state.userId, this.state.email, this.state.role, this.state.name)
   }
 
-  addUser() {
-    fire.database().ref('users/' + this.state.user.uid).set({
-      nome: this.state.user.nome,
-      email: this.state.user.email,
-      role: this.state.user.role
-    }).then((data) => {
-      //success callback
-      console.log('data ', data)
-    }).catch((error) => {
-      //error callback
-      console.log('error ', error)
-    })
-  }
-  matchAuthWithDB(userId) {
-
-  }
-
-  addUserGoogle() {
-    const rootUtente = fire.database().ref("users/" + this.props.user.uid);
+  mergeRealTimeDb() {
+    const rootUtente = fire.database().ref("users/" + this.state.userAuthProvider.uid);
     rootUtente.on("value", snap => {
       //verifico se utente esiste
-      if (snap.val()) {
-        //se non esiste lo aggiungo nel database
-        fire.database().ref('users/' + this.state.user.uid).set({
-          nome: this.state.user.displayName,
-          email: this.state.user.email,
-          /* Appena registrato l'utente google ha il ruolo di utente semplice, successivamente su profilo potra cambiare */
-          role: ROLES.USER
-        }).then((data) => {
-          console.log('data ', data)
-        }).catch((error) => {
-          console.log('error ', error)
-        })
-      } else { 
-        alert("Esiste giá un account") 
+      if (!snap.exists()) {
+          rootUtente.set({      
+            name: this.state.userAuthProvider.displayName,
+            email: this.state.userAuthProvider.userAuthProvider,
+            role: this.state.role
+          }).then((data) => {
+            console.log('data ', data)
+          }).catch((error) => {
+            console.log('error ', error)
+          })        
       }
+      this.setState({
+        name: snap.val().name,
+        email: snap.val().email,
+        role: snap.val().role
+      })
     })
   }
 
   authGoogleProvider() {
     fire.auth().signInWithPopup(providerGoogle)
       .then((result) => {
-        // console.log(result.user.displayName)
-        this.getUserDetailsFromAuth(result.user.displayName, result.user.email)
-        this.setUserInfo()
-        this.props.setAuthenticated(true)
-        this.addUserGoogle()  //aggiungo l'utente al db
+        this.setState({
+          userAuthProvider: result.user
+        })
+        this.mergeRealTimeDb()  //aggiungo l'utente al db
+        this.updateStateUser()
       })
       .catch((error) => {
         if (error.code === 'auth/account-exists-with-different-credential') {
           alert("Credenziali di accesso  collegate ad un altro account");
         } else alert("Errore login:" + error)
-      });
-     
+      })
   }
-
-  // getUserType() {
-  //   const rootUtente = fire.database().ref('users/' + this.state.user.uid);
-  //   rootUtente.on('value', snap => {
-  //     if (snap.val().role) {
-  //       this.setState({
-
-  //       })
-  //     }
-
-  //   })
-  // }
 
   authEmailPassword(event) {
     const email = this.refs.emailLogin.value
     const password = this.refs.pwdLogin.value
     fire.auth().signInWithEmailAndPassword(email, password)
       .then((result) => {
-        this.getUserDetailsFromAuth(result.user)
-        this.setUserInfo()
-        this.props.setAuthenticated(true)
+        this.setState({
+          userAuthProvider: result.user
+        })
+        this.mergeRealTimeDb()
+        this.updateStateUser()
       }).catch((error) => {
         if (error.code === 'auth/account-exists-with-different-credential') {
           alert("Email collegata ad un altro account");
@@ -135,18 +97,19 @@ class Login extends Component {
   }
 
   registrationEmailPassword(event) {
-    const email = this.refs.emailLogin.value
-    const password = this.refs.pwdLogin.value
-    // this.setState({
-    //   tipo: this.tipoInputRegistrazione.value
-    // })
+    const email = this.refs.regEmail.value
+    const password = this.refs.regPwd.value
+    const role = this.ref.regRole.value
+    
+    console.log(email,password,role)
     fire.auth().createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        this.getUserDetailsFromAuth(result.user)
-        this.setUserInfo()
-        this.props.setAuthenticated(true)
-        this.addUser()  //aggiungo l'utente al db
-        // alert(this.state.tipo + " aggiunto correttamente")
+        this.setState({
+          userAuthProvider: result.user,
+          role: role
+        })
+        this.mergeRealTimeDb()
+        this.updateStateUser()
       }).catch((error) => {
         if (error.code === 'auth/weak-password') {
           alert("La password deve contenere almeno 6 caratteri");
@@ -176,7 +139,7 @@ class Login extends Component {
         <p>Oppure</p>
         <div className="googleCentrato">
           <br />
-          <GoogleLoginButton style={{ fontWeight: 'bold' }} onClick={() => {this.authGoogleProvider()}}>Accedi con Google</GoogleLoginButton>
+          <GoogleLoginButton style={{ fontWeight: 'bold' }} onClick={() => this.authGoogleProvider()}>Accedi con Google</GoogleLoginButton>
           <br />
         </div>
       </div>
@@ -194,8 +157,8 @@ class Login extends Component {
           <Form.Group controlId="exampleForm.ControlSelect1">
             <Form.Label>Sono uno</Form.Label>
             <Form.Control id="sltForm" as="select" ref='regRole' required>
-              <option>users</option>
-              <option>company</option>
+              <option value={ROLES.USER}>Users</option>
+              <option value={ROLES.COMPANY}>Company</option>
             </Form.Control>
           </Form.Group>
           <br></br>
@@ -208,7 +171,7 @@ class Login extends Component {
   }
 
   render() {
-    if (this.props.authenticated === true) {
+    if (this.props.authenticated) {
       return <Redirect to='/profile' />
     }
     const { openAccesso, openRegistrazione } = this.state;

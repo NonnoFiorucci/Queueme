@@ -37,41 +37,46 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      authenticated: false,
-      ruolo: null,
-      loading: true,
       userID: null,
-      notify: false,
       email: null,
-      name: null, 
+      name: null,
+      role: null,
+      authenticated: false,
+      
+      loading: true,      
+      notify: false,
+      
+       
     }
-    this.setAuthenticated = this.setAuthenticated.bind(this)
+    // this.setAuthenticated = this.setAuthenticated.bind(this)
     this.setRuolo = this.setRuolo.bind(this)
-    this.setStateUser = this.setStateUser.bind(this)
+    this.updateUserInfo = this.updateUserInfo.bind(this)
+    // this.setStateUser = this.setStateUser.bind(this)
   }
 
   updateUserInfo( id, email, role , name) {
-    localStorage.setItem('userName', name)
-    localStorage.setItem('userID', id)
-    localStorage.setItem('userEmail', email)
-    localStorage.setItem('userRole', role)    
     this.setState({
       userID: id,
       email: email,
       name: role,
       role: name
     })
+
+    localStorage.setItem('userName', name)
+    localStorage.setItem('userID', id)
+    localStorage.setItem('userEmail', email)
+    localStorage.setItem('userRole', role)    
   }
 
-  setStateUser() {
+  // setStateUser() {
     
-  }
+  // }
 
-  setAuthenticated(param) {
-    this.setState({
-      authenticated: param
-    });
-  }
+  // setAuthenticated(param) {
+  //   this.setState({
+  //     authenticated: param
+  //   });
+  // }
 
   setRuolo(param) {
     this.setState({
@@ -79,12 +84,12 @@ class App extends React.Component {
     });
   }
 
-  updateNotifyPermission(accessNotify){
-    this.setState({
-      notify: accessNotify
-    })
-    localStorage.setItem('notify', accessNotify);
-  }
+  // updateNotifyPermission(accessNotify){
+  //   this.setState({
+  //     notify: accessNotify
+  //   })
+  //   localStorage.setItem('notify', accessNotify);
+  // }
 
   componentDidMount() {
     this.removeAuthListener = fire.auth().onAuthStateChanged((user) => {
@@ -100,7 +105,6 @@ class App extends React.Component {
         })
       }
     })
-    this.setStateUser()
   }
 
 
@@ -157,7 +161,7 @@ class App extends React.Component {
                           ruolo={this.state.ruolo}
                           istituto={this.state.istituto}
 
-                          setRuolo={this.state.setRuolo}
+                          // ???? setRuolo={this.state.setRuolo}
                           setStateUser={this.setStateUser}
 
                           setLocalName={this.setLocalName}
@@ -174,7 +178,7 @@ class App extends React.Component {
 
                           ruolo={this.state.ruolo}
 
-                          setRuolo={this.state.setRuolo}
+                           // ???? setRuolo={this.state.setRuolo}
                           setStateUser={this.setStateUser}
 
                           setLocalName={this.setLocalName}
