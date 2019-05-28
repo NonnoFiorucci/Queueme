@@ -51,7 +51,7 @@ class App extends React.Component {
     // this.setAuthenticated = this.setAuthenticated.bind(this)
     this.setRuolo = this.setRuolo.bind(this)
     this.updateUserInfo = this.updateUserInfo.bind(this)
-    // this.setStateUser = this.setStateUser.bind(this)
+    //this.setStateUser = this.setStateUser.bind(this)
   }
 
   updateUserInfo( id, email, role , name) {
@@ -61,35 +61,18 @@ class App extends React.Component {
       name: role,
       role: name
     })
-
+    console.log(this.state.userID)
     localStorage.setItem('userName', name)
     localStorage.setItem('userID', id)
     localStorage.setItem('userEmail', email)
     localStorage.setItem('userRole', role)    
   }
 
-  // setStateUser() {
-    
-  // }
-
-  // setAuthenticated(param) {
-  //   this.setState({
-  //     authenticated: param
-  //   });
-  // }
-
   setRuolo(param) {
     this.setState({
       ruolo: param
     });
   }
-
-  // updateNotifyPermission(accessNotify){
-  //   this.setState({
-  //     notify: accessNotify
-  //   })
-  //   localStorage.setItem('notify', accessNotify);
-  // }
 
   componentDidMount() {
     this.removeAuthListener = fire.auth().onAuthStateChanged((user) => {

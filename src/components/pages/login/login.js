@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React  from 'react';
 import { Redirect } from 'react-router-dom';
 import { Button, Form, Collapse } from 'react-bootstrap';
 import { GoogleLoginButton } from "react-social-login-buttons";
@@ -10,10 +10,10 @@ import '../../../styles/style.css';
 import '../../../styles/btnStyle.css';
 
 
-class Login extends Component {
+class Login extends React.Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       email: null,
       name: null,
@@ -35,27 +35,38 @@ class Login extends Component {
     this.props.updateUserSession(this.state.userId, this.state.email, this.state.role, this.state.name)
   }
 
+
   mergeRealTimeDb() {
-    const rootUtente = fire.database().ref("users/" + this.state.userAuthProvider.uid);
-    rootUtente.on("value", snap => {
-      //verifico se utente esiste
+    const rootUtente = fire.database().ref("users/" + this.state.userAuthProvider.uid)
+    .on("value",snap => {
       if (!snap.exists()) {
-          rootUtente.set({      
+          rootUtente.set({     
             name: this.state.userAuthProvider.displayName,
-            email: this.state.userAuthProvider.userAuthProvider,
+            email: this.state.userAuthProvider.email,
             role: this.state.role
           }).then((data) => {
             console.log('data ', data)
           }).catch((error) => {
             console.log('error ', error)
-          })        
-      }
+          })   
+          this.setState({
+            userId: this.state.userAuthProvider.uid,
+            name: this.state.userAuthProvider.displayName,
+            email: this.state.userAuthProvider.email,
+            role: this.state.role
+          })     
+      }else {
+        console.log("moesiste")
       this.setState({
-        name: snap.val().name,
+        userId: this.state.userAuthProvider.uid,
+        name: snap.val().displayName,
         email: snap.val().email,
         role: snap.val().role
       })
-    })
+      }
+
+    });  
+   
   }
 
   authGoogleProvider() {
