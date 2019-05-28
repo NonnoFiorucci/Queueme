@@ -203,7 +203,11 @@ class App extends React.Component {
                       }/>
 
                       <Route path={ROUTES.INFO} component={Info} />
-                      <Route path={ROUTES.FAVORITE} component={Favorite} />
+                      <Route path={ROUTES.FAVORITE} render={() =>
+                        <Favorite
+                          userID={this.state.userID}
+                          />
+                      } />
                       <Route path={ROUTES.MYQUEUES} render={() =>
                         <MyQueue
                           userID={this.state.userID}

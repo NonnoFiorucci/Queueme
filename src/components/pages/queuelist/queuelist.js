@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+/* import React, { Component } from 'react';
 import { fire } from '../../../config/FirebaseConfig';
 
 import { TiPlus } from 'react-icons/ti';
@@ -90,7 +90,7 @@ class ListaCode extends Component {
         {this.state.idQueue.map((idQueue, index) => (
             <Card className="QCard" key={index}>
               <Card.Header>{this.state.title[index]} </Card.Header>
-              {/* <Card.Img variant="top" src={this.state.image[index]} /> */}
+             
               <Card.Body className="text-left">
                 <Card.Subtitle> {this.state.description[index]}</Card.Subtitle>
                 <Card.Text> {this.state.numWait[index]} </Card.Text>
@@ -121,4 +121,4 @@ class ListaCode extends Component {
 
 
 
-export default ListaCode;
+export default ListaCode; */

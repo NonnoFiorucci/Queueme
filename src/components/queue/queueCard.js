@@ -97,7 +97,7 @@ class SimpleQueue extends React.Component {
                             </Button></Col>
                             <br/>
                             <Col md={{ span: 3 }}>
-                            <Button block variant="outline-danger" size="sl" onClick={this.onToggleAddFavoriteQueue} disabled={sthis.state.favorite} >
+                            <Button block variant="outline-danger" size="sl" onClick={this.onToggleAddFavoriteQueue} disabled={this.state.favorite} >
                                 < TiHeartOutline size={40} />
                             </Button></Col>
                     </Row>

@@ -11,6 +11,7 @@ class MyQueueView extends React.Component {
             loading: false,
             //code 
             queues: [],
+            appoggio:[],
             limit: 5
         }
         this.onShowQueue = this.onShowQueue.bind(this);
@@ -21,7 +22,24 @@ class MyQueueView extends React.Component {
     }
     
     onShowQueue() {
+
+        // prova per prendere l'id di una coda e passarla sotto
+
+        let ref = fire.database().ref('users/'+ this.props.userID +'/queuesStatus');
+        ref.on('value', snapshot => {
+          const mate = snapshot.val();
+          
+          this.setState(mate);
+        
+        });
+
+       
+        
         this.setState({ loading: true });
+
+      //  qua sottto è sbagliato,  va presa la cosa specifica da queues/
+    
+       
         fire.database().ref().child('users/'+ this.props.userID +'/queuesStatus').on(
             'value', snap => {
                 const queueProps = snap.val();
@@ -69,7 +87,7 @@ class MyQueueView extends React.Component {
         const { queues, loading } = this.state;
         return(
             <div>
-                
+                <h2 style={{textAlign:'center',marginTop:20}}>Le mie code</h2>
                 {/*durante il caricamento da realtimedb*/}
                 {loading && (<Spinner color="secondary" />)}
                 {/*se ci sono code*/}
