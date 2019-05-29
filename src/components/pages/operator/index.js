@@ -15,7 +15,7 @@ class OperatorView extends React.Component {
             workingStatus: false,
             queues: []
         }
-        
+        this.setWorkingQueue = this.setWorkingQueue.bind(this)        
         this.showOperatorQueues = this.showOperatorQueues.bind(this)
     }
 
@@ -77,7 +77,6 @@ class OperatorView extends React.Component {
             workingStatus: false,
             workingQueue: null,
         })
-        // TODO update queue active: false
 
     }
 

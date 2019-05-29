@@ -44,50 +44,57 @@ class App extends React.Component {
       authenticated: false,
       
       loading: true,      
-      notify: false,
-      
-       
+      notify: false      
     }
-    // this.setAuthenticated = this.setAuthenticated.bind(this)
-    this.setRuolo = this.setRuolo.bind(this)
+    this.authState = this.authState.bind(this)
+    // this.setRuolo = this.setRuolo.bind(this)
     this.updateUserInfo = this.updateUserInfo.bind(this)
     //this.setStateUser = this.setStateUser.bind(this)
   }
 
-  updateUserInfo( id, email, role , name) {
-    this.setState({
-      userID: id,
-      email: email,
-      name: role,
-      role: name
-    })
-    console.log(this.state.userID)
-    localStorage.setItem('userName', name)
-    localStorage.setItem('userID', id)
-    localStorage.setItem('userEmail', email)
-    localStorage.setItem('userRole', role)    
+  updateUserInfo() {
+  
   }
-
-  setRuolo(param) {
-    this.setState({
-      ruolo: param
-    });
-  }
-
-  componentDidMount() {
-    this.removeAuthListener = fire.auth().onAuthStateChanged((user) => {
+  authState() {
+    fire.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setState({
+          userID: user.uid,
+          email: user.email,
+          name: user.displayName,
           authenticated: true,
           loading: false
         })
       } else {
         this.setState({
+          userID: null,
+          emai: null,
+          name: null,
           authenticated: false,
           loading: false
         })
       }
+      console.log(user.uid)
+
     })
+  }
+
+  syncRoleFromDb(){
+    if(this.state.userID){
+      fire.database().ref('users/'+this.state.userID).on("value", snap =>{
+        this.setState({
+          role: snap.val().role
+        })
+      })
+    }
+   
+
+  }
+  componentDidMount() {
+    this.authState()
+    this.syncRoleFromDb()
+
+    
   }
 
 
@@ -105,7 +112,10 @@ class App extends React.Component {
         {this.state.authenticated
           ?
           <div className="headerStyle">
-            <Header authenticated={this.state.authenticated} />
+            <Header 
+                authenticated={this.state.authenticated}
+                role={this.state.role}
+                />
           </div>
           : null
         }
@@ -116,9 +126,8 @@ class App extends React.Component {
                   <Route exact path={ROUTES.LANDING} component={Landing} />
                   <Route path={ROUTES.LOGIN} render={() =>
                     <Login
-                      setAuthenticated={this.setAuthenticated}
                       authenticated={this.state.authenticated}
-                      updateUserSession={this.updateUserInfo} />
+                      updateUserInfo={this.updateUserInfo} />
                   } />
 
                   {this.state.authenticated

@@ -11,7 +11,7 @@ class WorkingQueue extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            queue: {},
+            queue: null,
             currentUser: null
         }
         this.showCurrentUser = this.showCurrentUser.bind(this)
@@ -38,7 +38,9 @@ class WorkingQueue extends React.Component {
             .on('value', s => {
                 s.forEach(n => {
                     if (n) {
-                        this.setState({ currentUser: n.val().userId })
+                        this.setState({ 
+                            currentUser: n.val().userId 
+                        })
                     }
                 })
             })

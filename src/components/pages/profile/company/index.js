@@ -2,10 +2,11 @@ import React from 'react';
 import { fire } from '../../../../config/FirebaseConfig';
 import { Form, Table, Button, Collapse, Alert, Col, Row } from 'react-bootstrap';
 import { IoIosCheckmark, IoIosClose, IoIosArrowDropdownCircle } from "react-icons/io";
+
+
 import '../../../../styles/btnStyle.css';
 
-
-
+import * as ROLES from '../../../../constants/roles';
 
 
 class Company extends React.Component {
@@ -22,8 +23,7 @@ class Company extends React.Component {
             idOperator: [],
             numWait: [],
             active: [],
-            //--- alterantiva ---
-            // listOfQueues: [],
+
             listOfOperator: [],
             usersAvailableKey: [],
             usersAvailableUsername: []
@@ -129,6 +129,9 @@ class Company extends React.Component {
             .catch((error) => {
                 alert(error);
             });
+        fire.database().ref('users/' + this.refs.idUserForOperator.value).update({
+            role: ROLES.OPERATOR
+        })
     }
 
 

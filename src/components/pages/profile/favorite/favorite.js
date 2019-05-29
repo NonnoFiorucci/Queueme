@@ -22,7 +22,7 @@ class MyQueueView extends React.Component {
     
     onShowQueue() {
         this.setState({ loading: true });
-        fire.database().ref().child('users/'+ this.props.userID +'/favoriteQueues').on(
+        fire.database().ref('users/'+ this.props.userID +'/favoriteQueues').on(
             'value', snap => {
                 const queueProps = snap.val();
                 const allQueuesGetted = Object.keys(queueProps).map(key => ({

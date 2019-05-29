@@ -1,10 +1,11 @@
-import React  from 'react';
+import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Button, Form, Collapse } from 'react-bootstrap';
 import { GoogleLoginButton } from "react-social-login-buttons";
 import { fire, providerGoogle } from '../../../config/FirebaseConfig';
 
 import * as ROLES from '../../../constants/roles';
+import * as ROUTES from '../../../constants/routes';
 
 import '../../../styles/style.css';
 import '../../../styles/btnStyle.css';
@@ -15,9 +16,6 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: null,
-      name: null,
-      userId: null,
       role: ROLES.USER,
 
       userAuthProvider: null,
@@ -28,19 +26,24 @@ class Login extends React.Component {
     this.authGoogleProvider = this.authGoogleProvider.bind(this)
     this.authEmailPassword = this.authEmailPassword.bind(this)
     this.registrationEmailPassword = this.registrationEmailPassword.bind(this)
-    this.updateStateUser = this.updateStateUser.bind(this)
+    // this.updateStateUser = this.updateStateUser.bind(this)
   }
 
-  updateStateUser() {
-    this.props.updateUserSession(this.state.userId, this.state.email, this.state.role, this.state.name)
-  }
+  // updateStateUser() {
+  //   localStorage.setItem('userName', JSON.stringify(this.state.userAuthProvider.displayName))
+  //   localStorage.setItem('userID', JSON.stringify(this.state.userAuthProvider.uid))
+  //   localStorage.setItem('userEmail', this.state.userAuthProvider.email)
+  //   localStorage.setItem('userRole', this.state.role) 
+  //   console.log(localStorage.getItem("userName"))
+  //   this.props.updateUserInfo()
+  // }
 
 
   mergeRealTimeDb() {
     const rootUtente = fire.database().ref("users/" + this.state.userAuthProvider.uid)
-    .on("value",snap => {
-      if (!snap.exists()) {
-          rootUtente.set({     
+      rootUtente.on("value", snap => {
+        if (snap.val() === null) {
+          rootUtente.set({
             name: this.state.userAuthProvider.displayName,
             email: this.state.userAuthProvider.email,
             role: this.state.role
@@ -48,25 +51,26 @@ class Login extends React.Component {
             console.log('data ', data)
           }).catch((error) => {
             console.log('error ', error)
-          })   
+          })
+          console.log(this.state.userAuthProvider.displayName, this.state.userAuthProvider.uid)
           this.setState({
             userId: this.state.userAuthProvider.uid,
             name: this.state.userAuthProvider.displayName,
             email: this.state.userAuthProvider.email,
             role: this.state.role
-          })     
-      }else {
-        console.log("moesiste")
-      this.setState({
-        userId: this.state.userAuthProvider.uid,
-        name: snap.val().displayName,
-        email: snap.val().email,
-        role: snap.val().role
-      })
-      }
+          })
+        } else {
+          console.log(snap.key)
+          this.setState({
+             userId: snap.key,
+             name: snap.val().name,
+             email: snap.val().email,
+             role: snap.val().role
+           })
+        }
 
-    });  
-   
+      });
+
   }
 
   authGoogleProvider() {
@@ -111,8 +115,6 @@ class Login extends React.Component {
     const email = this.refs.regEmail.value
     const password = this.refs.regPwd.value
     const role = this.ref.regRole.value
-    
-    console.log(email,password,role)
     fire.auth().createUserWithEmailAndPassword(email, password)
       .then((result) => {
         this.setState({
@@ -183,7 +185,7 @@ class Login extends React.Component {
 
   render() {
     if (this.props.authenticated) {
-      return <Redirect to='/profile' />
+      return <Redirect to={ROUTES.PROFILE} />
     }
     const { openAccesso, openRegistrazione } = this.state;
     return (

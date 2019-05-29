@@ -10,7 +10,7 @@ import * as ROUTES from '../../../../constants/routes';
 
 class deleteProfile extends Component {
 
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
       nome: null,
@@ -40,10 +40,11 @@ class deleteProfile extends Component {
 
 
 
-  deleteaccount() {
+  deleteaccount(event) {
     fire.database().ref('users/' + this.props.userID).remove();
     fire.auth().signOut()
     this.deleteStorage()
+    event.preventDefault();
   }
 
   deleteStorage() {
