@@ -3,6 +3,8 @@ import React from 'react';
 import SimpleCard from './queueCard';
 import { Spinner } from 'react-bootstrap';
 import { fire } from '../../config/FirebaseConfig';
+import Favorite from '../pages/profile/favorite/favorite';
+import {  Route } from 'react-router-dom';
 
 class QueueView extends React.Component {
     constructor(props){
@@ -94,7 +96,7 @@ class QueueView extends React.Component {
         const { queues, loading } = this.state;
         return(
             <div>
-                
+                 <h2 style={{textAlign:'center',marginTop:20}}>Code Disponibili</h2>
                 {/*durante il caricamento da realtimedb*/}
                 {loading && (<Spinner color="secondary" />)}
                 {/*se ci sono code*/}
@@ -113,7 +115,8 @@ class QueueView extends React.Component {
                     ) )       
             
                         
-                }          
+                }      
+                    
             
             </div>
         )
