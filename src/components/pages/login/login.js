@@ -17,7 +17,6 @@ class Login extends React.Component {
     super(props);
     this.state = {
       role: ROLES.USER,
-
       userAuthProvider: null,
 
       openAccesso: false,
@@ -26,6 +25,7 @@ class Login extends React.Component {
     this.authGoogleProvider = this.authGoogleProvider.bind(this)
     this.authEmailPassword = this.authEmailPassword.bind(this)
     this.regEmailPassword = this.regEmailPassword.bind(this)
+    this.mergeRealTimeDb = this.mergeRealTimeDb.bind(this)
   }
 
 
@@ -80,10 +80,10 @@ class Login extends React.Component {
   }
 
   regEmailPassword(event) {
+    const email = this.refs.registerEmail.value
+    const password = this.refs.registerPwd.value
+    const role = this.refs.registerRole.value
 
-    const email = this.refs.regEmail.value
-    const password = this.refs.regPwd.value
-    const role = this.ref.regRole.value
     fire.auth().createUserWithEmailAndPassword(email, password)
       .then((result) => {
         console.log(result.user.email)
@@ -131,11 +131,11 @@ class Login extends React.Component {
         <Form onSubmit={this.regEmailPassword}>
           <Form.Group>
             <Form.Label>Email</Form.Label>
-            <Form.Control type="email" placeholder="Inserisci Email" ref='regEmail' required />
+            <Form.Control type="email" placeholder="Inserisci Email" ref='registerEmail' required />
             <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Inserisci Password" ref='regPwd' required />
+            <Form.Control type="password" placeholder="Inserisci Password" ref='registerPwd' required />
             <Form.Label>Sono uno</Form.Label>
-            <Form.Control as="select" ref='regRole' required>
+            <Form.Control as='select' ref='registerRole'>
               <option value={ROLES.USER}>Users</option>
               <option value={ROLES.COMPANY}>Company</option>
             </Form.Control>
@@ -159,10 +159,7 @@ class Login extends React.Component {
         <h2 className="title">Login/Registrazione</h2>
         <h4 className="text">Hai già un account QueueMe?</h4>
         <Button bsPrefix="btnStyle one"
-          onClick={() => this.setState({ openRegistrazione: false, openAccesso: !openAccesso })}
-           aria-controls="collapse-accedi"
-           aria-expanded={openAccesso}
-          >
+          onClick={() => this.setState({ openRegistrazione: false, openAccesso: !openAccesso })}>
           Accedi
         </Button>
         <Collapse in={this.state.openAccesso}>
@@ -170,10 +167,7 @@ class Login extends React.Component {
         </Collapse>
         <h4 className="text">Oppure Registrati, ci vuole un attimo!</h4>
         <Button bsPrefix="btnStyle one"
-          onClick={() => this.setState({ openAccesso: false, openRegistrazione: !openRegistrazione })}
-          aria-controls="collapse-registrazione"
-          aria-expanded={openRegistrazione}
-          >
+          onClick={() => this.setState({ openAccesso: false, openRegistrazione: !openRegistrazione })}>
           Registrati ora
         </Button>
         <Collapse in={this.state.openRegistrazione}>

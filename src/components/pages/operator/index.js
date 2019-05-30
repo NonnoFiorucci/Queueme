@@ -18,7 +18,6 @@ class OperatorView extends React.Component {
         this.setWorkingQueue = this.setWorkingQueue.bind(this)        
         this.showOperatorQueues = this.showOperatorQueues.bind(this)
     }
-
     componentDidMount() {
         this.showOperatorQueues()
     }

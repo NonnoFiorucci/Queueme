@@ -224,7 +224,6 @@ class Company extends React.Component {
             <div className="form">
                 <Alert variant="primary">
                     Vuoi creare una nuova coda?
-                    <br/>
                         <Button variant="outline-primary" onClick={() => this.setState({ showQeueueCreation: !this.state.showQeueueCreation })}>
                         <IoIosArrowDropdownCircle />
                     </Button>
@@ -234,8 +233,7 @@ class Company extends React.Component {
                 </Collapse>
                 <Alert variant="secondary">
                     Vuoi creare un nuovo operatore?
-                    <br/>
-                        <Button  className="btnmid" variant="outline-secondary" onClick={() => this.setState({ showOperatorAssign: !this.state.showOperatorAssign })}>
+                        <Button  variant="outline-secondary" onClick={() => this.setState({ showOperatorAssign: !this.state.showOperatorAssign })}>
                         <IoIosArrowDropdownCircle />
                     </Button>
                 </Alert>

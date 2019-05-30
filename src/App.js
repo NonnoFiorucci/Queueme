@@ -47,6 +47,7 @@ class App extends React.Component {
       notify: false
     }
     this.authState = this.authState.bind(this)
+    this.syncRoleFromDb = this.syncRoleFromDb.bind(this)
   }
 
   authState() {
@@ -59,7 +60,6 @@ class App extends React.Component {
           loading: false
         })
         console.log(user.uid)
-        this.syncRoleFromDb()
       }
 
     })
@@ -69,8 +69,7 @@ class App extends React.Component {
     if (this.state.userID) {
       fire.database().ref('users/' + this.state.userID).on("value", snap => {
         this.setState({
-          role: snap.val().role,
-          name: snap.val().name
+          role: snap.val().role
         })
       })
     }
@@ -79,6 +78,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.authState()
+    this.syncRoleFromDb()
 
   }
 
