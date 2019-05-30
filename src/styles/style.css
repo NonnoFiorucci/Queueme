@@ -24,15 +24,10 @@ body {
     justify-content: center;
 }
 
-.headerStyle {
-    margin-bottom: 70px;
-    
+.pageStyle{
+    margin-top: 5rem;
+    margin-bottom: 5rem;    
 }
-/* .pageStyle{
-    
-    
-} */
-
 
 h2.title{
     text-align: center;

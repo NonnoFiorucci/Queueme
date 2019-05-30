@@ -94,19 +94,18 @@ class App extends React.Component {
 
     return (
       <div>
-        {this.state.authenticated
-          ?
-          <div className="headerStyle">
+        {this.state.authenticated && (
+          <>
             <Header
               authenticated={this.state.authenticated}
               role={this.state.role}
             />
-          </div>
-          : null
+            <Footer authenticated={this.state.authenticated} />
+          </>)
         }
-        
-          <BrowserRouter>
-            <div className="pageStyle"> 
+
+        <BrowserRouter>
+          <div className="pageStyle">
             <Switch>
               <Route exact path={ROUTES.LANDING} component={Landing} />
               <Route path={ROUTES.LOGIN} render={() =>
@@ -127,37 +126,12 @@ class App extends React.Component {
 
               <Route path={ROUTES.MODPRO} render={() =>
                 <ModifyProfile
-                  userID={this.state.userID}
-                  email={this.state.email}
-                  name={this.state.name}
-
-                  ruolo={this.state.ruolo}
-                  istituto={this.state.istituto}
-
-                  // ???? setRuolo={this.state.setRuolo}
-                  setStateUser={this.setStateUser}
-
-                  setLocalName={this.setLocalName}
-                  setLocalRole={this.setLocalRole}
-
-                  setLocalUser={this.setLocalUser} />
+                  userID={this.state.userID} />
               } />
 
               <Route path={ROUTES.DELPRO} render={() =>
                 <DeleteProfile
-                  userID={this.state.userID}
-                  email={this.state.email}
-                  name={this.state.name}
-
-                  ruolo={this.state.ruolo}
-
-                  // ???? setRuolo={this.state.setRuolo}
-                  setStateUser={this.setStateUser}
-
-                  setLocalName={this.setLocalName}
-                  setLocalRole={this.setLocalRole}
-
-                  setLocalUser={this.setLocalUser} />
+                  userID={this.state.userID} />
               } />
 
               <Route path={ROUTES.COMPANY} render={() =>
@@ -191,15 +165,12 @@ class App extends React.Component {
                 />
               } />
 
-              </Switch>
-              </div>
-             
-            </BrowserRouter>
-      <div className="footerstyle">
-        <Footer authenticated={this.state.authenticated} />
-      </div>
-      
-      
+            </Switch>
+          </div>
+
+        </BrowserRouter>
+
+
       </div>
     )
   }

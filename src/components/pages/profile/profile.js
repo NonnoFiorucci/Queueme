@@ -1,8 +1,9 @@
 
 import React, { Component } from 'react';
+import { fire } from '../../../config/FirebaseConfig';
 
 
-import * as ROUTES from '../../../constants/routes'; 
+import * as ROUTES from '../../../constants/routes';
 
 import '../../../styles/style.css';
 import '../../../styles/btnStyle.css';
@@ -14,30 +15,48 @@ class Profile extends Component {
   constructor() {
     super();
     this.state = {
-      nome: null,
-      // statusNotify: false,
+      name: null,
+      role: null,
+      email: null,
+      statusNotify: null,
       ruolo: null
     }
   }
+
+  componentDidMount() {
+    this.getUserData(this.props.userID)
+  }
+  getUserData(uid) {
+    fire.database().ref('users/' + uid).on(
+      "value", snap => {
+        this.setState({
+          name: snap.val().name,
+          role: snap.val().role,
+          email: snap.val().email,
+        })
+      }
+    )
+  }
+  //TODO modificare i valori all'interno del db e modifica della password attraverso le api auth di firebase
 
 
   render() {
     return (
       <div class="formAccesso">
         <h3>Bentornato </h3>
-        
-            <a href={ROUTES.QUEUES} class="btnStyle one">
-              Code disponibili
+        <a href={ROUTES.QUEUES} class="btnStyle one">
+          Code disponibili
           </a>
-            <a href={ROUTES.DELPRO} class="btnStyle one">
-              Elimina
+        <a href={ROUTES.DELPRO} class="btnStyle one">
+          Elimina
           </a>
-      
-            <a href={ROUTES.LOGOUT} class="btnStyle one">
-              Logout
+
+        <a href={ROUTES.LOGOUT} class="btnStyle one">
+          Logout
           </a>
-        
-       
+        {this.getUserData(this.props.userID)}
+
+
       </div>
     );
   }
@@ -85,20 +104,6 @@ class Profile extends Component {
       });
   }
 
-  aggiornaDati() {
-    const nome = this.aggiornaNome.value;
-    const istituto = this.aggiornaIstituto.value;
-    const telefono = this.aggiornaTelefono.value;
-    if (nome !== "" && istituto !== "" && telefono !== "") {
-      this.writeUserData(this.props.userID, nome, telefono, istituto);
-      //this.props.setLocalName(nome)
-      //this.props.setStateUser()
-      //alert('dati aggiornati')
-    } else {
-      alert("Tutti i campi devono essere compilati");
-    }
-    //this.datiForm.reset();
-  }
 
   componentDidMount() {
     this.readUserData();
@@ -106,23 +111,6 @@ class Profile extends Component {
 
   render() {
     return (
-      <div>
-        <h3>Profilo {this.props.ruolo}</h3>
-        <br />
-        <br />
-
-        <Button href="/myconversation" variant="info" size="lg">
-          Le mie conversazioni
-        </Button>
-
-        <br />
-        <br />
-        <Button href="modifyProfile" variant="info" size="lg">
-          Modifica profilo
-        </Button>
-
-        {/*
-
                 {this.props.picture === 'null'
                 ? <Button variant="info" href="/profile" size="sm">
                     Inserisci immagine
@@ -177,9 +165,6 @@ class Profile extends Component {
                         Aggiorna
                     </Button>
                 </Form>
-
-
-
       </div>
     );
   }
