@@ -11,18 +11,31 @@ class MyQueueView extends React.Component {
             loading: false,
             //code 
             queues: [],
+            favorite:[],
             limit: 5
         }
         this.onShowQueue = this.onShowQueue.bind(this);
+        
         // this.onVerifyAlreadyEnqueue = this.onVerifyAlreadyEnqueue.bind(this);
     }
     componentDidMount() {
         this.onShowQueue();
     }
     
+    
     onShowQueue() {
-        this.setState({ loading: true });
-        fire.database().ref('users/'+ this.props.userID +'/favoriteQueues').on(
+
+        let ref = fire.database().ref().child('users/'+ this.props.userID +'/favoriteQueues');
+        ref.on('value', snapshot => {
+          var fav = snapshot.val();
+          const allFavGetted = Object.keys(fav).map(function(key) {
+            
+
+            // DENTRO ALLFAV C'è la roba giusta....
+           const allFav = fav[key].queueId
+           console.log(allFav)
+
+           fire.database().ref().child('queues/'+fav[key].queueId).on(
             'value', snap => {
                 const queueProps = snap.val();
                 const allQueuesGetted = Object.keys(queueProps).map(key => ({
@@ -35,6 +48,20 @@ class MyQueueView extends React.Component {
                 })                
             }
         )
+        
+        
+        })
+
+
+
+
+
+          
+        });
+       
+
+        this.setState({ loading: true });
+       
     }
     
     onRemoveUser = quId => {        
