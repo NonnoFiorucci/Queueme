@@ -25,51 +25,26 @@ class Login extends React.Component {
     }
     this.authGoogleProvider = this.authGoogleProvider.bind(this)
     this.authEmailPassword = this.authEmailPassword.bind(this)
-    this.registrationEmailPassword = this.registrationEmailPassword.bind(this)
-    // this.updateStateUser = this.updateStateUser.bind(this)
+    this.regEmailPassword = this.regEmailPassword.bind(this)
   }
-
-  // updateStateUser() {
-  //   localStorage.setItem('userName', JSON.stringify(this.state.userAuthProvider.displayName))
-  //   localStorage.setItem('userID', JSON.stringify(this.state.userAuthProvider.uid))
-  //   localStorage.setItem('userEmail', this.state.userAuthProvider.email)
-  //   localStorage.setItem('userRole', this.state.role) 
-  //   console.log(localStorage.getItem("userName"))
-  //   this.props.updateUserInfo()
-  // }
 
 
   mergeRealTimeDb() {
     const rootUtente = fire.database().ref("users/" + this.state.userAuthProvider.uid)
-      rootUtente.on("value", snap => {
-        if (snap.val() === null) {
-          rootUtente.set({
-            name: this.state.userAuthProvider.displayName,
-            email: this.state.userAuthProvider.email,
-            role: this.state.role
-          }).then((data) => {
-            console.log('data ', data)
-          }).catch((error) => {
-            console.log('error ', error)
-          })
-          console.log(this.state.userAuthProvider.displayName, this.state.userAuthProvider.uid)
-          this.setState({
-            userId: this.state.userAuthProvider.uid,
-            name: this.state.userAuthProvider.displayName,
-            email: this.state.userAuthProvider.email,
-            role: this.state.role
-          })
-        } else {
-          console.log(snap.key)
-          this.setState({
-             userId: snap.key,
-             name: snap.val().name,
-             email: snap.val().email,
-             role: snap.val().role
-           })
-        }
-
-      });
+    rootUtente.on("value", snap => {
+      if (snap.val() === null) {
+        rootUtente.set({
+          name: this.state.userAuthProvider.displayName,
+          email: this.state.userAuthProvider.email,
+          role: this.state.role
+        }).then((data) => {
+          console.log('data ', data)
+        }).catch((error) => {
+          console.log('error ', error)
+        })
+        console.log(this.state.userAuthProvider.displayName, this.state.userAuthProvider.uid)
+      }
+    });
 
   }
 
@@ -80,7 +55,6 @@ class Login extends React.Component {
           userAuthProvider: result.user
         })
         this.mergeRealTimeDb()  //aggiungo l'utente al db
-        this.updateStateUser()
       })
       .catch((error) => {
         if (error.code === 'auth/account-exists-with-different-credential') {
@@ -93,13 +67,7 @@ class Login extends React.Component {
     const email = this.refs.emailLogin.value
     const password = this.refs.pwdLogin.value
     fire.auth().signInWithEmailAndPassword(email, password)
-      .then((result) => {
-        this.setState({
-          userAuthProvider: result.user
-        })
-        this.mergeRealTimeDb()
-        this.updateStateUser()
-      }).catch((error) => {
+      .then().catch((error) => {
         if (error.code === 'auth/account-exists-with-different-credential') {
           alert("Email collegata ad un altro account");
         } else if (error.code === 'auth/wrong-password') {
@@ -111,18 +79,19 @@ class Login extends React.Component {
     event.preventDefault()
   }
 
-  registrationEmailPassword(event) {
+  regEmailPassword(event) {
+
     const email = this.refs.regEmail.value
     const password = this.refs.regPwd.value
     const role = this.ref.regRole.value
     fire.auth().createUserWithEmailAndPassword(email, password)
       .then((result) => {
+        console.log(result.user.email)
         this.setState({
           userAuthProvider: result.user,
           role: role
         })
         this.mergeRealTimeDb()
-        this.updateStateUser()
       }).catch((error) => {
         if (error.code === 'auth/weak-password') {
           alert("La password deve contenere almeno 6 caratteri");
@@ -143,17 +112,14 @@ class Login extends React.Component {
             <Form.Label>Password</Form.Label>
             <Form.Control type="password" placeholder="Inserisci Password" ref='pwdLogin' required />
           </Form.Group>
-          <Form.Group controlId="formBasicChecbox">
-          </Form.Group>
+          <Form.Group controlId="formBasicChecbox" />
           <Button type="submit" bsPrefix="btnStyle one">
             Accedi
-            </Button>
+          </Button>
         </Form>
         <p>Oppure</p>
         <div className="googleCentrato">
-          <br />
           <GoogleLoginButton style={{ fontWeight: 'bold' }} onClick={() => this.authGoogleProvider()}>Accedi con Google</GoogleLoginButton>
-          <br />
         </div>
       </div>
     )
@@ -161,25 +127,25 @@ class Login extends React.Component {
 
   formRegistrazione() {
     return (
-      <div>
-        <Form className="formLogin" onSubmit={this.registrationEmailPassword}>
-          <Form.Label>Email</Form.Label>
-          <Form.Control type="email" placeholder="Inserisci Email" ref='regEmail' require />
-          <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Inserisci Password" ref='regPwd' required />
-          <Form.Group controlId="exampleForm.ControlSelect1">
+      <div className="formAccesso">
+        <Form onSubmit={this.regEmailPassword}>
+          <Form.Group>
+            <Form.Label>Email</Form.Label>
+            <Form.Control type="email" placeholder="Inserisci Email" ref='regEmail' required />
+            <Form.Label>Password</Form.Label>
+            <Form.Control type="password" placeholder="Inserisci Password" ref='regPwd' required />
             <Form.Label>Sono uno</Form.Label>
-            <Form.Control id="sltForm" as="select" ref='regRole' required>
+            <Form.Control as="select" ref='regRole' required>
               <option value={ROLES.USER}>Users</option>
               <option value={ROLES.COMPANY}>Company</option>
             </Form.Control>
           </Form.Group>
-          <br></br>
           <Button type="submit" bsPrefix="btnStyle one">
             Registrati
           </Button>
         </Form>
       </div>
+
     )
   }
 
@@ -189,13 +155,14 @@ class Login extends React.Component {
     }
     const { openAccesso, openRegistrazione } = this.state;
     return (
-      <div className="">
+      <div>
         <h2 className="title">Login/Registrazione</h2>
         <h4 className="text">Hai già un account QueueMe?</h4>
         <Button bsPrefix="btnStyle one"
           onClick={() => this.setState({ openRegistrazione: false, openAccesso: !openAccesso })}
-          aria-controls="collapse-accedi"
-          aria-expanded={openAccesso}>
+           aria-controls="collapse-accedi"
+           aria-expanded={openAccesso}
+          >
           Accedi
         </Button>
         <Collapse in={this.state.openAccesso}>
@@ -205,10 +172,10 @@ class Login extends React.Component {
         <Button bsPrefix="btnStyle one"
           onClick={() => this.setState({ openAccesso: false, openRegistrazione: !openRegistrazione })}
           aria-controls="collapse-registrazione"
-          aria-expanded={openRegistrazione}>
+          aria-expanded={openRegistrazione}
+          >
           Registrati ora
         </Button>
-
         <Collapse in={this.state.openRegistrazione}>
           {this.formRegistrazione()}
         </Collapse>
