@@ -23,7 +23,7 @@ class Profile extends Component {
     }
   }
 
-  componentDidMount() {
+  /* componentDidMount() {
     this.getUserData(this.props.userID)
   }
   getUserData(uid) {
@@ -36,7 +36,7 @@ class Profile extends Component {
         })
       }
     )
-  }
+  } */
   //TODO modificare i valori all'interno del db e modifica della password attraverso le api auth di firebase
 
 
@@ -54,7 +54,7 @@ class Profile extends Component {
         <a href={ROUTES.LOGOUT} class="btnStyle one">
           Logout
           </a>
-        {this.getUserData(this.props.userID)}
+    {/*   {this.getUserData(this.props.userID)} */}
 
 
       </div>

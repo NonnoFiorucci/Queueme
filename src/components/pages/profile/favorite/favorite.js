@@ -12,7 +12,8 @@ class MyQueueView extends React.Component {
             //code 
             queues: [],
             favorite:[],
-            limit: 5
+            limit: 5,
+            favque: null
         }
         this.onShowQueue = this.onShowQueue.bind(this);
         
@@ -28,14 +29,26 @@ class MyQueueView extends React.Component {
         let ref = fire.database().ref().child('users/'+ this.props.userID +'/favoriteQueues');
         ref.on('value', snapshot => {
           var fav = snapshot.val();
-          const allFavGetted = Object.keys(fav).map(function(key) {
-            
-
+          Object.keys(fav).map(key=> {
+           
+            this.onrealshow(fav[key].queueId)
+    //    console.log(this.state.favque)  
             // DENTRO ALLFAV C'è la roba giusta....
-           const allFav = fav[key].queueId
-           console.log(allFav)
+          // const allFav = fav[key].queueId
+           //console.log(allFav)
 
-           fire.database().ref().child('queues/'+fav[key].queueId).on(
+               
+        }) ;        
+        });
+       
+       
+    }
+
+
+
+    onrealshow = quId => {
+        console.log(quId)
+        fire.database().ref('queues/'+ quId).on(
             'value', snap => {
                 const queueProps = snap.val();
                 const allQueuesGetted = Object.keys(queueProps).map(key => ({
@@ -47,22 +60,9 @@ class MyQueueView extends React.Component {
                     loading: false
                 })                
             }
-        )
-        
-        
-        })
-
-
-
-
-
-          
-        });
-       
-
-        this.setState({ loading: true });
-       
+        ) 
     }
+    
     
     onRemoveUser = quId => {        
         const remUserFromQueue = fire.database().ref('queues/' + quId + '/userList/')

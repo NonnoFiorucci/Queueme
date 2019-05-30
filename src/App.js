@@ -2,7 +2,7 @@ import React from 'react';
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { fire } from './config/FirebaseConfig';
-// import { Spinner } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 
 import Header from './components/header/header';
 import Footer from './components/footer/footer';
@@ -59,9 +59,10 @@ class App extends React.Component {
           authenticated: true,
           loading: false
         })
-        console.log(user.uid)
+      
+       
       }
-
+      
     })
   }
 
@@ -77,31 +78,34 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.authState()
-    this.syncRoleFromDb()
+    this.authState();
+    this.syncRoleFromDb();
+   
+    
+    
 
   }
 
 
   render() {
-    // if (this.state.loading === true) {
-    //   return (
-    //     <div className="loading">
-    //       <Spinner animation="grow" />
-    //     </div>
-    //   )
-    // }
+     if (this.state.loading === true) {
+       return (
+         <div className="loading">
+           <Spinner animation="grow" />
+         </div>
+       )
+     }
 
     return (
       <div>
-        {this.state.authenticated && (
+        {this.state.authenticated && 
           <>
             <Header
               authenticated={this.state.authenticated}
               role={this.state.role}
             />
             <Footer authenticated={this.state.authenticated} />
-          </>)
+          </>
         }
 
         <BrowserRouter>
@@ -162,6 +166,7 @@ class App extends React.Component {
               <Route path={ROUTES.MYQUEUES} render={() =>
                 <MyQueue
                   userID={this.state.userID}
+                  
                 />
               } />
 
