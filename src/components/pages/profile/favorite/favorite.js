@@ -32,12 +32,8 @@ class MyQueueView extends React.Component {
           Object.keys(fav).map(key=> {
            
             this.onrealshow(fav[key].queueId)
-    //    console.log(this.state.favque)  
-            // DENTRO ALLFAV C'è la roba giusta....
-          // const allFav = fav[key].queueId
-           //console.log(allFav)
-
-               
+            this.setState({favque:fav[key]})
+                 
         }) ;        
         });
        
@@ -48,17 +44,22 @@ class MyQueueView extends React.Component {
 
     onrealshow = quId => {
         console.log(quId)
-        fire.database().ref('queues/'+ quId).on(
+        fire.database().ref().child('queues/').on(
             'value', snap => {
                 const queueProps = snap.val();
-                const allQueuesGetted = Object.keys(queueProps).map(key => ({
+                const allQueuesGetted = Object.keys(queueProps).filter(key => key == quId).map(key => ({
+                    
                     ...queueProps[key],
+                    
                     queueId: key
                 }));
+               console.log(allQueuesGetted)
                 this.setState({
-                    queues: allQueuesGetted,
+                    
+                    queues: this.state.queues.concat(allQueuesGetted),
                     loading: false
-                })                
+                })        
+              
             }
         ) 
     }

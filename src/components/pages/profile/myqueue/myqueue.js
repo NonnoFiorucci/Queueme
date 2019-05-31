@@ -23,36 +23,42 @@ class MyQueueView extends React.Component {
     
     onShowQueue() {
 
-        // prova per prendere l'id di una coda e passarla sotto
-
-        let ref = fire.database().ref('users/'+ this.props.userID +'/queuesStatus');
+        let ref = fire.database().ref().child('users/'+ this.props.userID +'/queuesStatus');
         ref.on('value', snapshot => {
-          const mate = snapshot.val();
-          
-          this.setState(mate);
-        
+          var fav = snapshot.val();
+          Object.keys(fav).map(key=> {
+           
+            this.onrealshow(fav[key].queueId)
+            this.setState({favque:fav[key]})
+                 
+        }) ;        
         });
-
        
-        
-        this.setState({ loading: true });
-
-      //  qua sottto è sbagliato,  va presa la cosa specifica da queues/
-    
        
-        fire.database().ref().child('users/'+ this.props.userID +'/queuesStatus').on(
+    }
+
+
+
+    onrealshow = quId => {
+        console.log(quId)
+        fire.database().ref().child('queues/').on(
             'value', snap => {
                 const queueProps = snap.val();
-                const allQueuesGetted = Object.keys(queueProps).map(key => ({
+                const allQueuesGetted = Object.keys(queueProps).filter(key => key == quId).map(key => ({
+                    
                     ...queueProps[key],
+                    
                     queueId: key
                 }));
+               console.log(allQueuesGetted)
                 this.setState({
-                    queues: allQueuesGetted,
+                    
+                    queues: this.state.queues.concat(allQueuesGetted),
                     loading: false
-                })                
+                })        
+              
             }
-        )
+        ) 
     }
     
     onRemoveUser = quId => {        
