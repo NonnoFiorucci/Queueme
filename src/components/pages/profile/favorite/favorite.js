@@ -10,28 +10,28 @@ class MyQueueView extends React.Component {
         this.state = {
             loading: false,
             //code 
-            queues: [],
+            
             favorite:[],
             limit: 5,
             favque: null
         }
-        this.onShowQueue = this.onShowQueue.bind(this);
+        this.getFavQueue = this.getFavQueue.bind(this);
         
         // this.onVerifyAlreadyEnqueue = this.onVerifyAlreadyEnqueue.bind(this);
     }
     componentDidMount() {
-        this.onShowQueue();
+        this.getFavQueue();
     }
     
     
-    onShowQueue() {
+    getFavQueue() {
 
         let ref = fire.database().ref().child('users/'+ this.props.userID +'/favoriteQueues');
         ref.on('value', snapshot => {
           var fav = snapshot.val();
           Object.keys(fav).map(key=> {
            
-            this.onrealshow(fav[key].queueId)
+            this.onShowQueue(fav[key].queueId)
             this.setState({favque:fav[key]})
                  
         }) ;        
@@ -42,12 +42,12 @@ class MyQueueView extends React.Component {
 
 
 
-    onrealshow = quId => {
+    onShowQueue = quId => {
         console.log(quId)
         fire.database().ref().child('queues/').on(
             'value', snap => {
                 const queueProps = snap.val();
-                const allQueuesGetted = Object.keys(queueProps).filter(key => key == quId).map(key => ({
+                const allQueuesGetted = Object.keys(queueProps).filter(key => key === quId).map(key => ({
                     
                     ...queueProps[key],
                     
@@ -56,7 +56,7 @@ class MyQueueView extends React.Component {
                console.log(allQueuesGetted)
                 this.setState({
                     
-                    queues: this.state.queues.concat(allQueuesGetted),
+                    favorite: this.state.favorite.concat(allQueuesGetted),
                     loading: false
                 })        
               
@@ -118,15 +118,15 @@ class MyQueueView extends React.Component {
 
 
   render() {
-      const { queues, loading } = this.state;
+      const { favorite, loading } = this.state;
       return(
           <div>
               <h2 style={{textAlign:'center',marginTop:20}}>Preferiti</h2>
               {/*durante il caricamento da realtimedb*/}
               {loading && (<Spinner color="secondary" />)}
               {/*se ci sono code*/}
-              {queues && 
-                  this.state.queues.map( queue => (
+              {favorite && 
+                  this.state.favorite.map( queue => (
                       <SimpleCard 
                           queue={queue}
                           userId={this.props.userID}
