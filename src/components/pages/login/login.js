@@ -28,7 +28,6 @@ class Login extends React.Component {
     this.mergeRealTimeDb = this.mergeRealTimeDb.bind(this)
   }
 
-
   mergeRealTimeDb() {
     const rootUtente = fire.database().ref("users/" + this.state.userAuthProvider.uid)
     rootUtente.on("value", snap => {
@@ -144,6 +143,7 @@ class Login extends React.Component {
             Registrati
           </Button>
         </Form>
+        
       </div>
 
     )

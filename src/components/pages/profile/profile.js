@@ -12,7 +12,7 @@ import '../../../styles/btnStyle.css';
 
 class Profile extends Component {
 
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
       name: null,
@@ -21,19 +21,20 @@ class Profile extends Component {
       statusNotify: null,
       ruolo: null
     }
+
   }
 
-  componentDidMount() {
-    this.getUserData(this.props.userID)
-  }
+  // componentDidMount() {
+  //   this.getUserData(this.props.userID)
+  // }
   getUserData(uid) {
     fire.database().ref('users/' + uid).on(
       "value", snap => {
-        this.setState({
-          name: snap.val().name,
-          role: snap.val().role,
-          email: snap.val().email,
-        })
+        // this.setState({
+        //   name: snap.val().name,
+        //   role: snap.val().role,
+        //   email: snap.val().email,
+        // })
       }
     )
   }
@@ -54,7 +55,7 @@ class Profile extends Component {
         <a href={ROUTES.LOGOUT} class="btnStyle one">
           Logout
           </a>
-        {this.getUserData(this.props.userID)}
+        {/* {this.getUserData(this.props.userID)} */}
 
 
       </div>

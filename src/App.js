@@ -2,7 +2,7 @@ import React from 'react';
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { fire } from './config/FirebaseConfig';
-// import { Spinner } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 
 import Header from './components/header/header';
 import Footer from './components/footer/footer';
@@ -16,7 +16,7 @@ import MyQueue from './components/pages/profile/myqueue/myqueue';
 
 import ModifyProfile from './components/pages/profile/modify/modify';
 import DeleteProfile from './components/pages/profile/delete/delete';
-import Company from './components/pages/profile/company';
+import Company from './components/pages/company';
 import Info from './components/pages/info/info';
 import OperatorView from './components/pages/operator';
 import QueueView from './components/queue/queueView';
@@ -26,7 +26,6 @@ import * as ROUTES from './constants/routes';
 
 import './styles/style.css';
 import './styles/btnStyle.css';
-
 
 
 
@@ -57,10 +56,10 @@ class App extends React.Component {
           userID: user.uid,
           email: user.email,
           authenticated: true,
-          loading: false
         })
         console.log(user.uid)
       }
+      this.syncRoleFromDb()
 
     })
   }
@@ -73,25 +72,26 @@ class App extends React.Component {
         })
       })
     }
-
   }
+
 
   componentDidMount() {
     this.authState()
     this.syncRoleFromDb()
-
+    this.setState({
+      loading: false
+    })
   }
 
 
   render() {
-    // if (this.state.loading === true) {
-    //   return (
-    //     <div className="loading">
-    //       <Spinner animation="grow" />
-    //     </div>
-    //   )
-    // }
-
+    if (this.state.loading === true) {
+      return (
+        <div className="loading">
+          <Spinner animation="grow" />
+        </div>
+      )
+    }
     return (
       <div>
         {this.state.authenticated && (
@@ -108,51 +108,15 @@ class App extends React.Component {
           <div className="pageStyle">
             <Switch>
               <Route exact path={ROUTES.LANDING} component={Landing} />
-              <Route path={ROUTES.LOGIN} render={() =>
-                <Login
-                  authenticated={this.state.authenticated}
-                />
-              } />
-              <Route path={ROUTES.LOGOUT} render={() =>
-                <Logout
-                  userID={this.state.userID} />
-              } />
+              <Route path={ROUTES.LOGIN} component={() =>  <Login authenticated={ this.state.authenticated } />} />
+              <Route path={ROUTES.LOGOUT} component={() =>  <Logout userID={this.state.userID} />  } />
+              <Route path={ROUTES.PROFILE} component={() =>  <Profile userID={this.state.userID} /> } />
+              {/* <Route path={ROUTES.MODPRO} component={() => <ModifyProfile userID={this.state.userID} /> } /> */}
 
-              <Route path={ROUTES.PROFILE} render={() =>
-                <Profile
-                  userID={this.state.userID}
-                />
-              } />
-
-              <Route path={ROUTES.MODPRO} render={() =>
-                <ModifyProfile
-                  userID={this.state.userID} />
-              } />
-
-              <Route path={ROUTES.DELPRO} render={() =>
-                <DeleteProfile
-                  userID={this.state.userID} />
-              } />
-
-              <Route path={ROUTES.COMPANY} render={() =>
-                <Company
-                  userID={this.state.userID}
-                />
-              } />
-
-              <Route path={ROUTES.QUEUES} render={() =>
-                <QueueView
-                  userID={this.state.userID}
-                />
-              } />
-
-              <Route path={ROUTES.OPERATOR} render={() =>
-                <OperatorView
-                  userID={this.state.userID}
-                  name={this.state.name}
-                />
-              } />
-
+              <Route path={ROUTES.DELPRO} render={() => <DeleteProfile userID={this.state.userID} /> } />
+              <Route path={ROUTES.COMPANY} component={() => <Company userID={this.state.userID}/> } />
+              <Route path={ROUTES.QUEUES} component={() => <QueueView userID={this.state.userID} /> } />
+              <Route path={ROUTES.OPERATOR} component={() => <OperatorView  userID={this.state.userID} name={this.state.name} /> } />
               <Route path={ROUTES.INFO} component={Info} />
               <Route path={ROUTES.FAVORITE} render={() =>
                 <Favorite

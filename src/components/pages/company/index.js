@@ -1,12 +1,12 @@
 import React from 'react';
-import { fire } from '../../../../config/FirebaseConfig';
+import { fire } from '../../../config/FirebaseConfig';
 import { Form, Table, Button, Collapse, Alert, Col, Row } from 'react-bootstrap';
 import { IoIosCheckmark, IoIosClose, IoIosArrowDropdownCircle } from "react-icons/io";
 
 
-import '../../../../styles/btnStyle.css';
+import '../../../styles/btnStyle.css';
 
-import * as ROLES from '../../../../constants/roles';
+import * as ROLES from '../../../constants/roles';
 
 
 class Company extends React.Component {
@@ -33,15 +33,11 @@ class Company extends React.Component {
         this.handleNewQueue = this.handleNewQueue.bind(this);
         this.handleNewOperator = this.handleNewOperator.bind(this)
     }
-
-    getIdCompany() {
-        return this.state.idCompany;
-    }
     uniqueIDCode() {
         var ID = Date.now();
         return ID;
     }
-    componentWillMount() {
+    componentDidMount() {
         this.showQueues();
         this.showUser();
         this.showOperator();
@@ -73,6 +69,7 @@ class Company extends React.Component {
     }
     //fa una query per visualizzare le code gestite da una determinata azienda ## da sistemare
     showQueues() {
+        console.log(this.state.idCompany);
         // *** Query per ricavare la lista di code associata a quella azienda **
         const dbQueryQueues = fire.database().ref('queues/').orderByChild('idCompany/').equalTo(this.props.userID);
         dbQueryQueues.on('value', snapQuery => {
@@ -81,8 +78,6 @@ class Company extends React.Component {
                     idQueue: this.state.idQueue.concat([snap.key]),
                     title: this.state.title.concat([snap.val().title]),
                     description: this.state.description.concat([snap.val().description]),
-                    //image: this.state.image.concat([child.val().image]),
-                    //sempre lo stesso perchè la compagnia visualizza solo le sue code
                     idOperator: this.state.idOperator.concat([snap.val().idOperator]),
                     numWait: this.state.numWait.concat([snap.val().numWait]),
                     active: this.state.active.concat([snap.val().active])
