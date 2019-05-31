@@ -37,7 +37,7 @@ class Profile extends Component {
         // })
       }
     )
-  }
+  } */
   //TODO modificare i valori all'interno del db e modifica della password attraverso le api auth di firebase
 
 

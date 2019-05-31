@@ -10,49 +10,55 @@ class MyQueueView extends React.Component {
         this.state = {
             loading: false,
             //code 
-            queues: [],
-            appoggio:[],
+            myqueues: [],
+            
             limit: 5
         }
-        this.onShowQueue = this.onShowQueue.bind(this);
+        this.getMyQueue = this.getMyQueue.bind(this);
         // this.onVerifyAlreadyEnqueue = this.onVerifyAlreadyEnqueue.bind(this);
     }
     componentDidMount() {
-        this.onShowQueue();
+        this.getMyQueue();
     }
     
-    onShowQueue() {
+    getMyQueue() {
 
-        // prova per prendere l'id di una coda e passarla sotto
-
-        let ref = fire.database().ref('users/'+ this.props.userID +'/queuesStatus');
+        let ref = fire.database().ref().child('users/'+ this.props.userID +'/queuesStatus');
         ref.on('value', snapshot => {
-          const mate = snapshot.val();
-          
-          this.setState(mate);
-        
+          var fav = snapshot.val();
+          Object.keys(fav).map(key=> {
+           
+            this.onShowQueue(fav[key].queueId)
+            this.setState({favque:fav[key]})
+                 
+        }) ;        
         });
-
        
-        
-        this.setState({ loading: true });
-
-      //  qua sottto è sbagliato,  va presa la cosa specifica da queues/
-    
        
-        fire.database().ref().child('users/'+ this.props.userID +'/queuesStatus').on(
+    }
+
+
+
+    onShowQueue = quId => {
+        console.log(quId)
+        fire.database().ref().child('queues/').on(
             'value', snap => {
                 const queueProps = snap.val();
-                const allQueuesGetted = Object.keys(queueProps).map(key => ({
+                const allQueuesGetted = Object.keys(queueProps).filter(key => key === quId).map(key => ({
+                    
                     ...queueProps[key],
+                    
                     queueId: key
                 }));
+               console.log(allQueuesGetted)
                 this.setState({
-                    queues: allQueuesGetted,
+                    
+                    myqueues: this.state.myqueues.concat(allQueuesGetted),
                     loading: false
-                })                
+                })        
+              
             }
-        )
+        ) 
     }
     
     onRemoveUser = quId => {        
@@ -84,15 +90,15 @@ class MyQueueView extends React.Component {
     }
 
     render() {
-        const { queues, loading } = this.state;
+        const { myqueues, loading } = this.state;
         return(
             <div>
                 <h2 style={{textAlign:'center',marginTop:20}}>Le mie code</h2>
                 {/*durante il caricamento da realtimedb*/}
                 {loading && (<Spinner color="secondary" />)}
                 {/*se ci sono code*/}
-                {queues && 
-                    this.state.queues.map( queue => (
+                {myqueues && 
+                    this.state.myqueues.map( queue => (
                         <SimpleCard 
                             queue={queue}
                             userId={this.props.userID}

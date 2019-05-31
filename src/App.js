@@ -57,7 +57,8 @@ class App extends React.Component {
           email: user.email,
           authenticated: true,
         })
-        console.log(user.uid)
+      
+       
       }
       this.syncRoleFromDb()
 
@@ -68,7 +69,8 @@ class App extends React.Component {
     if (this.state.userID) {
       fire.database().ref('users/' + this.state.userID).on("value", snap => {
         this.setState({
-          role: snap.val().role
+          role: snap.val().role,
+          loading:false
         })
       })
     }
@@ -82,6 +84,7 @@ class App extends React.Component {
       loading: false
     })
   }
+  
 
 
   render() {
@@ -94,14 +97,14 @@ class App extends React.Component {
     }
     return (
       <div>
-        {this.state.authenticated && (
+        {this.state.authenticated && 
           <>
             <Header
               authenticated={this.state.authenticated}
               role={this.state.role}
             />
             <Footer authenticated={this.state.authenticated} />
-          </>)
+          </>
         }
 
         <BrowserRouter>
@@ -126,6 +129,7 @@ class App extends React.Component {
               <Route path={ROUTES.MYQUEUES} render={() =>
                 <MyQueue
                   userID={this.state.userID}
+                  
                 />
               } />
 
