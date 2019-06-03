@@ -121,12 +121,12 @@ class App extends React.Component {
               <Route path={ROUTES.QUEUES} component={() => <QueueView userID={this.state.userID} /> } />
               <Route path={ROUTES.OPERATOR} component={() => <OperatorView  userID={this.state.userID} name={this.state.name} /> } />
               <Route path={ROUTES.INFO} component={Info} />
-              <Route path={ROUTES.FAVORITE} render={() =>
+              <Route path={ROUTES.FAVORITE} component={() =>
                 <Favorite
                   userID={this.state.userID}
                 />
               } />
-              <Route path={ROUTES.MYQUEUES} render={() =>
+              <Route path={ROUTES.MYQUEUES} component={() =>
                 <MyQueue
                   userID={this.state.userID}
                   

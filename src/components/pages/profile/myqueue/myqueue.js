@@ -11,6 +11,7 @@ class MyQueueView extends React.Component {
             loading: false,
             //code 
             myqueues: [],
+            uID: this.props.userID,
             
             limit: 5
         }
@@ -18,11 +19,12 @@ class MyQueueView extends React.Component {
         // this.onVerifyAlreadyEnqueue = this.onVerifyAlreadyEnqueue.bind(this);
     }
     componentDidMount() {
-        this.getMyQueue();
+        if(this.props.userID !== null) this.getMyQueue();
+        
     }
     
-    getMyQueue() {
-
+    getMyQueue(props) {
+       console.log(this.props.userID)
         let ref = fire.database().ref().child('users/'+ this.props.userID +'/queuesStatus');
         ref.on('value', snapshot => {
           var fav = snapshot.val();
@@ -89,6 +91,28 @@ class MyQueueView extends React.Component {
 
     }
 
+    onAddFavorite = quId => {
+       
+        fire.database().ref('users/'+this.props.userID+'/favoriteQueues').push({
+            queueId: quId
+        })
+  
+    }
+  
+  
+    onRemoveFavorite = quId => {        
+      
+        const remQueueFromUser = fire.database().ref('users/'+this.props.userID+'/favoriteQueues/')
+        remQueueFromUser.orderByChild('queueId').equalTo(quId).once('value', s =>{
+            s.forEach ( n =>{
+                remQueueFromUser.child(n.key).remove();
+            })
+  
+        })
+           
+    
+    }
+
     render() {
         const { myqueues, loading } = this.state;
         return(
@@ -103,7 +127,9 @@ class MyQueueView extends React.Component {
                             queue={queue}
                             userId={this.props.userID}
                             onRemoveUser={this.onRemoveUser}
-                            onAddUser={this.onAddUser} />
+                            onAddUser={this.onAddUser} 
+                            onAddFavorite={this.onAddFavorite}
+                            onRemoveFavorite={this.onRemoveFavorite}/>
                     ) )       
             
                         

@@ -8,7 +8,7 @@ class MyQueueView extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            loading: false,
+            loading: true,
             //code 
             
             favorite:[],
@@ -20,15 +20,17 @@ class MyQueueView extends React.Component {
         // this.onVerifyAlreadyEnqueue = this.onVerifyAlreadyEnqueue.bind(this);
     }
     componentDidMount() {
-        this.getFavQueue();
+       if(this.props.userID !== null) this.getFavQueue();
     }
     
     
     getFavQueue() {
-
+        console.log(this.props.userID)
+        this.setState({ loading: true });
         let ref = fire.database().ref().child('users/'+ this.props.userID +'/favoriteQueues');
         ref.on('value', snapshot => {
           var fav = snapshot.val();
+          console.log(fav)
           Object.keys(fav).map(key=> {
            
             this.onShowQueue(fav[key].queueId)
@@ -53,7 +55,7 @@ class MyQueueView extends React.Component {
                     
                     queueId: key
                 }));
-               console.log(allQueuesGetted)
+               
                 this.setState({
                     
                     favorite: this.state.favorite.concat(allQueuesGetted),

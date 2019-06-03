@@ -3,8 +3,8 @@ import React from 'react';
 import SimpleCard from './queueCard';
 import { Spinner } from 'react-bootstrap';
 import { fire } from '../../config/FirebaseConfig';
-import Favorite from '../pages/profile/favorite/favorite';
-import {  Route } from 'react-router-dom';
+//import Favorite from '../pages/profile/favorite/favorite';
+//import {  Route } from 'react-router-dom';
 
 class QueueView extends React.Component {
     constructor(props){
