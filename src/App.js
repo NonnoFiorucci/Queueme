@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { fire } from './config/FirebaseConfig';
 import { Spinner } from 'react-bootstrap';
 
+
 import Header from './components/header/header';
 import Footer from './components/footer/footer';
 import Login from './components/pages/login/login';
@@ -13,7 +14,7 @@ import Profile from './components/pages/profile/profile';
 
 import Favorite from './components/pages/profile/favorite/favorite';
 import MyQueue from './components/pages/profile/myqueue/myqueue';
-
+import NotificationModal from './components/notificationModal/notificationModal';
 import ModifyProfile from './components/pages/profile/modify/modify';
 import DeleteProfile from './components/pages/profile/delete/delete';
 import Company from './components/pages/company';
@@ -41,7 +42,7 @@ class App extends React.Component {
       name: null,
       role: null,
       authenticated: false,
-
+      modalshow:false,
       loading: true,
       notify: false
     }
@@ -81,13 +82,27 @@ class App extends React.Component {
     this.authState()
     this.syncRoleFromDb()
     this.setState({
-      loading: false
+      loading: false,
+      
     })
   }
   
 
+  /* notification(){
+    var usersRef  = fire.database.ref('whatever/users');
+    
+    usersRef.on('child_removed', (snapshot) => {
+    console.log('user was removed !!' );
+          
+    //  SE NUM PERSONE < 3 this.setState({ modalShow: true })
+
+     
+});
+    
+  } */
 
   render() {
+    let modalClose = () => this.setState({ modalShow: false });
     if (this.state.loading === true) {
       return (
         <div className="loading">
@@ -97,6 +112,10 @@ class App extends React.Component {
     }
     return (
       <div>
+        <NotificationModal
+          show={this.state.modalShow}
+          onHide={modalClose}
+        />
         {this.state.authenticated && 
           <>
             <Header

@@ -11,12 +11,12 @@ class MyQueueView extends React.Component {
             loading: false,
             //code 
             myqueues: [],
-            uID: this.props.userID,
+            
             
             limit: 5
         }
         this.getMyQueue = this.getMyQueue.bind(this);
-        // this.onVerifyAlreadyEnqueue = this.onVerifyAlreadyEnqueue.bind(this);
+        
     }
     componentDidMount() {
         if(this.props.userID !== null) this.getMyQueue();
@@ -39,7 +39,18 @@ class MyQueueView extends React.Component {
        
     }
 
-
+    triggerNotification = quID => {
+        var usersRef  = fire.database.ref('queues/' + quID + '/userList');
+        
+        usersRef.on('child_removed', (snapshot) => {
+        console.log('user was removed !!' );
+              /* 
+          SE NUM PERSONE < 3 this.setState({ modalShow: true })
+    
+         */
+    });
+        
+      }
 
     onShowQueue = quId => {
         console.log(quId)

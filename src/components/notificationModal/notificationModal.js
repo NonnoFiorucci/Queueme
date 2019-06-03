@@ -1,6 +1,27 @@
 import React from 'react';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 class MyVerticallyCenteredModal extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+        loading: false,
+      
+        myqueues: [],
+        
+        
+        limit: 5
+    }
+    
+}
+
+componentDidMount() {
+  
+  
+}
+
+
     render() {
       return (
         <Modal
@@ -17,12 +38,12 @@ class MyVerticallyCenteredModal extends React.Component {
           <Modal.Body>
             <h4>Il tuo turno si sta avvicinando!</h4>
             <p>
-              Nella coda : 
-              Rimangono : persone
+              Nella coda : {this.props.nomeCoda} <br/>
+              Rimangono : {this.props.num} persone
             </p>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.props.onHide}>Capito!</Button>
+            <Button variant="danger" onClick={this.props.onHide}>Capito!</Button>
           </Modal.Footer>
         </Modal>
       );
