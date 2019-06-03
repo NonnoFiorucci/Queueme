@@ -216,3 +216,10 @@ input[type]:focus{
     width: 15px;
     height: 18px;
 }
+
+
+
+/* FAQ*/
+.just {
+    text-align: justify
+}

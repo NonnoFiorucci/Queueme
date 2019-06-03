@@ -39,18 +39,7 @@ class MyQueueView extends React.Component {
        
     }
 
-    triggerNotification = quID => {
-        var usersRef  = fire.database.ref('queues/' + quID + '/userList');
-        
-        usersRef.on('child_removed', (snapshot) => {
-        console.log('user was removed !!' );
-              /* 
-          SE NUM PERSONE < 3 this.setState({ modalShow: true })
-    
-         */
-    });
-        
-      }
+   
 
     onShowQueue = quId => {
         console.log(quId)

@@ -16,6 +16,7 @@ import Favorite from './components/pages/profile/favorite/favorite';
 import MyQueue from './components/pages/profile/myqueue/myqueue';
 import NotificationModal from './components/notificationModal/notificationModal';
 import ModifyProfile from './components/pages/profile/modify/modify';
+import Faq from './components/pages/faq/faq';
 import DeleteProfile from './components/pages/profile/delete/delete';
 import Company from './components/pages/company';
 import Info from './components/pages/info/info';
@@ -122,7 +123,8 @@ class App extends React.Component {
               authenticated={this.state.authenticated}
               role={this.state.role}
             />
-            <Footer authenticated={this.state.authenticated} />
+            <Footer authenticated={this.state.authenticated}
+            role={this.state.role} />
           </>
         }
 
@@ -137,6 +139,7 @@ class App extends React.Component {
 
               <Route path={ROUTES.DELPRO} render={() => <DeleteProfile userID={this.state.userID} /> } />
               <Route path={ROUTES.COMPANY} component={() => <Company userID={this.state.userID}/> } />
+              <Route path={ROUTES.FAQ} component={() => <Faq userID={this.state.userID}/> } />
               <Route path={ROUTES.QUEUES} component={() => <QueueView userID={this.state.userID} /> } />
               <Route path={ROUTES.OPERATOR} component={() => <OperatorView  userID={this.state.userID} name={this.state.name} /> } />
               <Route path={ROUTES.INFO} component={Info} />
