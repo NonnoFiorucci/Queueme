@@ -17,6 +17,7 @@ class Login extends React.Component {
     super(props);
     this.state = {
       role: ROLES.USER,
+      name: null,
       userAuthProvider: null,
 
       openAccesso: false,
@@ -33,7 +34,7 @@ class Login extends React.Component {
     rootUtente.on("value", snap => {
       if (snap.val() === null) {
         rootUtente.set({
-          name: this.state.userAuthProvider.displayName,
+          name: this.state.name,
           email: this.state.userAuthProvider.email,
           role: this.state.role
         }).then((data) => {
@@ -51,7 +52,8 @@ class Login extends React.Component {
     fire.auth().signInWithPopup(providerGoogle)
       .then((result) => {
         this.setState({
-          userAuthProvider: result.user
+          userAuthProvider: result.user,
+          name: result.user.displayName
         })
         this.mergeRealTimeDb()  //aggiungo l'utente al db
       })
@@ -81,13 +83,16 @@ class Login extends React.Component {
   regEmailPassword(event) {
     const email = this.refs.registerEmail.value
     const password = this.refs.registerPwd.value
+    const name = this.refs.registerName.value
     const role = this.refs.registerRole.value
 
     fire.auth().createUserWithEmailAndPassword(email, password)
       .then((result) => {
         console.log(result.user.email)
+
         this.setState({
-          userAuthProvider: result.user,
+          userAuthProvider: result.user,    
+          name: name,      
           role: role
         })
         this.mergeRealTimeDb()
@@ -131,6 +136,8 @@ class Login extends React.Component {
           <Form.Group>
             <Form.Label>Email</Form.Label>
             <Form.Control type="email" placeholder="Inserisci Email" ref='registerEmail' required />
+            <Form.Label>Name</Form.Label>
+            <Form.Control type="text" placeholder="Inserisci Email" ref='registerName' required />
             <Form.Label>Password</Form.Label>
             <Form.Control type="password" placeholder="Inserisci Password" ref='registerPwd' required />
             <Form.Label>Sono uno</Form.Label>

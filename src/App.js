@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { fire } from './config/FirebaseConfig';
 import { Spinner } from 'react-bootstrap';
 
+
 import Header from './components/header/header';
 import Footer from './components/footer/footer';
 import Login from './components/pages/login/login';
@@ -13,8 +14,8 @@ import Profile from './components/pages/profile/profile';
 
 import Favorite from './components/pages/profile/favorite/favorite';
 import MyQueue from './components/pages/profile/myqueue/myqueue';
-
-import ModifyProfile from './components/pages/profile/modify/modify';
+import NotificationModal from './components/notificationModal/notificationModal';
+import Faq from './components/pages/faq/faq';
 import DeleteProfile from './components/pages/profile/delete/delete';
 import Company from './components/pages/company';
 import Info from './components/pages/info/info';
@@ -40,8 +41,9 @@ class App extends React.Component {
       email: null,
       name: null,
       role: null,
-      authenticated: false,
 
+      authenticated: false,
+      modalshow: false,
       loading: true,
       notify: false
     }
@@ -57,8 +59,6 @@ class App extends React.Component {
           email: user.email,
           authenticated: true,
         })
-      
-       
       }
       this.syncRoleFromDb()
 
@@ -66,11 +66,11 @@ class App extends React.Component {
   }
 
   syncRoleFromDb() {
-    if (this.state.userID) {
-      fire.database().ref('users/' + this.state.userID).on("value", snap => {
+    if (this.state.userID !==null ) {
+      fire.database().ref('users/' + this.state.userID).once("value", snap => {
         this.setState({
           role: snap.val().role,
-          loading:false
+          loading: false
         })
       })
     }
@@ -80,67 +80,80 @@ class App extends React.Component {
   componentDidMount() {
     this.authState()
     this.syncRoleFromDb()
+
     this.setState({
       loading: false
     })
   }
-  
 
+
+  /* notification(){
+    var usersRef  = fire.database.ref('whatever/users');
+    
+    usersRef.on('child_removed', (snapshot) => {
+    console.log('user was removed !!' );
+          
+    //  SE NUM PERSONE < 3 this.setState({ modalShow: true })
+
+     
+});
+    
+  } */
 
   render() {
-    if (this.state.loading === true) {
+    let modalClose = () => this.setState({ modalShow: false });
+    if (this.state.loading) {
+      return (<Spinner animation="grow" />)
+    } else {
       return (
-        <div className="loading">
-          <Spinner animation="grow" />
+        <div>
+          <NotificationModal
+            show={this.state.modalShow}
+            onHide={modalClose}
+          />
+          {this.state.authenticated &&
+            <>
+              <Header
+                authenticated={this.state.authenticated}
+                role={this.state.role}
+              />
+              <Footer authenticated={this.state.authenticated}
+                role={this.state.role} />
+            </>
+          }
+
+          <BrowserRouter>
+            <div className="pageStyle">
+              <Switch>
+                <Route exact path={ROUTES.LANDING} component={Landing} />
+                <Route path={ROUTES.LOGIN} component={() => <Login authenticated={this.state.authenticated} />} />
+                <Route path={ROUTES.LOGOUT} component={() => <Logout userID={this.state.userID} />} />
+                <Route path={ROUTES.PROFILE} component={() => <Profile userID={this.state.userID} />} />
+                <Route path={ROUTES.DELPRO} render={() => <DeleteProfile userID={this.state.userID} />} />
+
+                <Route path={ROUTES.COMPANY} component={() => <Company userID={this.state.userID} />} />
+                <Route path={ROUTES.FAQ} component={() => <Faq userID={this.state.userID} />} />
+                <Route path={ROUTES.QUEUES} component={() => <QueueView userID={this.state.userID} />} />
+                <Route path={ROUTES.OPERATOR} component={() => <OperatorView userID={this.state.userID} name={this.state.name} />} />
+                <Route path={ROUTES.INFO} component={Info} />
+                <Route path={ROUTES.FAVORITE} component={() =>
+                  <Favorite
+                    userID={this.state.userID}
+                  />
+                } />
+                <Route path={ROUTES.MYQUEUES} component={() =>
+                  <MyQueue userID={this.state.userID} />
+                } />
+
+              </Switch>
+            </div>
+
+          </BrowserRouter>
+
+
         </div>
       )
     }
-    return (
-      <div>
-        {this.state.authenticated && 
-          <>
-            <Header
-              authenticated={this.state.authenticated}
-              role={this.state.role}
-            />
-            <Footer authenticated={this.state.authenticated} />
-          </>
-        }
-
-        <BrowserRouter>
-          <div className="pageStyle">
-            <Switch>
-              <Route exact path={ROUTES.LANDING} component={Landing} />
-              <Route path={ROUTES.LOGIN} component={() =>  <Login authenticated={ this.state.authenticated } />} />
-              <Route path={ROUTES.LOGOUT} component={() =>  <Logout userID={this.state.userID} />  } />
-              <Route path={ROUTES.PROFILE} component={() =>  <Profile userID={this.state.userID} /> } />
-              {/* <Route path={ROUTES.MODPRO} component={() => <ModifyProfile userID={this.state.userID} /> } /> */}
-
-              <Route path={ROUTES.DELPRO} render={() => <DeleteProfile userID={this.state.userID} /> } />
-              <Route path={ROUTES.COMPANY} component={() => <Company userID={this.state.userID}/> } />
-              <Route path={ROUTES.QUEUES} component={() => <QueueView userID={this.state.userID} /> } />
-              <Route path={ROUTES.OPERATOR} component={() => <OperatorView  userID={this.state.userID} name={this.state.name} /> } />
-              <Route path={ROUTES.INFO} component={Info} />
-              <Route path={ROUTES.FAVORITE} render={() =>
-                <Favorite
-                  userID={this.state.userID}
-                />
-              } />
-              <Route path={ROUTES.MYQUEUES} render={() =>
-                <MyQueue
-                  userID={this.state.userID}
-                  
-                />
-              } />
-
-            </Switch>
-          </div>
-
-        </BrowserRouter>
-
-
-      </div>
-    )
   }
 }
 

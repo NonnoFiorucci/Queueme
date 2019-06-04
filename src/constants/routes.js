@@ -4,7 +4,7 @@ export const QUEUES = '/queues';
 export const MYQUEUES ='/myqueues';
 export const COMPANY = '/company';
 export const OPERATOR = '/operator';
-
+export const FAQ ='/faq';
 export const PROFILE = '/profile';
 export const FAVORITE ='/favorite';
 export const MODPRO = '/modifyprofile';

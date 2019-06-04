@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { fire } from '../../../config/FirebaseConfig';
+// import { fire } from '../../../config/FirebaseConfig';
 
 
 import * as ROUTES from '../../../constants/routes';
