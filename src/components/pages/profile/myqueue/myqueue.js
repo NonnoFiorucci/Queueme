@@ -17,22 +17,25 @@ class MyQueueView extends React.Component {
 
     }
     componentDidMount() {
-        // if (this.props.userID !== null) 
-        // this.getMyQueue();
+         if (this.props.userID !== null) 
+         this.getMyQueue();
 
     }
 
-    // getMyQueue() {
-    //     console.log(this.props.userID)
-    //     let ref = fire.database().ref().child('users/' + this.props.userID + '/queuesStatus');
-    //     ref.on('value', snapshot => {
-    //         var fav = snapshot.val();
-    //         Object.keys(fav).map(key => {
-    //             this.onShowQueue(fav[key].queueId)
-    //             this.setState({ favque: fav[key] })
-    //         });
-    //     });
-    // }
+     getMyQueue() {
+         console.log(this.props.userID)
+         let ref = fire.database().ref().child('users/' + this.props.userID + '/queuesStatus');
+         ref.on('value', snapshot => {
+             if(snapshot.val() ){
+             var fav = snapshot.val();
+             Object.keys(fav).map(key => {
+                 this.onShowQueue(fav[key].queueId)
+                 this.setState({ favque: fav[key] })
+
+             });
+            }
+         });
+     }
 
 
 
@@ -122,6 +125,9 @@ class MyQueueView extends React.Component {
 
 
                     }
+
+                    {this.state.myqueues.length === 0 ?
+                    <h3 style={{textAlign:"center"}}> Non sei inserito in nessuna cosa </h3> :null}
 
                 </div>
             )

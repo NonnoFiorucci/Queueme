@@ -3,7 +3,7 @@ import { fire } from '../../config/FirebaseConfig';
 
 import { Card, Button, Col, Row, Spinner } from 'react-bootstrap';
 
-import { TiPlus, TiTrash, TiHeartOutline } from 'react-icons/ti';
+import { TiPlus, TiTrash, TiHeartOutline, TiHeartFullOutline } from 'react-icons/ti';
 
 import '../../styles/style.css';
 import '../../styles/btnStyle.css';
@@ -13,12 +13,14 @@ class SimpleQueue extends React.Component {
         super(props);
         this.state = {
             enqueued: "",
-            favorite:false,
+            favorite:"",
         }
         this.onRenderVerifyEnqueue = this.onRenderVerifyEnqueue.bind(this);
+        this.onRenderFavoriteEnqueue = this.onRenderFavoriteEnqueue.bind(this);
     }
     componentDidMount() {
         this.onRenderVerifyEnqueue();
+        this.onRenderFavoriteEnqueue();
     }
 
     onToggleAddUserQueue = () => {
@@ -56,12 +58,32 @@ class SimpleQueue extends React.Component {
         .orderByChild('queueId').equalTo(this.props.queue.queueId).on('value',s => {
             if (s.val()){
                 this.setState({
-                    enqueued: true
+                    enqueued: true,
+                    
                 })
             }
             else{
                 this.setState({
                     enqueued: false
+                })
+            }
+        })
+    
+
+    }
+    onRenderFavoriteEnqueue = () => {
+    
+        fire.database().ref('users/' + this.props.userId + '/favoriteQueues/')
+        .orderByChild('queueId').equalTo(this.props.queue.queueId).on('value',s => {
+            if (s.val()){
+                this.setState({
+                    favorite: false,
+                    
+                })
+            }
+            else{
+                this.setState({
+                    favorite: true,
                 })
             }
         })
@@ -97,9 +119,16 @@ class SimpleQueue extends React.Component {
                             </Button></Col>
                             <br/>
                             <Col md={{ span: 3 }}>
-                            <Button block variant="outline-danger" size="sl" onClick={this.onToggleAddFavoriteQueue} disabled={this.state.favorite} >
-                                < TiHeartOutline size={40} />
-                            </Button></Col>
+                                {this.state.favorite === false  ? <Button block variant="outline-danger" size="sl" onClick={this.onToggleRemoveFavoriteQueue}  >
+                                <TiHeartFullOutline  size={40} />
+                            </Button>
+                            : 
+                            <Button block variant="outline-danger" size="sl" onClick={this.onToggleAddFavoriteQueue}  >
+                                <TiHeartOutline  size={40} />
+                            </Button>}
+
+
+                            </Col>
                     </Row>
                 </Card.Footer>
             </Card>

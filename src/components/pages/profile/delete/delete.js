@@ -11,7 +11,7 @@ import * as ROUTES from '../../../../constants/routes';
 class deleteProfile extends Component {
 
   constructor(props) {
-    super();
+    super(props);
     this.state = {
       nome: null,
       email: null,
