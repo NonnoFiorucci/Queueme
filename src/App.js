@@ -153,7 +153,7 @@ class App extends React.Component {
                 <Route path={ROUTES.LOGIN} component={() => <Login authenticated={this.state.authenticated} />} />
                 <Route path={ROUTES.LOGOUT} component={() => <Logout userID={this.state.userID} />} />
                 <Route path={ROUTES.PROFILE} component={() => <Profile userID={this.state.userID} />} />
-                <Route path={ROUTES.DELPRO} render={() => <DeleteProfile userID={this.state.userID} />} />
+                <Route path={ROUTES.DELPRO} component={() => <DeleteProfile userID={this.state.userID} />} />
 
                 <Route path={ROUTES.COMPANY} component={() => <Company userID={this.state.userID} />} />
                 <Route path={ROUTES.FAQ} component={() => <Faq userID={this.state.userID} />} />

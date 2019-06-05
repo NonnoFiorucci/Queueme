@@ -1,7 +1,7 @@
 import React from 'react';
 import FaqCompany from './company';
 import faqOperator from './operator';
-import faqUser from './company';
+import faqUser from './user';
 import {Route} from 'react-router-dom';
 
 

@@ -27,7 +27,19 @@ class Header extends Component {
                     />
                     <Navbar.Collapse  >
                         <Nav className="justify-content-end" style={{ width: "100%" }}>
-                            <NavDropdown className="drop" style={{ color: 'white', fontWeight: 'bold' }} title="Profile" id="basic-nav-dropdown">
+                          
+
+                           
+                            {((this.props.role === ROLES.OPERATOR) || (this.props.role === ROLES.ADMIN))
+                                ? <Nav.Link style={{ fontWeight: 'bold' }} href={ROUTES.OPERATOR}>Operator Panel</Nav.Link> : null } 
+                            {((this.props.role === ROLES.COMPANY) || (this.props.role === ROLES.ADMIN)) 
+                                ? <Nav.Link style={{ fontWeight: 'bold' }} href={ROUTES.COMPANY}>Manage Company</Nav.Link> : null }
+
+                                 <Nav.Link style={{ fontWeight: 'bold' }} href={ROUTES.INFO}>Info</Nav.Link>
+                                 {((this.props.role === ROLES.USER) || (this.props.role === ROLES.ADMIN)) 
+                                ? <Nav.Link style={{ fontWeight: 'bold' }} href={'/faq/user'}>Faq</Nav.Link> : null }
+
+                                <NavDropdown className="drop" style={{ color: 'white', fontWeight: 'bold' }} title="Profile" id="basic-nav-dropdown">
                                 <NavDropdown.Item style={{ fontWeight: 'bold', color: '#9a9da0' }} href={ROUTES.PROFILE}>My Profile</NavDropdown.Item>
                                 <NavDropdown.Item style={{ fontWeight: 'bold', color: '#9a9da0' }} href={ROUTES.MYQUEUES}>My Queues</NavDropdown.Item>
                                 <NavDropdown.Item style={{ fontWeight: 'bold', color: '#9a9da0' }} href={ROUTES.DELPRO}>Delete Accaunt</NavDropdown.Item>
@@ -35,12 +47,6 @@ class Header extends Component {
                                 <NavDropdown.Item style={{ fontWeight: 'bold', color: '#9a9da0' }} href={ROUTES.LOGOUT}>Logout</NavDropdown.Item>
 
                             </NavDropdown>
-
-                            <Nav.Link style={{ fontWeight: 'bold' }} href={ROUTES.INFO}>Info</Nav.Link>
-                            {((this.props.role === ROLES.OPERATOR) || (this.props.role === ROLES.ADMIN))
-                                ? <Nav.Link style={{ fontWeight: 'bold' }} href={ROUTES.OPERATOR}>Operator Panel</Nav.Link> : null } 
-                            {((this.props.role === ROLES.COMPANY) || (this.props.role === ROLES.ADMIN)) 
-                                ? <Nav.Link style={{ fontWeight: 'bold' }} href={ROUTES.COMPANY}>Manage Company</Nav.Link> : null }
 
                         </Nav>
                     </Navbar.Collapse>

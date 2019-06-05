@@ -21,6 +21,7 @@ class deleteProfile extends Component {
   }
 
   readUserData() {
+    console.log(this.props.userID)
     const rootUtente = fire.database().ref('users/' + this.props.userID);
     rootUtente.on('value', snap => { 
       if (snap.val() !== null) { 
@@ -30,8 +31,9 @@ class deleteProfile extends Component {
           ruolo: snap.val().role
         })
         //imposto ruolo e state App
-        this.props.setLocalRole(this.state.ruolo)
-        this.props.setStateUser()
+        
+       // this.props.setLocalRole(this.state.ruolo)
+       // this.props.setStateUser()
       } else if (snap.val() === null) {  
         alert('problemi lettura dati account')
       }
@@ -53,7 +55,7 @@ class deleteProfile extends Component {
   }
 
   componentDidMount() {
-    this.readUserData();
+   if(this.props.userID) this.readUserData();
   }
 
   render() {
