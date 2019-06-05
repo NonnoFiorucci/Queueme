@@ -10,6 +10,8 @@ import * as ROLES from '../../../constants/roles';
 
 
 class Company extends React.Component {
+    usersAvailableKey = [];
+
     constructor(props) {
         super(props);
         this.state = {
@@ -29,15 +31,14 @@ class Company extends React.Component {
             userAuthProvider: null,
 
             listOfOperator: [],
-            usersAvailableKey: [],
-            usersAvailableUsername: []
+
+            usersAvailableKey: []
         }
-        this.showQueues = this.showQueues.bind(this);
-        this.showOperator = this.showOperator.bind(this);
         this.handleNewQueue = this.handleNewQueue.bind(this);
         this.handleNewOperator = this.handleNewOperator.bind(this);
         this.regEmailPassword = this.regEmailPassword.bind(this)
     }
+
     uniqueIDCode() {
         var ID = Date.now();
         return ID;
@@ -48,7 +49,6 @@ class Company extends React.Component {
         this.showOperator();
         console.log(this.props)
     }
-
 
     //utilizzato nella select del form di creazione di una nuova coda
     /* #region  Query Realtimedatabase da migrare */
@@ -65,18 +65,26 @@ class Company extends React.Component {
     }
     showUser() {
         const dbQueryUser = fire.database().ref('users/');
-        dbQueryUser.on('value', snapQuery => {
-            snapQuery.forEach(snap => {
+        dbQueryUser.on('value', snap => {
+            snap.forEach(s => {
                 this.setState({
-                    usersAvailableKey: this.state.usersAvailableKey.concat([snap.key]),
-                    usersAvailableUsername: this.state.usersAvailableUsername.concat([snap.val().nome])
+                    usersAvailableKey: this.state.usersAvailableKey.concat([s.key])
                 })
+                console.log(s.key)
             })
         })
+         const dbQueryOperator = fire.database().ref('company/' + this.state.idCompany + '/operators/')
+         dbQueryOperator.on('value', snap => {
+             snap.forEach(s => {
+                 this.setState({
+                     listOfOperator: this.state.listOfOperator.concat([s.val().idOperator])
+                 })
+                 console.log(s.val().idOperator)
+             })
+         })
     }
     //fa una query per visualizzare le code gestite da una determinata azienda ## da sistemare
     showQueues() {
-        console.log(this.state.idCompany);
         // *** Query per ricavare la lista di code associata a quella azienda **
         const dbQueryQueues = fire.database().ref('queues/').orderByChild('idCompany/').equalTo(this.props.userID);
         dbQueryQueues.on('value', snapQuery => {
@@ -89,6 +97,7 @@ class Company extends React.Component {
                     numWait: this.state.numWait.concat([snap.val().numWait]),
                     active: this.state.active.concat([snap.val().active])
                 })
+                console.log(snap.key)
             });
         })
     }
@@ -123,7 +132,7 @@ class Company extends React.Component {
     handleNewOperator(event) {
         event.preventDefault();
         fire.database().ref('company/' + this.state.idCompany + '/operators/').push({
-            idOperator: this.refs.idUserForOperator.value
+            idOperator: this.state.usersAvailableKey[this.refs.idUserForOperator.value]
         })
             .then((data) => {
                 alert("Operatore aggiunto all'azienda");
@@ -131,7 +140,7 @@ class Company extends React.Component {
             .catch((error) => {
                 alert(error);
             });
-        fire.database().ref('users/' + this.refs.idUserForOperator.value).update({
+        fire.database().ref('users/' + this.state.usersAvailableKey[this.refs.idUserForOperator.value]).update({
             role: ROLES.OPERATOR
         })
     }
@@ -139,8 +148,9 @@ class Company extends React.Component {
 
 
     getQueueList() {
+
         return (
-           
+
             <Table size='sm' responsive striped bordered hover variant="dark">
                 <thead>
                     <tr>
@@ -162,7 +172,7 @@ class Company extends React.Component {
                                 <th>{this.state.idOperator[index]}</th>
                                 <th>{this.state.numWait[index]}</th>
                                 <th> {
-                                    this.state.active[index] ? <IoIosCheckmark size={30} /> : <IoIosClose size={30}/>
+                                    this.state.active[index] ? <IoIosCheckmark size={30} /> : <IoIosClose size={30} />
                                 }
                                 </th>
                             </tr>
@@ -171,7 +181,7 @@ class Company extends React.Component {
                 </tbody>
 
             </Table>
-            
+
         )
     }
     createQueueForm() {
@@ -183,13 +193,9 @@ class Company extends React.Component {
                     <Form.Label>Descrizione</Form.Label>
                     <Form.Control ref='description' type="text" placeholder="Posizione all'interno della struttura" required />
                     <Form.Label>Operatore</Form.Label>
-                    {/* <Form.Control custom ref='idOperator' as='select' id={"customSelect"}>
-                            <option value='a1'>Uno</option>
-                            <option value={this.state.idCompany}>Due</option>
-                        </Form.Control> */}
                     <Form.Control ref='idOperator' as="select" >
-                        {this.state.listOfOperator.map((codice, index) =>
-                            <option value={this.state.listOfOperator[index]}> {this.state.listOfOperator[index]} </option>
+                        {this.state.listOfOperator.map((codice) =>
+                            <option value={codice}> {codice} </option>
                         )
                         }
                     </Form.Control>
@@ -277,8 +283,8 @@ class Company extends React.Component {
                     <Col sm="8">
                         <Form.Control as='select' ref='idUserForOperator' required >
                             {this.state.usersAvailableKey.map((codice, index) => (
-                                <option value={codice}>
-                                    {this.state.usersAvailableUsername[index]} - {this.state.usersAvailableKey[index]}
+                                <option value={index}>
+                                    {codice}
                                 </option>
                             ))
                             }
@@ -315,31 +321,34 @@ class Company extends React.Component {
     
 
     render() {
-        return (
-            <div className="form">
-                <Alert variant="primary">
-                    Vuoi creare una nuova coda?
+        
+       
+            return (
+                <div className="form">
+                    <Alert variant="primary">
+                        Vuoi creare una nuova coda?
                         <Button variant="outline-primary" onClick={() => this.setState({ showQeueueCreation: !this.state.showQeueueCreation })}>
-                        <IoIosArrowDropdownCircle />
-                    </Button>
-                </Alert>
-                <Collapse in={this.state.showQeueueCreation}>
-                    {this.createQueueForm()}
-                </Collapse>
-                <Alert variant="secondary">
-                    Vuoi creare un nuovo operatore?
-                        <Button  variant="outline-secondary" onClick={() => this.setState({ showOperatorAssign: !this.state.showOperatorAssign })}>
-                        <IoIosArrowDropdownCircle />
-                    </Button>
-                </Alert>
-                <Collapse in={this.state.showOperatorAssign}>
-                    {this.createAnOperator()}
-                </Collapse>
+                            <IoIosArrowDropdownCircle />
+                        </Button>
+                    </Alert>
+                    <Collapse in={this.state.showQeueueCreation}>
+                        {this.createQueueForm()}
+                    </Collapse>
+                    <Alert variant="secondary">
+                        Vuoi creare un nuovo operatore?
+                        <Button variant="outline-secondary" onClick={() => this.setState({ showOperatorAssign: !this.state.showOperatorAssign })}>
+                            <IoIosArrowDropdownCircle />
+                        </Button>
+                    </Alert>
+                    <Collapse in={this.state.showOperatorAssign}>
+                        {this.createAnOperator()}
+                    </Collapse> 
 
-                {this.getQueueList()}
-            </div>
-        )
+                    {this.getQueueList()}
+                </div>
+            )
+        }
     }
-}
+
 
 export default Company;

@@ -15,7 +15,6 @@ import Profile from './components/pages/profile/profile';
 import Favorite from './components/pages/profile/favorite/favorite';
 import MyQueue from './components/pages/profile/myqueue/myqueue';
 import NotificationModal from './components/notificationModal/notificationModal';
-import ModifyProfile from './components/pages/profile/modify/modify';
 import Faq from './components/pages/faq/faq';
 import DeleteProfile from './components/pages/profile/delete/delete';
 import Company from './components/pages/company';
@@ -42,8 +41,9 @@ class App extends React.Component {
       email: null,
       name: null,
       role: null,
+
       authenticated: false,
-      modalshow:false,
+      modalshow: false,
       loading: true,
       notify: false
     }
@@ -76,7 +76,7 @@ class App extends React.Component {
       fire.database().ref('users/' + this.state.userID).on("value", snap => {
         this.setState({
           role: snap.val().role,
-          loading:false
+          loading: false
         })
       })
     }
@@ -87,12 +87,11 @@ class App extends React.Component {
     this.authState()
     //this.syncRoleFromDb()
     this.setState({
-      loading: false,
-      
+      loading: false
     })
     if(this.state.userID !== null) this.getMyQueue()
   }
-  
+
 
   getMyQueue() {
    // console.log(this.state.userID)
@@ -123,65 +122,58 @@ class App extends React.Component {
 
   render() {
     let modalClose = () => this.setState({ modalShow: false });
-    if (this.state.loading === true) {
+    if (this.state.loading) {
+      return (<Spinner animation="grow" />)
+    } else {
       return (
-        <div className="loading">
-          <Spinner animation="grow" />
+        <div>
+          <NotificationModal
+            show={this.state.modalShow}
+            onHide={modalClose}
+          />
+          {this.state.authenticated &&
+            <>
+              <Header
+                authenticated={this.state.authenticated}
+                role={this.state.role}
+              />
+              <Footer authenticated={this.state.authenticated}
+                role={this.state.role} />
+            </>
+          }
+
+          <BrowserRouter>
+            <div className="pageStyle">
+              <Switch>
+                <Route exact path={ROUTES.LANDING} component={Landing} />
+                <Route path={ROUTES.LOGIN} component={() => <Login authenticated={this.state.authenticated} />} />
+                <Route path={ROUTES.LOGOUT} component={() => <Logout userID={this.state.userID} />} />
+                <Route path={ROUTES.PROFILE} component={() => <Profile userID={this.state.userID} />} />
+                <Route path={ROUTES.DELPRO} render={() => <DeleteProfile userID={this.state.userID} />} />
+
+                <Route path={ROUTES.COMPANY} component={() => <Company userID={this.state.userID} />} />
+                <Route path={ROUTES.FAQ} component={() => <Faq userID={this.state.userID} />} />
+                <Route path={ROUTES.QUEUES} component={() => <QueueView userID={this.state.userID} />} />
+                <Route path={ROUTES.OPERATOR} component={() => <OperatorView userID={this.state.userID} name={this.state.name} />} />
+                <Route path={ROUTES.INFO} component={Info} />
+                <Route path={ROUTES.FAVORITE} component={() =>
+                  <Favorite
+                    userID={this.state.userID}
+                  />
+                } />
+                <Route path={ROUTES.MYQUEUES} component={() =>
+                  <MyQueue userID={this.state.userID} />
+                } />
+
+              </Switch>
+            </div>
+
+          </BrowserRouter>
+
+
         </div>
       )
     }
-    return (
-      <div>
-        <NotificationModal
-          show={this.state.modalShow}
-          onHide={modalClose}
-        />
-        {this.state.authenticated && 
-          <>
-            <Header
-              authenticated={this.state.authenticated}
-              role={this.state.role}
-            />
-            <Footer authenticated={this.state.authenticated}
-            role={this.state.role} />
-          </>
-        }
-
-        <BrowserRouter>
-          <div className="pageStyle">
-            <Switch>
-              <Route exact path={ROUTES.LANDING} component={Landing} />
-              <Route path={ROUTES.LOGIN} component={() =>  <Login authenticated={ this.state.authenticated } />} />
-              <Route path={ROUTES.LOGOUT} component={() =>  <Logout userID={this.state.userID} />  } />
-              <Route path={ROUTES.PROFILE} component={() =>  <Profile userID={this.state.userID} /> } />
-              {/* <Route path={ROUTES.MODPRO} component={() => <ModifyProfile userID={this.state.userID} /> } /> */}
-
-              <Route path={ROUTES.DELPRO} render={() => <DeleteProfile userID={this.state.userID} /> } />
-              <Route path={ROUTES.COMPANY} component={() => <Company userID={this.state.userID}/> } />
-              <Route path={ROUTES.FAQ} component={() => <Faq userID={this.state.userID}/> } />
-              <Route path={ROUTES.QUEUES} component={() => <QueueView userID={this.state.userID} /> } />
-              <Route path={ROUTES.OPERATOR} component={() => <OperatorView  userID={this.state.userID} name={this.state.name} /> } />
-              <Route path={ROUTES.INFO} component={Info} />
-              <Route path={ROUTES.FAVORITE} component={() =>
-                <Favorite
-                  userID={this.state.userID}
-                />
-              } />
-              <Route path={ROUTES.MYQUEUES} component={() =>
-                <MyQueue
-                  userID={this.state.userID}
-                  
-                />
-              } />
-
-            </Switch>
-          </div>
-
-        </BrowserRouter>
-
-
-      </div>
-    )
   }
 }
 

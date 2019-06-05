@@ -9,11 +9,9 @@ class MyQueueView extends React.Component {
         super(props);
         this.state = {
             loading: true,
-            //code 
-            
+            //code             
             favorite:[],
-            limit: 5,
-            favque: null
+            limit: 5
         }
         this.getFavQueue = this.getFavQueue.bind(this);
         
@@ -29,36 +27,19 @@ class MyQueueView extends React.Component {
         this.setState({ loading: true });
         let ref = fire.database().ref().child('users/'+ this.props.userID +'/favoriteQueues');
         ref.on('value', snapshot => {
-          var fav = snapshot.val();
-          console.log(fav)
-          Object.keys(fav).map(key=> {
-           
-            this.onShowQueue(fav[key].queueId)
-            this.setState({favque:fav[key]})
-                 
-        }) ;        
-        });
-       
+          snapshot.forEach(q => {
+              this.getPropsFromQueue(q.queueId)
+          })     
+        });      
        
     }
 
-
-
-    onShowQueue = quId => {
+    getPropsFromQueue = quId => {
         console.log(quId)
-        fire.database().ref().child('queues/').on(
-            'value', snap => {
-                const queueProps = snap.val();
-                const allQueuesGetted = Object.keys(queueProps).filter(key => key === quId).map(key => ({
-                    
-                    ...queueProps[key],
-                    
-                    queueId: key
-                }));
-               
-                this.setState({
-                    
-                    favorite: this.state.favorite.concat(allQueuesGetted),
+        fire.database().ref().child('queues/'+ quId).on(
+            'value', snap => {               
+                this.setState({                    
+                    favorite: this.state.favorite.concat([{key: snap.key, queueProps: snap.val()}]),
                     loading: false
                 })        
               
@@ -135,8 +116,7 @@ class MyQueueView extends React.Component {
                           onRemoveUser={this.onRemoveUser}
                           onAddUser={this.onAddUser}
                           onAddFavorite={this.onAddFavorite}
-                          onRemoveFavorite={this.onRemoveFavorite}
-                          
+                          onRemoveFavorite={this.onRemoveFavorite}                      
                           
                           />
                   ) )       

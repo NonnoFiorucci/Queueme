@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { fire } from '../../../config/FirebaseConfig';
+// import { fire } from '../../../config/FirebaseConfig';
 
 
 import * as ROUTES from '../../../constants/routes';
@@ -27,17 +27,17 @@ class Profile extends Component {
   // componentDidMount() {
   //   this.getUserData(this.props.userID)
   // }
-  getUserData(uid) {
-    fire.database().ref('users/' + uid).on(
-      "value", snap => {
-        // this.setState({
-        //   name: snap.val().name,
-        //   role: snap.val().role,
-        //   email: snap.val().email,
-        // })
-      }
-    )
-  }
+  // getUserData(uid) {
+  //   fire.database().ref('users/' + uid).on(
+  //     "value", snap => {
+  //       // this.setState({
+  //       //   name: snap.val().name,
+  //       //   role: snap.val().role,
+  //       //   email: snap.val().email,
+  //       // })
+  //     }
+  //   )
+  // } 
   //TODO modificare i valori all'interno del db e modifica della password attraverso le api auth di firebase
 
 
