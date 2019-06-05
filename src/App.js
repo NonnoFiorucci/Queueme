@@ -49,6 +49,8 @@ class App extends React.Component {
     }
     this.authState = this.authState.bind(this)
     this.syncRoleFromDb = this.syncRoleFromDb.bind(this)
+    this.getMyQueue = this.getMyQueue.bind(this)
+    this.notificationListeners = this.notificationListeners.bind(this)
   }
 
   authState() {
@@ -57,8 +59,10 @@ class App extends React.Component {
         this.setState({
           userID: user.uid,
           email: user.email,
+          role: user.role,
           authenticated: true,
         })
+        console.log(user.role)
       
        
       }
@@ -68,7 +72,7 @@ class App extends React.Component {
   }
 
   syncRoleFromDb() {
-    if (this.state.userID) {
+    if (this.state.userID ) {
       fire.database().ref('users/' + this.state.userID).on("value", snap => {
         this.setState({
           role: snap.val().role,
@@ -81,26 +85,41 @@ class App extends React.Component {
 
   componentDidMount() {
     this.authState()
-    this.syncRoleFromDb()
+    //this.syncRoleFromDb()
     this.setState({
       loading: false,
       
     })
+    if(this.state.userID !== null) this.getMyQueue()
   }
   
 
-  /* notification(){
-    var usersRef  = fire.database.ref('whatever/users');
+  getMyQueue() {
+   // console.log(this.state.userID)
+     let ref = fire.database().ref().child('users/'+ this.state.userID +'/queuesStatus');
+     ref.on('value', snapshot => {
+       var fav = snapshot.val();
+       Object.keys(fav).map(key=> {
+       this.notificationListeners(fav[key].queueId)
+              
+     }) ;        
+     });
+    
+    
+ }
+
+  notificationListeners(quId){
+    var usersRef  = fire.database.ref('queues/'+quId+'/userList');
     
     usersRef.on('child_removed', (snapshot) => {
     console.log('user was removed !!' );
           
-    //  SE NUM PERSONE < 3 this.setState({ modalShow: true })
-
+    //  SE NUM PERSONE < 3 
+    this.setState({ modalShow: true })
      
 });
     
-  } */
+  } 
 
   render() {
     let modalClose = () => this.setState({ modalShow: false });

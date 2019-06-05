@@ -11,8 +11,9 @@ const config = {
 };
 
 const fire = firebase.initializeApp(config);
+const secondaryApp = firebase.initializeApp(config, "Secondary");
 
 const providerGoogle = new firebase.auth.GoogleAuthProvider();
 
 
-export { fire, providerGoogle};
+export { fire,secondaryApp, providerGoogle};

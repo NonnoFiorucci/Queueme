@@ -1,6 +1,6 @@
 import React from 'react';
-import { fire } from '../../../config/FirebaseConfig';
-import { Form, Table, Button, Collapse, Alert, Col, Row } from 'react-bootstrap';
+import { fire, secondaryApp } from '../../../config/FirebaseConfig';
+import { Form, Table, Button, Collapse, Alert,  } from 'react-bootstrap';
 import { IoIosCheckmark, IoIosClose, IoIosArrowDropdownCircle } from "react-icons/io";
 
 
@@ -24,6 +24,10 @@ class Company extends React.Component {
             numWait: [],
             active: [],
 
+
+            role: ROLES.OPERATOR,
+            userAuthProvider: null,
+
             listOfOperator: [],
             usersAvailableKey: [],
             usersAvailableUsername: []
@@ -31,7 +35,8 @@ class Company extends React.Component {
         this.showQueues = this.showQueues.bind(this);
         this.showOperator = this.showOperator.bind(this);
         this.handleNewQueue = this.handleNewQueue.bind(this);
-        this.handleNewOperator = this.handleNewOperator.bind(this)
+        this.handleNewOperator = this.handleNewOperator.bind(this);
+        this.regEmailPassword = this.regEmailPassword.bind(this)
     }
     uniqueIDCode() {
         var ID = Date.now();
@@ -41,13 +46,14 @@ class Company extends React.Component {
         this.showQueues();
         this.showUser();
         this.showOperator();
+        console.log(this.props)
     }
 
 
     //utilizzato nella select del form di creazione di una nuova coda
     /* #region  Query Realtimedatabase da migrare */
     showOperator() {
-        const dbQueryOperator = fire.database().ref('company/' + this.state.idCompany + '/operators/')
+        const dbQueryOperator = fire.database().ref('company/' + this.props.userID + '/operators/')
         dbQueryOperator.on('value', snap => {
             snap.forEach(s => {
                 this.setState({
@@ -55,6 +61,7 @@ class Company extends React.Component {
                 })
             })
         })
+        console.log(this.state.listOfOperator)
     }
     showUser() {
         const dbQueryUser = fire.database().ref('users/');
@@ -106,7 +113,7 @@ class Company extends React.Component {
             .catch((error) => {
                 alert(error);
             });
-        fire.database().ref('operators/' + this.refs.idUserForOperator.value + '/queues/').push({
+        fire.database().ref('operators/' + this.state.idOperator + '/queues/').push({
                 idQueue: keyQueue,
                 idCompany: this.props.userID
             })
@@ -193,8 +200,77 @@ class Company extends React.Component {
             </Form>
         )
     }
+
+
+
+    regEmailPassword(event) {
+        const email = this.refs.registerEmail.value
+        const password = this.refs.registerPwd.value
+        const role = ROLES.OPERATOR
+    
+        secondaryApp.auth().createUserWithEmailAndPassword(email, password)
+          .then((result) => {
+            console.log(result.user.email)
+            this.setState({
+              userAuthProvider: result.user,
+            //  role: role
+            })
+            this.mergeRealTimeDbUser()
+            this.mergeRealTimeDbCompany()
+          }).catch((error) => {
+            if (error.code === 'auth/weak-password') {
+              alert("La password deve contenere almeno 6 caratteri");
+            } else if (error.code === 'auth/invalid-email') {
+              alert("Email non valida");
+            } else alert("Errore creazione account: " + error)
+          })
+          secondaryApp.auth().signOut();
+        event.preventDefault()
+      }
+
+      mergeRealTimeDbUser() {
+        const rootUtente = fire.database().ref("users/" + this.state.userAuthProvider.uid)
+        rootUtente.on("value", snap => {
+          if (snap.val() === null) {
+              this.setState({
+                  idOperator: snap.key
+              })
+              console.log(this.state.idOperator)
+            rootUtente.set({
+                
+              name: this.state.userAuthProvider.displayName,
+              email: this.state.userAuthProvider.email,
+              role: ROLES.OPERATOR,
+            }).then((data) => {
+              console.log('data ', data)
+            }).catch((error) => {
+              console.log('error ', error)
+            })
+            console.log(this.state.userAuthProvider.displayName, this.state.userAuthProvider.uid)
+          }
+        });
+    
+      }
+
+      mergeRealTimeDbCompany(props) {
+        const rootUtente = fire.database().ref("company/" +this.props.userID +'/operators/'+ this.state.userAuthProvider.uid)
+        rootUtente.on("value", snap => {
+          if (snap.val() === null) {
+            rootUtente.set({
+              idOperator : this.state.idOperator
+            }).then((data) => {
+              console.log('data ', data)
+            }).catch((error) => {
+              console.log('error ', error)
+            })
+            console.log(this.state.userAuthProvider.displayName, this.state.userAuthProvider.uid)
+          }
+        });
+    
+      }
+
     createAnOperator() {
-        return (
+        /* return (
             <Form onSubmit={this.handleNewOperator}>
                 <Form.Group as={Row}>
                     <Form.Label column sm="2">Utente</Form.Label>
@@ -211,8 +287,32 @@ class Company extends React.Component {
                 </Form.Group>
                 <Button bsPrefix="btnStyle one" type="submit">Crea operatore</Button>
             </Form>
-        )
-    }
+        ) */
+
+
+        
+            return (
+              <div className="formCreazioneOperator">
+                <Form onSubmit={this.regEmailPassword}>
+                  <Form.Group>
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control type="email" placeholder="Inserisci Email" ref='registerEmail' required />
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" placeholder="Inserisci Password" ref='registerPwd' required />
+                    <Form.Label>Sono uno</Form.Label>
+                   
+                  </Form.Group>
+                  <Button type="submit" bsPrefix="btnStyle one">
+                    Crea Operator
+                  </Button>
+                </Form>
+                
+              </div>
+        
+            )
+          }
+
+    
 
     render() {
         return (
