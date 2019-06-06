@@ -8,60 +8,80 @@ class MyQueueView extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            loading: true,
-            //code             
+            loading: true,            
             favorite:[],
             limit: 5
         }
         this.getFavQueue = this.getFavQueue.bind(this);
-        
-        // this.onVerifyAlreadyEnqueue = this.onVerifyAlreadyEnqueue.bind(this);
     }
     componentDidMount() {
        if(this.props.userID !== null) this.getFavQueue();
     }
-    
-    
-    getFavQueue() {
-        console.log(this.props.userID)
-        this.setState({ loading: true });
-        let ref = fire.database().ref().child('users/'+ this.props.userID +'/favoriteQueues');
-        ref.on('value', snapshot => {
-            if(snapshot.val()){
-            var fav = snapshot.val();
-            console.log(fav)
-            Object.keys(fav).map(key=> {
-             
-              this.onShowQueue(fav[key].queueId)
-              this.setState({favque:fav[key]})
-                   
-          }) ; 
-        }       
-          });   
-       
-    }
 
-    onShowQueue = quId => {
-        console.log(quId)
-        fire.database().ref().child('queues/').on(
-            'value', snap => {
-                const queueProps = snap.val();
-                const allQueuesGetted = Object.keys(queueProps).filter(key => key === quId).map(key => ({
-                    
-                    ...queueProps[key],
-                    
-                    queueId: key
-                }));
-               
-                this.setState({
-                    
-                    favorite: this.state.favorite.concat(allQueuesGetted),
-                    loading: false
-                })        
-              
-            }
-        ) 
+    getFavQueue() {
+        let ref = fire.database().ref('users/' + this.props.userID + '/favoriteQueues');
+        ref.on('value', snapshot => {
+           snapshot.forEach((queue) => {
+               this.onShowQueue(queue.val().queueId)
+           })
+        });
     }
+    onShowQueue = quId => {        
+       fire.database().ref('queues/'+ quId).on(
+           'value', snap => {                
+               const tryObj = { 
+                   ...snap.val(),
+                   queueId: snap.key 
+               }
+               this.setState({
+                    favorite: this.state.favorite.concat(tryObj),
+                   loading: false
+               })
+           }
+       )
+   }
+    
+    
+    // getFavQueue() {
+    //     console.log(this.props.userID)
+    //     this.setState({ loading: true });
+    //     let ref = fire.database().ref().child('users/'+ this.props.userID +'/favoriteQueues');
+    //     ref.on('value', snapshot => {
+    //         if(snapshot.val()){
+    //         var fav = snapshot.val();
+    //         console.log(fav)
+    //         Object.keys(fav).map(key=> {
+             
+    //           this.onShowQueue(fav[key].queueId)
+    //           this.setState({favque:fav[key]})
+                   
+    //       }) ; 
+    //     }       
+    //       });   
+       
+    // }
+
+    // onShowQueue = quId => {
+    //     console.log(quId)
+    //     fire.database().ref().child('queues/').on(
+    //         'value', snap => {
+    //             const queueProps = snap.val();
+    //             const allQueuesGetted = Object.keys(queueProps).filter(key => key === quId).map(key => ({
+                    
+    //                 ...queueProps[key],
+                    
+    //                 queueId: key
+    //             }));
+               
+    //             this.setState({
+                    
+    //                 favorite: this.state.favorite.concat(allQueuesGetted),
+    //                 loading: false
+    //             })        
+              
+    //         }
+    //     ) 
+    // }
     
     
     onRemoveUser = quId => {        

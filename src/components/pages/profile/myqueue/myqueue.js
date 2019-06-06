@@ -22,35 +22,26 @@ class MyQueueView extends React.Component {
 
     }
 
-     getMyQueue() {
-         console.log(this.props.userID)
-         let ref = fire.database().ref().child('users/' + this.props.userID + '/queuesStatus');
+    getMyQueue() {
+         let ref = fire.database().ref('users/' + this.props.userID + '/queuesStatus');
          ref.on('value', snapshot => {
-             if(snapshot.val() ){
-             var fav = snapshot.val();
-             Object.keys(fav).map(key => {
-                 this.onShowQueue(fav[key].queueId)
-                 this.setState({ favque: fav[key] })
-
-             });
-            }
+            snapshot.forEach((queue) => {
+                this.onShowQueue(queue.val().queueId)
+            })
          });
      }
 
 
 
-    onShowQueue = quId => {
-        console.log(quId)
-        fire.database().ref().child('queues/').on(
-            'value', snap => {
-                const queueProps = snap.val();
-                const allQueuesGetted = Object.keys(queueProps).filter(key => key === quId).map(key => ({
-                    ...queueProps[key],
-                    queueId: key
-                }));
-                console.log(allQueuesGetted)
+    onShowQueue = quId => {        
+        fire.database().ref('queues/'+ quId).on(
+            'value', snap => {                
+                const tryObj = { 
+                    ...snap.val(),
+                    queueId: snap.key 
+                }
                 this.setState({
-                    myqueues: this.state.myqueues.concat(allQueuesGetted),
+                    myqueues: this.state.myqueues.concat(tryObj),
                     loading: false
                 })
 

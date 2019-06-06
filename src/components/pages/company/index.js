@@ -25,9 +25,7 @@ class Company extends React.Component {
             idOperator: [],
             numWait: [],
             active: [],
-
-
-            role: ROLES.OPERATOR,
+            
             userAuthProvider: null,
 
             listOfOperator: [],
@@ -129,10 +127,9 @@ class Company extends React.Component {
 
 
     }
-    handleNewOperator(event) {
-        event.preventDefault();
+    handleNewOperator(idOp) {
         fire.database().ref('company/' + this.state.idCompany + '/operators/').push({
-            idOperator: this.state.usersAvailableKey[this.refs.idUserForOperator.value]
+            idOperator: idOp
         })
             .then((data) => {
                 alert("Operatore aggiunto all'azienda");
@@ -140,9 +137,6 @@ class Company extends React.Component {
             .catch((error) => {
                 alert(error);
             });
-        fire.database().ref('users/' + this.state.usersAvailableKey[this.refs.idUserForOperator.value]).update({
-            role: ROLES.OPERATOR
-        })
     }
 
 
@@ -219,10 +213,10 @@ class Company extends React.Component {
             console.log(result.user.email)
             this.setState({
               userAuthProvider: result.user,
-            //  role: role
+              role: role.OPERATOR
             })
             this.mergeRealTimeDbUser()
-            this.mergeRealTimeDbCompany()
+            this.handleNewOperator(result.user.uid)
           }).catch((error) => {
             if (error.code === 'auth/weak-password') {
               alert("La password deve contenere almeno 6 caratteri");
@@ -234,16 +228,11 @@ class Company extends React.Component {
         event.preventDefault()
       }
 
-      mergeRealTimeDbUser() {
+    mergeRealTimeDbUser() {
         const rootUtente = fire.database().ref("users/" + this.state.userAuthProvider.uid)
         rootUtente.on("value", snap => {
           if (snap.val() === null) {
-              this.setState({
-                  idOperator: snap.key
-              })
-              console.log(this.state.idOperator)
-            rootUtente.set({
-                
+            rootUtente.set({                
               name: this.state.userAuthProvider.displayName,
               email: this.state.userAuthProvider.email,
               role: ROLES.OPERATOR,
@@ -252,61 +241,20 @@ class Company extends React.Component {
             }).catch((error) => {
               console.log('error ', error)
             })
-            console.log(this.state.userAuthProvider.displayName, this.state.userAuthProvider.uid)
-          }
-        });
-    
-      }
+        }
+        });    
+    }
 
-      mergeRealTimeDbCompany(props) {
-        const rootUtente = fire.database().ref("company/" +this.props.userID +'/operators/'+ this.state.userAuthProvider.uid)
-        rootUtente.on("value", snap => {
-          if (snap.val() === null) {
-            rootUtente.set({
-              idOperator : this.state.idOperator
-            }).then((data) => {
-              console.log('data ', data)
-            }).catch((error) => {
-              console.log('error ', error)
-            })
-            console.log(this.state.userAuthProvider.displayName, this.state.userAuthProvider.uid)
-          }
-        });
-    
-      }
-
-    createAnOperator() {
-        /* return (
-            <Form onSubmit={this.handleNewOperator}>
-                <Form.Group as={Row}>
-                    <Form.Label column sm="2">Utente</Form.Label>
-                    <Col sm="8">
-                        <Form.Control as='select' ref='idUserForOperator' required >
-                            {this.state.usersAvailableKey.map((codice, index) => (
-                                <option value={index}>
-                                    {codice}
-                                </option>
-                            ))
-                            }
-                        </Form.Control>
-                    </Col>
-                </Form.Group>
-                <Button bsPrefix="btnStyle one" type="submit">Crea operatore</Button>
-            </Form>
-        ) */
-
-
-        
+    createAnOperator() {      
             return (
-              <div className="formCreazioneOperator">
+              <div className="">
                 <Form onSubmit={this.regEmailPassword}>
                   <Form.Group>
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" placeholder="Inserisci Email" ref='registerEmail' required />
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" placeholder="Inserisci Password" ref='registerPwd' required />
-                    <Form.Label>Sono uno</Form.Label>
-                   
+                    <Form.Label>Sono uno</Form.Label>                   
                   </Form.Group>
                   <Button type="submit" bsPrefix="btnStyle one">
                     Crea Operator

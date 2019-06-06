@@ -42,6 +42,8 @@ class App extends React.Component {
       name: null,
       role: null,
 
+      listQueueNotify: [],
+
       authenticated: false,
       modalshow: false,
       loading: true,
@@ -50,22 +52,19 @@ class App extends React.Component {
     this.authState = this.authState.bind(this)
     this.syncRoleFromDb = this.syncRoleFromDb.bind(this)
     this.getMyQueue = this.getMyQueue.bind(this)
-    this.notificationListeners = this.notificationListeners.bind(this)
+    //this.notificationListeners = this.notificationListeners.bind(this)
   }
 
   authState() {
-    
+
     fire.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setState({
           userID: user.uid,
           email: user.email,
-        //  role: user.role,
           authenticated: true,
         })
         console.log(user.role)
-      
-       
       }
       this.syncRoleFromDb()
 
@@ -73,56 +72,55 @@ class App extends React.Component {
   }
 
   syncRoleFromDb() {
-   
-      fire.database().ref('users/' + this.state.userID).on("value", snap => {
-        if( snap.val()){
+
+    fire.database().ref('users/' + this.state.userID).on("value", snap => {
+      if (snap.val()) {
         this.setState({
           role: snap.val().role,
           loading: false
-        })}
-    //    console.log(snap.val().role)
-      })
-    
+        })
+      }
+    })
+
   }
 
 
   componentDidMount() {
-    
     this.authState()
-    //this.syncRoleFromDb()
     this.setState({
       loading: false
     })
-    if(this.state.userID !== null) this.getMyQueue()
+    if (this.state.userID !== null) this.getMyQueue()
   }
 
 
   getMyQueue() {
-   // console.log(this.state.userID)
-     let ref = fire.database().ref().child('users/'+ this.state.userID +'/queuesStatus');
-     ref.on('value', snapshot => {
-       var fav = snapshot.val();
-       Object.keys(fav).map(key=> {
-       this.notificationListeners(fav[key].queueId)
-              
-     }) ;        
-     });
-    
-    
- }
+    let ref = fire.database().ref().child('users/' + this.state.userID + '/queuesStatus');
+    ref.on('value', snapshot => {
+      snapshot.forEach((queueid) => {
+        this.setState({
+          listQueueNotify: this.state.listQueueNotify.concat(queueid.queueId)
+        })
+        
+      })
+      console.log(this.state.listQueueNotify)
+      // Object.keys(fav).map(key => {
+      //     this.notificationListeners(fav[key].queueId)    
+      //   });
+      // });
+    })
+  }
 
-  notificationListeners(quId){
-    var usersRef  = fire.database.ref('queues/'+quId+'/userList');
-    
-    usersRef.on('child_removed', (snapshot) => {
-    console.log('user was removed !!' );
-          
-    //  SE NUM PERSONE < 3 
-    this.setState({ modalShow: true })
-     
-});
-    
-  } 
+  // notificationListeners(quId) {
+  //   var usersRef = fire.database.ref('queues/' + quId + '/userList');
+
+  //   usersRef.on('child_removed', (snapshot) => {
+  //     console.log('user was removed !!');
+  //     //  SE NUM PERSONE < 3 
+  //     this.setState({ modalShow: true })
+  //   });
+
+  // }
 
   render() {
     let modalClose = () => this.setState({ modalShow: false });
@@ -153,7 +151,7 @@ class App extends React.Component {
                 <Route path={ROUTES.LOGIN} component={() => <Login authenticated={this.state.authenticated} />} />
                 <Route path={ROUTES.LOGOUT} component={() => <Logout userID={this.state.userID} />} />
                 <Route path={ROUTES.PROFILE} component={() => <Profile userID={this.state.userID} />} />
-                <Route path={ROUTES.DELPRO} component={() => <DeleteProfile userID={this.state.userID} />} />
+                <Route path={ROUTES.DELPRO} render={() => <DeleteProfile userID={this.state.userID} />} />
 
                 <Route path={ROUTES.COMPANY} component={() => <Company userID={this.state.userID} />} />
                 <Route path={ROUTES.FAQ} component={() => <Faq userID={this.state.userID} />} />
@@ -171,7 +169,6 @@ class App extends React.Component {
 
               </Switch>
             </div>
-
           </BrowserRouter>
 
 

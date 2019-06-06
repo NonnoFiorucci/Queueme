@@ -52,14 +52,12 @@ class SimpleQueue extends React.Component {
         //punta alla lista di code
         this.props.onRemoveUser(this.props.queue.queueId);
     }
-    onRenderVerifyEnqueue = () => {
-    
+    onRenderVerifyEnqueue = () => {    
         fire.database().ref('users/' + this.props.userId + '/queuesStatus/')
         .orderByChild('queueId').equalTo(this.props.queue.queueId).on('value',s => {
             if (s.val()){
                 this.setState({
-                    enqueued: true,
-                    
+                    enqueued: true                    
                 })
             }
             else{
@@ -71,14 +69,12 @@ class SimpleQueue extends React.Component {
     
 
     }
-    onRenderFavoriteEnqueue = () => {
-    
+    onRenderFavoriteEnqueue = () => {    
         fire.database().ref('users/' + this.props.userId + '/favoriteQueues/')
         .orderByChild('queueId').equalTo(this.props.queue.queueId).on('value',s => {
             if (s.val()){
                 this.setState({
-                    favorite: false,
-                    
+                    favorite: false,                    
                 })
             }
             else{
@@ -102,15 +98,13 @@ class SimpleQueue extends React.Component {
                 <Card.Header > {queue.title} </Card.Header>
                 {/* <Card.Img variant="top" src={this.state.image[index]} /> */}
                 <Card.Body className="text-center">
-                    <Card.Subtitle> 
-                                       
+                    <Card.Subtitle>                                       
                         {queue.active && (<Spinner animation="border" variant="success"/>)} 
                         {!queue.active && (<Spinner animation="grow" variant="danger"/>)} 
                     </Card.Subtitle>
                     <Card.Text> Persone in coda: {queue.numWait} </Card.Text>
                     <br/>
-                    {queue.description}      
-                    
+                    {queue.description}                         
                 </Card.Body>
                 <Card.Footer>
                     <Row>
@@ -123,18 +117,16 @@ class SimpleQueue extends React.Component {
                             <Button block variant="outline-danger" size="sl" onClick={this.onToggleRemoveUserQueue} disabled={!this.state.enqueued} >
                                 < TiTrash size={40} />
                             </Button></Col>
-                            <br/>
-                            <Col md={{ span: 3 }}>
-                                {this.state.favorite === false  ? <Button block variant="outline-danger" size="sl" onClick={this.onToggleRemoveFavoriteQueue}  >
+                        <Col md={{ span: 2 }}>
+                            {this.state.favorite === false  ? 
+                            <Button block variant="outline-danger" size="sl" onClick={this.onToggleRemoveFavoriteQueue}  >
                                 <TiHeartFullOutline  size={40} />
                             </Button>
                             : 
                             <Button block variant="outline-danger" size="sl" onClick={this.onToggleAddFavoriteQueue}  >
                                 <TiHeartOutline  size={40} />
                             </Button>}
-
-
-                            </Col>
+                        </Col>
                     </Row>
                 </Card.Footer>
             </Card>
