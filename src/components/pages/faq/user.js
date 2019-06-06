@@ -9,7 +9,7 @@ import { IoMdContacts } from "react-icons/io";;
 
 function User() {
     return (
-        <div style={{marginLeft:30, marginRight:30, }}>
+        <div style={{marginLeft:30, marginRight:30}}>
         <h3>Qual'è il compito dell utente?</h3>
 
         <p className='just'>L'utente ha a disposizione la possibilità di iscriversi a delle code presenti su una determinata lista.

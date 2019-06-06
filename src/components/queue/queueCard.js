@@ -88,9 +88,13 @@ class SimpleQueue extends React.Component {
             }
         })
     
-
+        
     }
+
+ 
+
     render() {
+        
         const { queue } = this.props;
 
         return (
@@ -99,11 +103,13 @@ class SimpleQueue extends React.Component {
                 {/* <Card.Img variant="top" src={this.state.image[index]} /> */}
                 <Card.Body className="text-center">
                     <Card.Subtitle> 
-                    {queue.description}                         
+                                       
                         {queue.active && (<Spinner animation="border" variant="success"/>)} 
                         {!queue.active && (<Spinner animation="grow" variant="danger"/>)} 
                     </Card.Subtitle>
                     <Card.Text> Persone in coda: {queue.numWait} </Card.Text>
+                    <br/>
+                    {queue.description}      
                     
                 </Card.Body>
                 <Card.Footer>

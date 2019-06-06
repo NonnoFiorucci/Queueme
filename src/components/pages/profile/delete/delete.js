@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { fire } from '../../../../config/FirebaseConfig';
+import firebase from 'firebase';
 import { Button } from 'react-bootstrap';
 import { FaAngleLeft } from 'react-icons/fa';
 
@@ -43,7 +44,15 @@ class deleteProfile extends Component {
 
 
   deleteaccount(event) {
+    var userDeleted = firebase.auth().currentUser;
+    userDeleted.delete()
+
+
+
     fire.database().ref('users/' + this.props.userID).remove();
+   
+
+
     fire.auth().signOut()
     this.deleteStorage()
     event.preventDefault();
@@ -83,7 +92,7 @@ class deleteProfile extends Component {
               <br />
               <div className="btn-toolbar" style={{ display: 'felx' }}>
 
-                <Button variant="danger" onClick={this.deleteaccount} > Elimina</Button>  {}
+                <Button variant="danger" href={ROUTES.LANDING} onClick={this.deleteaccount} > Elimina</Button>  {}
                 <Button style={{ marginLeft: 50 }} href={ROUTES.DELPRO} variant="secondary">Annulla</Button>
               </div>
             </Popover>

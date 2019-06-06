@@ -138,14 +138,14 @@ input[type]:focus{
 }
 
 .QCard{
-    margin-left: 5rem;
-    margin-right: 5rem;
-    margin-bottom: 5rem;
-    margin-top: 5rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
 }
 .QCard:hover{
-    margin-left: 4rem;
-    margin-right: 4rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
     -webkit-transition: all .4s ease-in-out;
     -moz-transition: all .4s ease-in-out;
     -ms-transition: all .4s ease-in-out;
@@ -221,5 +221,7 @@ input[type]:focus{
 
 /* FAQ*/
 .just {
-    text-align: justify
+    text-align: center;
+    /* justify */
+    
 }
