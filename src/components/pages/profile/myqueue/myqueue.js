@@ -118,7 +118,7 @@ class MyQueueView extends React.Component {
                     }
 
                     {this.state.myqueues.length === 0 ?
-                    <h3 style={{textAlign:"center"}}> Non sei inserito in nessuna cosa </h3> :null}
+                    <h3 style={{textAlign:"center"}}> Non sei inserito in nessuna coda </h3> :null}
 
                 </div>
             )

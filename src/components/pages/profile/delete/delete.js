@@ -9,6 +9,8 @@ import Popover from 'react-bootstrap/Popover';
 
 import * as ROUTES from '../../../../constants/routes';
 
+import '../../../../styles/style.css';
+
 class deleteProfile extends Component {
 
   constructor(props) {
@@ -78,7 +80,7 @@ class deleteProfile extends Component {
 
         <h1>Elimina il tuo profilo</h1>
 
-
+<div className="Elimina">
         <OverlayTrigger
           trigger="click"
           key='bottom' placement='bottom'
@@ -100,6 +102,7 @@ class deleteProfile extends Component {
         >
           <Button variant="secondary">Elimina account </Button>
         </OverlayTrigger>
+        </div>
       </div>
     );
   }
