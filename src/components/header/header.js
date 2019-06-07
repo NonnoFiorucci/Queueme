@@ -41,7 +41,7 @@ class Header extends Component {
 
                                 <NavDropdown drop={"left"} className="drop" style={{ color: 'white', fontWeight: 'bold' }} title="Profile" id="basic-nav-dropdown">
                                 <NavDropdown.Item style={{ fontWeight: 'bold', color: '#9a9da0' }} href={ROUTES.PROFILE}>My Profile</NavDropdown.Item>
-                                <NavDropdown.Item style={{ fontWeight: 'bold', color: '#9a9da0' }} href={ROUTES.MYQUEUES}>My Queues</NavDropdown.Item>
+                                
                                 <NavDropdown.Item style={{ fontWeight: 'bold', color: '#9a9da0' }} href={ROUTES.DELPRO}>Delete Accaunt</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item style={{ fontWeight: 'bold', color: '#9a9da0' }} href={ROUTES.LOGOUT}>Logout</NavDropdown.Item>
