@@ -1,7 +1,7 @@
 import React from 'react';
 
 import SimpleCard from '../../../queue/queueCard';
-import { Spinner } from 'react-bootstrap';
+import { Spinner, Button, Modal } from 'react-bootstrap';
 import { fire } from '../../../../config/FirebaseConfig';
 
 class MyQueueView extends React.Component {
@@ -10,35 +10,80 @@ class MyQueueView extends React.Component {
         this.state = {
             loading: false,
             myqueues: [],
-
+            notify: null,
             limit: 5
         }
-        this.getMyQueue = this.getMyQueue.bind(this);
+        this.getMyQueues = this.getMyQueues.bind(this);
+        this.pushModal = this.pushModal.bind(this);
+        this.getQueueDetails = this.getQueueDetails.bind(this);
+
 
     }
     componentDidMount() {
-         if (this.props.userID !== null) 
-         this.getMyQueue();
-
+        if (this.props.userID !== null)
+            this.getMyQueues();
     }
 
-    getMyQueue() {
-         let ref = fire.database().ref('users/' + this.props.userID + '/queuesStatus');
-         ref.on('value', snapshot => {
+
+    handleClose() {
+        this.setState({
+            notify: null
+        })
+    }
+
+
+    pushModal = (quId, pos) => {
+        if (this.state.notify === null) {
+            this.getQueueDetails(quId)
+            this.setState({
+                notify: {
+                    queue: quId,
+                    position: pos
+                }
+            })
+        }
+    }
+    checkPosition = (quId, usId) => {
+        var pos = 0
+        fire.database().ref('queues/' + quId + 'userList/').limitToFirst(3).on('value', snap => {
+            snap.forEach((user) => {
+                (user.val().userId === usId) ? this.pushModal(quId, pos) : (pos = pos + 1)
+                console.log(user.val().userId === usId)
+            })
+        })
+    }
+    getQueueDetails = quId => {
+        fire.database().ref('queue/' + quId).on('value', snap => {
+            this.setState({
+                notify: {
+                    title: snap.val().title,
+                    description: snap.val().description
+                }
+            })
+        })
+    }
+
+    getMyQueues() {
+        let ref = fire.database().ref('users/' + this.props.userID + '/queuesStatus');
+        ref.on('value', snapshot => {
             snapshot.forEach((queue) => {
                 this.onShowQueue(queue.val().queueId)
+                this.checkPosition(queue.val().queueId, this.props.userID)
             })
-         });
-     }
+        });
+    }
 
 
 
-    onShowQueue = quId => {        
-        fire.database().ref('queues/'+ quId).on(
-            'value', snap => {                
-                const tryObj = { 
-                    ...snap.val(),
-                    queueId: snap.key 
+    onShowQueue = quId => {
+        fire.database().ref('queues/' + quId).on(
+            'value', snap => {
+                const tryObj = {
+                    active: snap.val().active,
+                    description: snap.val().description,
+                    numWait: snap.val().numWait,
+                    title: snap.val().title,
+                    queueId: snap.key
                 }
                 this.setState({
                     myqueues: this.state.myqueues.concat(tryObj),
@@ -81,8 +126,6 @@ class MyQueueView extends React.Component {
             queueId: quId
         })
     }
-
-
     onRemoveFavorite = quId => {
         const remQueueFromUser = fire.database().ref('users/' + this.props.userID + '/favoriteQueues/')
         remQueueFromUser.orderByChild('queueId').equalTo(quId).once('value', s => {
@@ -91,12 +134,32 @@ class MyQueueView extends React.Component {
             })
         })
     }
+    showNotify() {
+        return (
+            <Modal show='true' onHide={this.handleClose}>
+                <Modal.Header>
+                    {this.state.notify.position !== 0 && (<p>Ehi! Tocca quasi a te! Ci sono solo {this.state.notify.position} prima di te </p>)}
+                    {this.state.notify.position === 0 && (<p>Ehi! Tocca a te!</p>)}
+                </Modal.Header>
+                <Modal.Body>
+                    La coda {this.state.notify.title} al {this.state.notify.description}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="dark" onClick={this.handleClose}> Ho capito! </Button>
+                </Modal.Footer>
+            </Modal>
+        )
+    }
 
     render() {
-        const { myqueues, loading } = this.state;
+        const { myqueues, loading, notify} = this.state;
         if (loading) {
             return (<Spinner color="secondary" />)
         } else {
+            if (notify!==null){
+                
+               this.showNotify()
+            }
             return (
                 <div>
                     <h2 style={{ textAlign: 'center', marginTop: 20 }}>Le mie code</h2>
@@ -118,7 +181,7 @@ class MyQueueView extends React.Component {
                     }
 
                     {this.state.myqueues.length === 0 ?
-                    <h3 style={{textAlign:"center"}}> Non sei inserito in nessuna cosa </h3> :null}
+                        <h3 style={{ textAlign: "center" }}> Non sei inserito in nessuna cosa </h3> : null}
 
                 </div>
             )

@@ -120,7 +120,6 @@ class MyQueueView extends React.Component {
 
   }
 
-
   onRemoveFavorite = quId => {        
     
       const remQueueFromUser = fire.database().ref('users/'+this.props.userID+'/favoriteQueues/')

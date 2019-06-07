@@ -52,6 +52,7 @@ class SimpleQueue extends React.Component {
         //punta alla lista di code
         this.props.onRemoveUser(this.props.queue.queueId);
     }
+
     onRenderVerifyEnqueue = () => {    
         fire.database().ref('users/' + this.props.userId + '/queuesStatus/')
         .orderByChild('queueId').equalTo(this.props.queue.queueId).on('value',s => {
@@ -65,8 +66,7 @@ class SimpleQueue extends React.Component {
                     enqueued: false
                 })
             }
-        })
-    
+        })   
 
     }
     onRenderFavoriteEnqueue = () => {    
@@ -117,7 +117,7 @@ class SimpleQueue extends React.Component {
                             <Button block variant="outline-danger" size="sl" onClick={this.onToggleRemoveUserQueue} disabled={!this.state.enqueued} >
                                 < TiTrash size={40} />
                             </Button></Col>
-                        <Col md={{ span: 2 }}>
+                        <Col md={{ span: 2 }} xs >
                             {this.state.favorite === false  ? 
                             <Button block variant="outline-danger" size="sl" onClick={this.onToggleRemoveFavoriteQueue}  >
                                 <TiHeartFullOutline  size={40} />
