@@ -159,16 +159,20 @@ input[type]:focus{
 }
 
 .card-header.QActive{
-    background-color: #343a40;
+    background-color: #273849;
     color: whitesmoke;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 21px;
+    text-align: left;
+    line-height:43px
     
 }
+
 .card-header.QInactive{
-    background-color: rgb(211, 100, 100);
+    background-color: rgb(160, 25, 25);
     color: whitesmoke;
-    font-size: 18px;
+    font-size: 21px;
+    text-align: left;
+    line-height:43px
 }
 
 .card-text.QNumber{

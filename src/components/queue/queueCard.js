@@ -3,7 +3,7 @@ import { fire } from '../../config/FirebaseConfig';
 
 import { Card, Button,  Row } from 'react-bootstrap';
 
-import { TiPlus, TiTrash, TiHeartOutline, TiHeartFullOutline } from 'react-icons/ti';
+import { TiPlus, TiTrash, TiStarOutline, TiStarFullOutline } from 'react-icons/ti';
 
 import '../../styles/style.css';
 import '../../styles/btnStyle.css';
@@ -97,8 +97,28 @@ class SimpleQueue extends React.Component {
 
         return (
             <Card className="QCard text-center">
-                 {queue.active && (<Card.Header className="QActive"> {queue.title} </Card.Header>)} 
-                 {!queue.active && (<Card.Header className="QInactive"> {queue.title} </Card.Header>)} 
+                 {queue.active && (<Card.Header className="QActive"> {queue.title}
+                 {this.state.favorite === false  ? 
+                            <Button  variant="outline-warning"  onClick={this.onToggleRemoveFavoriteQueue}  >
+                                <TiStarFullOutline  size={25} />
+                            </Button>
+                            : 
+                            <Button  variant="outline-warning"  onClick={this.onToggleAddFavoriteQueue}  >
+                                <TiStarOutline  size={25} />
+                            </Button>}
+                            
+                             </Card.Header>)} 
+                 {!queue.active && (<Card.Header className="QInactive"> {queue.title}
+                 {this.state.favorite === false  ? 
+                            <Button  variant="outline-warning"  onClick={this.onToggleRemoveFavoriteQueue}  >
+                                <TiStarFullOutline  size={25} />
+                            </Button>
+                            : 
+                            <Button  variant="outline-warning"  onClick={this.onToggleAddFavoriteQueue}  >
+                                <TiStarOutline  size={25} />
+                            </Button>}
+                            
+                             </Card.Header>)} 
                 
                 {/* <Card.Img variant="top" src={this.state.image[index]} /> */}
                 <Card.Body src={imgProva} >
@@ -106,9 +126,10 @@ class SimpleQueue extends React.Component {
                     <Card.Subtitle>                                       
                        
                     </Card.Subtitle>
-                    <Card.Text className="QNumber"> Persone in coda: {queue.numWait} </Card.Text>
+                    {queue.description}   
+                    
                     <hr/>
-                    {queue.description}                         
+                     <Card.Text className="QNumber"> Persone in coda: {queue.numWait} </Card.Text>                     
                 </Card.Body>
                 <Card.Footer>
                     <Row className="justify-content-center" md={{ span: 1, offset: 3 } }>
@@ -122,14 +143,7 @@ class SimpleQueue extends React.Component {
                                 < TiTrash size={40} />
                             </Button>
                         
-                            {this.state.favorite === false  ? 
-                            <Button  variant="outline-danger"  onClick={this.onToggleRemoveFavoriteQueue}  >
-                                <TiHeartFullOutline  size={40} />
-                            </Button>
-                            : 
-                            <Button  variant="outline-danger"  onClick={this.onToggleAddFavoriteQueue}  >
-                                <TiHeartOutline  size={40} />
-                            </Button>}
+                           
                 
                     </Row>
                 </Card.Footer>
