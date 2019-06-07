@@ -1,12 +1,14 @@
 import React from 'react';
 import { fire } from '../../config/FirebaseConfig';
 
-import { Card, Button, Col, Row, Spinner } from 'react-bootstrap';
+import { Card, Button,  Row } from 'react-bootstrap';
 
 import { TiPlus, TiTrash, TiHeartOutline, TiHeartFullOutline } from 'react-icons/ti';
 
 import '../../styles/style.css';
 import '../../styles/btnStyle.css';
+
+import imgProva from '../media/banca-interno.jpg';
 
 class SimpleQueue extends React.Component {
     constructor(props) {
@@ -95,38 +97,40 @@ class SimpleQueue extends React.Component {
 
         return (
             <Card className="QCard text-center">
-                <Card.Header > {queue.title} </Card.Header>
+                 {queue.active && (<Card.Header className="QActive"> {queue.title} </Card.Header>)} 
+                 {!queue.active && (<Card.Header className="QInactive"> {queue.title} </Card.Header>)} 
+                
                 {/* <Card.Img variant="top" src={this.state.image[index]} /> */}
-                <Card.Body className="text-center">
+                <Card.Body src={imgProva} >
+              
                     <Card.Subtitle>                                       
-                        {queue.active && (<Spinner animation="border" variant="success"/>)} 
-                        {!queue.active && (<Spinner animation="grow" variant="danger"/>)} 
+                       
                     </Card.Subtitle>
-                    <Card.Text> Persone in coda: {queue.numWait} </Card.Text>
-                    <br/>
+                    <Card.Text className="QNumber"> Persone in coda: {queue.numWait} </Card.Text>
+                    <hr/>
                     {queue.description}                         
                 </Card.Body>
                 <Card.Footer>
-                    <Row>
-                        <Col md={{ span: 3, offset: 3  }}>
-                            <Button block variant="outline-success" size="sl" onClick={this.onToggleAddUserQueue} disabled={(!queue.active || this.state.enqueued)}>
+                    <Row className="justify-content-center" md={{ span: 1, offset: 3 } }>
+                        
+                            <Button  variant="outline-success"  onClick={this.onToggleAddUserQueue} disabled={(!queue.active || this.state.enqueued)}>
                                 < TiPlus size={40} />
-                            </Button></Col>
+                            </Button>
                             <br/>
-                        <Col md={{ span: 3 }}>
-                            <Button block variant="outline-danger" size="sl" onClick={this.onToggleRemoveUserQueue} disabled={!this.state.enqueued} >
+                        
+                            <Button  variant="outline-danger"  onClick={this.onToggleRemoveUserQueue} disabled={!this.state.enqueued} >
                                 < TiTrash size={40} />
-                            </Button></Col>
-                        <Col md={{ span: 2 }}>
+                            </Button>
+                        
                             {this.state.favorite === false  ? 
-                            <Button block variant="outline-danger" size="sl" onClick={this.onToggleRemoveFavoriteQueue}  >
+                            <Button  variant="outline-danger"  onClick={this.onToggleRemoveFavoriteQueue}  >
                                 <TiHeartFullOutline  size={40} />
                             </Button>
                             : 
-                            <Button block variant="outline-danger" size="sl" onClick={this.onToggleAddFavoriteQueue}  >
+                            <Button  variant="outline-danger"  onClick={this.onToggleAddFavoriteQueue}  >
                                 <TiHeartOutline  size={40} />
                             </Button>}
-                        </Col>
+                
                     </Row>
                 </Card.Footer>
             </Card>

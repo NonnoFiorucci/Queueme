@@ -158,8 +158,32 @@ input[type]:focus{
     margin-right: auto;
 }
 
+.card-header.QActive{
+    background-color: #343a40;
+    color: whitesmoke;
+    font-size: 18px;
+    font-weight: bold;
+    
+}
+.card-header.QInactive{
+    background-color: rgb(211, 100, 100);
+    color: whitesmoke;
+    font-size: 18px;
+}
 
+.card-text.QNumber{
+    margin-top: 15px;
+    font-size:20px
+}
 
+.hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
 
 .navbar-collapse{
     text-align:center;
