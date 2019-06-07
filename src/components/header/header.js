@@ -39,7 +39,7 @@ class Header extends Component {
                                  {((this.props.role === ROLES.USER) || (this.props.role === ROLES.ADMIN)) 
                                 ? <Nav.Link style={{ fontWeight: 'bold' }} href={'/faq/user'}>Faq</Nav.Link> : null }
 
-                                <NavDropdown className="drop" style={{ color: 'white', fontWeight: 'bold' }} title="Profile" id="basic-nav-dropdown">
+                                <NavDropdown drop={"left"} className="drop" style={{ color: 'white', fontWeight: 'bold' }} title="Profile" id="basic-nav-dropdown">
                                 <NavDropdown.Item style={{ fontWeight: 'bold', color: '#9a9da0' }} href={ROUTES.PROFILE}>My Profile</NavDropdown.Item>
                                 <NavDropdown.Item style={{ fontWeight: 'bold', color: '#9a9da0' }} href={ROUTES.MYQUEUES}>My Queues</NavDropdown.Item>
                                 <NavDropdown.Item style={{ fontWeight: 'bold', color: '#9a9da0' }} href={ROUTES.DELPRO}>Delete Accaunt</NavDropdown.Item>
