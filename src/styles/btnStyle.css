@@ -334,3 +334,33 @@ a.btnStyle.four:before {
     transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
 }
 
+.btn.btn-outline-danger{
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    margin-left: 5px;
+    margin-right: 5px;
+    
+    
+}
+
+.btn.btn-outline-success{
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    margin-left: 5px;
+    margin-right: 5px;
+    
+}
+.btn.btn-outline-warning{
+    border-radius: 50%;
+    border:transparent;
+    width: 50px;
+    height:50px;
+    float: right;
+    margin-right: 5px;
+    margin-left: -33px;
+    align-content: right;
+
+    
+}

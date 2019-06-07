@@ -3,7 +3,7 @@ import { Navbar, Nav } from 'react-bootstrap';
 import { FaUsers, FaUserCircle, FaStoreAlt, FaQuestionCircle, FaUsersCog } from 'react-icons/fa';
 import { IoMdContacts } from "react-icons/io";
 
-import { FaHeart } from 'react-icons/fa';
+import { TiStarFullOutline } from 'react-icons/ti';
 
 import bgimage from '../media/foot3.jpg';
 
@@ -32,7 +32,7 @@ class Footer extends Component {
 
                         <Nav.Item style={{ marginLeft: '8%', marginTop: '-70px', marginBottom: '30px', fontSize: '13px', fontWeight: 'bold', color: '#c3c3c3' }}>
                             <a href={ROUTES.FAVORITE} className="btnStyle foot">
-                                <FaHeart style={{ marginBottom: '-50px' }} size={25} /><br />
+                                <TiStarFullOutline style={{ marginBottom: '-50px' }} size={25} /><br />
 
                             </a>
                             PREFERITI

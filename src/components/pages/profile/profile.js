@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 
 
 import * as ROUTES from '../../../constants/routes';
+import * as ROLES from '../../../constants/roles';
 
 import '../../../styles/style.css';
 import '../../../styles/btnStyle.css';
@@ -43,16 +44,25 @@ class Profile extends Component {
 
   render() {
     return (
-      <div class="formAccesso">
+      <div className="formAccesso">
         <h3>Bentornato </h3>
-        <a href={ROUTES.QUEUES} class="btnStyle one">
+        {((this.props.role === ROLES.USER)
+       ? <a href={ROUTES.QUEUES} className="btnStyle one">
           Code disponibili
-          </a>
-        <a href={ROUTES.DELPRO} class="btnStyle one">
+          </a> : null )}
+          {((this.props.role === ROLES.COMPANY)
+       ? <a href={ROUTES.COMPANY} className="btnStyle one">
+         Gestisci azienda
+          </a> : null )}
+          {((this.props.role === ROLES.OPERATOR)
+       ? <a href={ROUTES.OPERATOR} className="btnStyle one">
+          Gestisci coda
+          </a> : null )}
+        <a href={ROUTES.DELPRO} className="btnStyle one">
           Elimina
           </a>
 
-        <a href={ROUTES.LOGOUT} class="btnStyle one">
+        <a href={ROUTES.LOGOUT} className="btnStyle one">
           Logout
           </a>
         {/* {this.getUserData(this.props.userID)} */}

@@ -102,6 +102,7 @@ class QueueView extends React.Component {
                 {/*se ci sono code*/}
                 {queues && 
                     this.state.queues.map( queue => (
+                        
                         <SimpleCard 
                             queue={queue}
                             userId={this.props.userID}
@@ -112,6 +113,8 @@ class QueueView extends React.Component {
                             
                             
                             />
+                            
+                            
                     ) )       
             
                         

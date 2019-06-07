@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { fire } from './config/FirebaseConfig';
 import { Spinner } from 'react-bootstrap';
 
@@ -23,10 +23,12 @@ import OperatorView from './components/pages/operator';
 import QueueView from './components/queue/queueView';
 
 import * as ROUTES from './constants/routes';
+import * as ROLES from './constants/roles';
 
 
 import './styles/style.css';
 import './styles/btnStyle.css';
+
 
 
 
@@ -150,22 +152,23 @@ class App extends React.Component {
                 <Route exact path={ROUTES.LANDING} component={Landing} />
                 <Route path={ROUTES.LOGIN} component={() => <Login authenticated={this.state.authenticated} />} />
                 <Route path={ROUTES.LOGOUT} component={() => <Logout userID={this.state.userID} />} />
-                <Route path={ROUTES.PROFILE} component={() => <Profile userID={this.state.userID} />} />
                 <Route path={ROUTES.DELPRO} render={() => <DeleteProfile userID={this.state.userID} />} />
-
-                <Route path={ROUTES.COMPANY} component={() => <Company userID={this.state.userID} />} />
+                {this.state.authenticated ? ( <>  
+                 
+                <Route path={ROUTES.PROFILE} component={() => <Profile userID={this.state.userID} role={this.state.role} />} />
+                <Route path={ROUTES.DELPRO} render={() => <DeleteProfile userID={this.state.userID} />} />
+                {this.state.role === ROLES.COMPANY ? (<Route path={ROUTES.COMPANY} component={() => <Company userID={this.state.userID} />} /> ) : null}
                 <Route path={ROUTES.FAQ} component={() => <Faq userID={this.state.userID} />} />
-                <Route path={ROUTES.QUEUES} component={() => <QueueView userID={this.state.userID} />} />
-                <Route path={ROUTES.OPERATOR} component={() => <OperatorView userID={this.state.userID} name={this.state.name} />} />
+                {this.state.role === ROLES.USER ? (<Route path={ROUTES.QUEUES} component={() => <QueueView userID={this.state.userID} />} />) : null}
+               {this.state.role === ROLES.OPERATOR ? ( <Route path={ROUTES.OPERATOR} component={() => <OperatorView userID={this.state.userID} name={this.state.name} />} />) : null}
                 <Route path={ROUTES.INFO} component={Info} />
-                <Route path={ROUTES.FAVORITE} component={() =>
-                  <Favorite
-                    userID={this.state.userID}
-                  />
-                } />
-                <Route path={ROUTES.MYQUEUES} component={() =>
-                  <MyQueue userID={this.state.userID} />
-                } />
+                {this.state.role === ROLES.USER? ( <Route path={ROUTES.FAVORITE} component={() =>< Favorite userID={this.state.userID} />} /> ) : null}
+                {this.state.role === ROLES.USER ? ( <Route path={ROUTES.MYQUEUES} component={() => <MyQueue userID={this.state.userID} /> } /> ) : null}
+                </>) :
+                  null
+                  //<Redirect to="/login" /> CI ANDREBBE MA VA IN MONA
+                } 
+                
 
               </Switch>
             </div>
