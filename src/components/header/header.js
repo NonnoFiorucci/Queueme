@@ -21,14 +21,7 @@ class Header extends Component {
                             className="d-inline-block align-top"
                             alt="React Bootstrap logo"
                         /></Navbar.Brand>
-                    <Navbar.Toggle
-<<<<<<< HEAD
-                        style={{ backgroundColor: "info" }}
-=======
-                      
-                        aria-controls="basic-navbar-nav"
->>>>>>> b60aecc24490fd8595222c2188cbd0058c29d6be
-                    />
+                    <Navbar.Toggle/>
                     <Navbar.Collapse  >
                         <Nav className="justify-content-end" style={{ width: "100%" }}>
                           
