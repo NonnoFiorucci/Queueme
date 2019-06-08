@@ -16,20 +16,19 @@ class Profile extends Component {
   constructor(props) {
     super();
     this.state = {
-      name: null,
-      email: null
     }
   }
 
   componentDidMount() {
-    this.getUserData(this.props.userID)
+    if(this.props.userID !== null)
+        this.getUserData(this.props.userID)
   }
   getUserData(uid) {
-    fire.database().ref('users/' + uid).on(
+    fire.database().ref('users/' + uid).once(
       "value", snap => {
         this.setState({
           name: snap.val().name,
-          email: snap.val().email,
+          email: snap.val().email
         })
       }
     )

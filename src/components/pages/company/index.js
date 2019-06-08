@@ -259,8 +259,7 @@ class Company extends React.Component {
                   <Button type="submit" bsPrefix="btnStyle one">
                     Crea Operator
                   </Button>
-                </Form>
-                
+                </Form>                
               </div>
         
             )
