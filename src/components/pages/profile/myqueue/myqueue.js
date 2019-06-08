@@ -1,7 +1,7 @@
 import React from 'react';
 
 import SimpleCard from '../../../queue/queueCard';
-import { Spinner, Button, Modal } from 'react-bootstrap';
+// import { Spinner, Button, Modal } from 'react-bootstrap';
 import { fire } from '../../../../config/FirebaseConfig';
 
 import '../../../../styles/style.css'
@@ -10,14 +10,13 @@ class MyQueueView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false,
             myqueues: [],
-            notify: null,
+            // notify: null,
             limit: 5
         }
         this.getMyQueues = this.getMyQueues.bind(this);
-        this.pushModal = this.pushModal.bind(this);
-        this.getQueueDetails = this.getQueueDetails.bind(this);
+        // this.pushModal = this.pushModal.bind(this);
+        // this.getQueueDetails = this.getQueueDetails.bind(this);
 
     }
     componentDidMount() {
@@ -27,49 +26,49 @@ class MyQueueView extends React.Component {
     }
 
 
-    handleClose() {
-        this.setState({
-            notify: null
-        })
-    }
+    // handleClose() {
+    //     this.setState({
+    //         notify: null
+    //     })
+    // }
 
 
-    pushModal = (quId, pos) => {
-        if (this.state.notify === null) {
-            this.getQueueDetails(quId)
-            this.setState({
-                notify: {
-                    queue: quId,
-                    position: pos
-                }
-            })
-        }
-    }
+    // pushModal = (quId, pos) => {
+    //     if (this.state.notify === null) {
+    //         this.getQueueDetails(quId)
+    //         this.setState({
+    //             notify: {
+    //                 queue: quId,
+    //                 position: pos
+    //             }
+    //         })
+    //     }
+    // }
 
-    scanQueues() {
-        this.statemyqueues.forEach(queue => {
-            this.checkPosition(queue.queueId, this.props.userID)
-        })
-    }
-    checkPosition = (quId, usId) => {
-        var pos = 0
-        fire.database().ref('queues/' + quId + 'userList/').limitToFirst(3).on('value', snap => {
-            snap.forEach((user) => {
-                (user.val().userId === usId) ? this.pushModal(quId, pos) : (pos = pos + 1)
-                console.log(user.val().userId === usId)
-            })
-        })
-    }
-    getQueueDetails = quId => {
-        fire.database().ref('queue/' + quId).on('value', snap => {
-            this.setState({
-                notify: {
-                    title: snap.val().title,
-                    description: snap.val().description
-                }
-            })
-        })
-    }
+    // scanQueues() {
+    //     this.statemyqueues.forEach(queue => {
+    //         this.checkPosition(queue.queueId, this.props.userID)
+    //     })
+    // }
+    // checkPosition = (quId, usId) => {
+    //     var pos = 0
+    //     fire.database().ref('queues/' + quId + 'userList/').limitToFirst(3).on('value', snap => {
+    //         snap.forEach((user) => {
+    //             (user.val().userId === usId) ? this.pushModal(quId, pos) : (pos = pos + 1)
+    //             console.log(user.val().userId === usId)
+    //         })
+    //     })
+    // }
+    // getQueueDetails = quId => {
+    //     fire.database().ref('queue/' + quId).on('value', snap => {
+    //         this.setState({
+    //             notify: {
+    //                 title: snap.val().title,
+    //                 description: snap.val().description
+    //             }
+    //         })
+    //     })
+    // }
 
 
 
@@ -78,24 +77,22 @@ class MyQueueView extends React.Component {
         ref.on('value', snapshot => {
             snapshot.forEach((queue) => {
                 this.onShowQueue(queue.val().queueId)
-                this.checkPosition(queue.val().queueId, this.props.userID)
+                // this.checkPosition(queue.val().queueId, this.props.userID)
             })
         });
     }
     onShowQueue = quId => {
         fire.database().ref('queues/' + quId).on(
             'value', snap => {
-                const queueProps = snap.val();
-                const allQueuesGetted = Object.keys(queueProps).filter(key => key === quId).map(key => ({
-                    active: queueProps[key].active,
-                    description: queueProps[key].description,
-                    numWait: queueProps[key].numWait,
-                    title: queueProps[key].title,
-                    queueId: key
-                }));
+                const tryObj = { 
+                    active: snap.val().active,
+                    title: snap.val().title,
+                    description: snap.val().description,
+                    numWait: snap.val().numWait,
+                    queueId: snap.key 
+                }
                 this.setState({
-                    queues: allQueuesGetted,
-                    loading: false
+                    myqueues: this.state.myqueues.concat(tryObj)
                 })
             }
         )
@@ -140,39 +137,30 @@ class MyQueueView extends React.Component {
 
 
 
-    showNotify() {
-        return (
-            <Modal show='true' onHide={this.handleClose}>
-                <Modal.Header>
-                    {this.state.notify.position !== 0 && (<p>Ehi! Tocca quasi a te! Ci sono solo {this.state.notify.position} prima di te </p>)}
-                    {this.state.notify.position === 0 && (<p>Ehi! Tocca a te!</p>)}
-                </Modal.Header>
-                <Modal.Body>
-                    La coda {this.state.notify.title} al {this.state.notify.description}
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="dark" onClick={this.handleClose}> Ho capito! </Button>
-                </Modal.Footer>
-            </Modal>
-        )
-    }
+    // showNotify() {
+    //     return (
+    //         <Modal show='true' onHide={this.handleClose}>
+    //             <Modal.Header>
+    //                 {this.state.notify.position !== 0 && (<p>Ehi! Tocca quasi a te! Ci sono solo {this.state.notify.position} prima di te </p>)}
+    //                 {this.state.notify.position === 0 && (<p>Ehi! Tocca a te!</p>)}
+    //             </Modal.Header>
+    //             <Modal.Body>
+    //                 La coda {this.state.notify.title} al {this.state.notify.description}
+    //             </Modal.Body>
+    //             <Modal.Footer>
+    //                 <Button variant="dark" onClick={this.handleClose}> Ho capito! </Button>
+    //             </Modal.Footer>
+    //         </Modal>
+    //     )
+    // }
 
     render() {
-        const { myqueues, loading, notify } = this.state;
-        if (loading) {
-            return (<Spinner color="secondary" />)
-        } else {
-            if (notify !== null) {
-                this.showNotify()
-            }
+        const { myqueues, notify } = this.state;
             return (
                 <div className="favDiv">
                     <h2 >Le mie code</h2>
-                    {/*durante il caricamento da realtimedb*/}
-                    {loading && (<Spinner color="secondary" />)}
-                    {/*se ci sono code*/}
-                    {myqueues &&
-                        this.state.myqueues.map(queue => (
+                    {this.state.myqueues.length === 0 ?
+                        <h3 > Non sei inserito in nessuna coda </h3> : this.state.myqueues.map(queue => (
                             <SimpleCard
                                 queue={queue}
                                 userId={this.props.userID}
@@ -180,17 +168,11 @@ class MyQueueView extends React.Component {
                                 onAddUser={this.onAddUser}
                                 onAddFavorite={this.onAddFavorite}
                                 onRemoveFavorite={this.onRemoveFavorite} />
-                        ))
-
-
-                    }
-
-                    {this.state.myqueues.length === 0 ?
-                        <h3 > Non sei inserito in nessuna coda </h3> : null}
+                        ))}
 
                 </div>
             )
-        }
+    
     }
 }
 export default MyQueueView;

@@ -53,7 +53,6 @@ class App extends React.Component {
     }
     this.authState = this.authState.bind(this)
     this.syncRoleFromDb = this.syncRoleFromDb.bind(this)
-    this.getMyQueue = this.getMyQueue.bind(this)
   }
 
   authState() {
@@ -93,37 +92,7 @@ class App extends React.Component {
     this.setState({
       loading: false
     })
-    //if (this.state.userID !== null) this.getMyQueue()
   }
-
-
-  getMyQueue() {
-    let ref = fire.database().ref().child('users/' + this.state.userID + '/queuesStatus');
-    ref.on('value', snapshot => {
-      snapshot.forEach((queueid) => {
-        this.setState({
-          listQueueNotify: this.state.listQueueNotify.concat(queueid.queueId)
-        })
-
-      })
-      console.log(this.state.listQueueNotify)
-      // Object.keys(fav).map(key => {
-      //     this.notificationListeners(fav[key].queueId)    
-      //   });
-      // });
-    })
-  }
-
-  // notificationListeners(quId) {
-  //   var usersRef = fire.database.ref('queues/' + quId + '/userList');
-
-  //   usersRef.on('child_removed', (snapshot) => {
-  //     console.log('user was removed !!');
-  //     //  SE NUM PERSONE < 3 
-  //     this.setState({ modalShow: true })
-  //   });
-
-  // }
 
   render() {
     if (this.state.loading) {
@@ -157,7 +126,7 @@ class App extends React.Component {
                 {this.state.role === ROLES.USER ? (<Route path={ROUTES.QUEUES} component={() => <QueueView userID={this.state.userID} />} />) : null}
                 {this.state.role === ROLES.OPERATOR ? (<Route path={ROUTES.OPERATOR} component={() => <OperatorView userID={this.state.userID} name={this.state.name} />} />) : null}
                 <Route path={ROUTES.INFO} component={Info} />
-                {this.state.role === ROLES.USER ? (<Route path={ROUTES.FAVORITE} component={() => < Favorite userID={this.state.userID} />} />) : null}
+                {this.state.role === ROLES.USER ? (<Route path={ROUTES.FAVORITE} component={() => <Favorite userID={this.state.userID} />} />) : null}
                 {this.state.role === ROLES.USER ? (<Route path={ROUTES.MYQUEUES} component={() => <MyQueue userID={this.state.userID} />} />) : null}
               </Switch>
             </BrowserRouter>
