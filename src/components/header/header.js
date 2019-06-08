@@ -23,7 +23,6 @@ class Header extends Component {
                         /></Navbar.Brand>
                     <Navbar.Toggle
                         style={{ backgroundColor: "info" }}
-                        aria-controls="basic-navbar-nav"
                     />
                     <Navbar.Collapse  >
                         <Nav className="justify-content-end" style={{ width: "100%" }}>

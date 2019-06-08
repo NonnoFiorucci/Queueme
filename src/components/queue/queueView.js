@@ -21,14 +21,17 @@ class QueueView extends React.Component {
     componentDidMount() {
         this.onShowQueue();
     }
-    
+        
     onShowQueue() {
         this.setState({ loading: true });
         fire.database().ref().child('queues/').on(
             'value', snap => {
                 const queueProps = snap.val();
                 const allQueuesGetted = Object.keys(queueProps).map(key => ({
-                    ...queueProps[key],
+                    active: queueProps[key].active,
+                    description: queueProps[key].description,
+                    numWait: queueProps[key].numWait,
+                    title: queueProps[key].title,
                     queueId: key
                 }));
                 this.setState({

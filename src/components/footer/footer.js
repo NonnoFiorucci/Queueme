@@ -75,7 +75,7 @@ class Footer extends Component {
 
                             </a>
                             MANAGE COMPANY
-    </Nav.Item> : null}
+                        </Nav.Item> : null}
 
 
                     {((this.props.role === ROLES.COMPANY) || (this.props.role === ROLES.ADMIN)) ?
@@ -85,7 +85,7 @@ class Footer extends Component {
 
                             </a>
                             GUIDE COMPANY
-    </Nav.Item> : null}
+                    </Nav.Item> : null}
 
                     {((this.props.role === ROLES.OPERATOR) || (this.props.role === ROLES.ADMIN)) ?
                         <Nav.Item style={{ marginTop: '-70px', marginBottom: '30px', fontSize: '13px', fontWeight: 'bold', color: '#c3c3c3', textAlign: 'center' }}>
@@ -94,7 +94,7 @@ class Footer extends Component {
 
                             </a>
                             MANAGE QUEUES
-        </Nav.Item> : null}
+                        </Nav.Item> : null}
 
 
                     {((this.props.role === ROLES.OPERATOR) || (this.props.role === ROLES.ADMIN)) ?
@@ -104,7 +104,7 @@ class Footer extends Component {
 
                             </a>
                             GUIDE OPERATOR
-        </Nav.Item> : null}
+                        </Nav.Item> : null}
 
                 </Navbar>
 

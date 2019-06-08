@@ -17,11 +17,11 @@ class MyQueueView extends React.Component {
         this.pushModal = this.pushModal.bind(this);
         this.getQueueDetails = this.getQueueDetails.bind(this);
 
-
     }
     componentDidMount() {
         if (this.props.userID !== null)
             this.getMyQueues();
+
     }
 
 
@@ -43,6 +43,12 @@ class MyQueueView extends React.Component {
             })
         }
     }
+
+    scanQueues() {
+        this.statemyqueues.forEach(queue => {
+            this.checkPosition(queue.queueId, this.props.userID)
+        })
+    }
     checkPosition = (quId, usId) => {
         var pos = 0
         fire.database().ref('queues/' + quId + 'userList/').limitToFirst(3).on('value', snap => {
@@ -63,6 +69,8 @@ class MyQueueView extends React.Component {
         })
     }
 
+
+
     getMyQueues() {
         let ref = fire.database().ref('users/' + this.props.userID + '/queuesStatus');
         ref.on('value', snapshot => {
@@ -72,28 +80,24 @@ class MyQueueView extends React.Component {
             })
         });
     }
-
-
-
     onShowQueue = quId => {
         fire.database().ref('queues/' + quId).on(
             'value', snap => {
-                const tryObj = {
-                    active: snap.val().active,
-                    description: snap.val().description,
-                    numWait: snap.val().numWait,
-                    title: snap.val().title,
-                    queueId: snap.key
-                }
+                const queueProps = snap.val();
+                const allQueuesGetted = Object.keys(queueProps).filter(key => key === quId).map(key => ({
+                    active: queueProps[key].active,
+                    description: queueProps[key].description,
+                    numWait: queueProps[key].numWait,
+                    title: queueProps[key].title,
+                    queueId: key
+                }));
                 this.setState({
-                    myqueues: this.state.myqueues.concat(tryObj),
+                    queues: allQueuesGetted,
                     loading: false
                 })
-
             }
         )
     }
-
     onRemoveUser = quId => {
         const remUserFromQueue = fire.database().ref('queues/' + quId + '/userList/')
         remUserFromQueue.orderByChild('userId').equalTo(this.props.userID).once('value', snap => {
@@ -106,10 +110,7 @@ class MyQueueView extends React.Component {
             s.forEach(n => {
                 remQueueFromUser.child(n.key).remove();
             })
-
         })
-
-
     }
 
     onAddUser = quId => {
@@ -134,6 +135,9 @@ class MyQueueView extends React.Component {
             })
         })
     }
+
+
+
     showNotify() {
         return (
             <Modal show='true' onHide={this.handleClose}>
@@ -152,13 +156,12 @@ class MyQueueView extends React.Component {
     }
 
     render() {
-        const { myqueues, loading, notify} = this.state;
+        const { myqueues, loading, notify } = this.state;
         if (loading) {
             return (<Spinner color="secondary" />)
         } else {
-            if (notify!==null){
-                
-               this.showNotify()
+            if (notify !== null) {
+                this.showNotify()
             }
             return (
                 <div>

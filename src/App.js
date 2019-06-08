@@ -54,11 +54,9 @@ class App extends React.Component {
     this.authState = this.authState.bind(this)
     this.syncRoleFromDb = this.syncRoleFromDb.bind(this)
     this.getMyQueue = this.getMyQueue.bind(this)
-    //this.notificationListeners = this.notificationListeners.bind(this)
   }
 
   authState() {
-
     fire.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setState({
@@ -66,15 +64,13 @@ class App extends React.Component {
           email: user.email,
           authenticated: true,
         })
-        console.log(user.role)
+        this.syncRoleFromDb()
       }
-      this.syncRoleFromDb()
-
+      
     })
   }
 
   syncRoleFromDb() {
-
     fire.database().ref('users/' + this.state.userID).on("value", snap => {
       if (snap.val()) {
         this.setState({
@@ -83,7 +79,12 @@ class App extends React.Component {
         })
       }
     })
+  }
 
+  handleOfflineSession = ( uid, role, auth) => {
+    localStorage.setItem('userId', uid)
+    localStorage.setItem('role', role)
+    localStorage.setItem('auth', auth)
   }
 
 
@@ -92,7 +93,7 @@ class App extends React.Component {
     this.setState({
       loading: false
     })
-    if (this.state.userID !== null) this.getMyQueue()
+    //if (this.state.userID !== null) this.getMyQueue()
   }
 
 
@@ -103,7 +104,7 @@ class App extends React.Component {
         this.setState({
           listQueueNotify: this.state.listQueueNotify.concat(queueid.queueId)
         })
-        
+
       })
       console.log(this.state.listQueueNotify)
       // Object.keys(fav).map(key => {
@@ -125,17 +126,13 @@ class App extends React.Component {
   // }
 
   render() {
-    let modalClose = () => this.setState({ modalShow: false });
     if (this.state.loading) {
       return (<Spinner animation="grow" />)
-    } else {
+    }
+    else {
       return (
         <div>
-          <NotificationModal
-            show={this.state.modalShow}
-            onHide={modalClose}
-          />
-          {this.state.authenticated &&
+          {this.state.authenticated && (
             <>
               <Header
                 authenticated={this.state.authenticated}
@@ -143,38 +140,28 @@ class App extends React.Component {
               />
               <Footer authenticated={this.state.authenticated}
                 role={this.state.role} />
+              }
             </>
-          }
-
-          <BrowserRouter>
-            <div className="pageStyle">
+          )}
+          <div className="pageStyle">
+            <BrowserRouter>
               <Switch>
                 <Route exact path={ROUTES.LANDING} component={Landing} />
                 <Route path={ROUTES.LOGIN} component={() => <Login authenticated={this.state.authenticated} />} />
                 <Route path={ROUTES.LOGOUT} component={() => <Logout userID={this.state.userID} />} />
                 <Route path={ROUTES.DELPRO} render={() => <DeleteProfile userID={this.state.userID} />} />
-                {this.state.authenticated ? ( <>  
-                 
                 <Route path={ROUTES.PROFILE} component={() => <Profile userID={this.state.userID} role={this.state.role} />} />
                 <Route path={ROUTES.DELPRO} render={() => <DeleteProfile userID={this.state.userID} />} />
-                {this.state.role === ROLES.COMPANY ? (<Route path={ROUTES.COMPANY} component={() => <Company userID={this.state.userID} />} /> ) : null}
+                {this.state.role === ROLES.COMPANY ? (<Route path={ROUTES.COMPANY} component={() => <Company userID={this.state.userID} />} />) : null}
                 <Route path={ROUTES.FAQ} component={() => <Faq userID={this.state.userID} />} />
                 {this.state.role === ROLES.USER ? (<Route path={ROUTES.QUEUES} component={() => <QueueView userID={this.state.userID} />} />) : null}
-               {this.state.role === ROLES.OPERATOR ? ( <Route path={ROUTES.OPERATOR} component={() => <OperatorView userID={this.state.userID} name={this.state.name} />} />) : null}
+                {this.state.role === ROLES.OPERATOR ? (<Route path={ROUTES.OPERATOR} component={() => <OperatorView userID={this.state.userID} name={this.state.name} />} />) : null}
                 <Route path={ROUTES.INFO} component={Info} />
-                {this.state.role === ROLES.USER? ( <Route path={ROUTES.FAVORITE} component={() =>< Favorite userID={this.state.userID} />} /> ) : null}
-                {this.state.role === ROLES.USER ? ( <Route path={ROUTES.MYQUEUES} component={() => <MyQueue userID={this.state.userID} /> } /> ) : null}
-                </>) :
-                  null
-                  //<Redirect to="/login" /> CI ANDREBBE MA VA IN MONA
-                } 
-                
-
+                {this.state.role === ROLES.USER ? (<Route path={ROUTES.FAVORITE} component={() => < Favorite userID={this.state.userID} />} />) : null}
+                {this.state.role === ROLES.USER ? (<Route path={ROUTES.MYQUEUES} component={() => <MyQueue userID={this.state.userID} />} />) : null}
               </Switch>
-            </div>
-          </BrowserRouter>
-
-
+            </BrowserRouter>
+          </div>
         </div>
       )
     }
