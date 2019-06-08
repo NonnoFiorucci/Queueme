@@ -1,7 +1,7 @@
 import React from 'react';
 
 import SimpleCard from '../../../queue/queueCard';
-import { Spinner, Button, Modal } from 'react-bootstrap';
+//import { Spinner, Button, Modal } from 'react-bootstrap';
 import { fire } from '../../../../config/FirebaseConfig';
 
 import '../../../../styles/style.css'
@@ -158,7 +158,7 @@ class MyQueueView extends React.Component {
     // }
 
     render() {
-        const { myqueues, notify } = this.state;
+        const { myqueues } = this.state;
         return (
             <>
                 {this.showNotify()}

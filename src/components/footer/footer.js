@@ -5,7 +5,6 @@ import { IoMdContacts } from "react-icons/io";
 
 import { TiStarFullOutline } from 'react-icons/ti';
 
-import bgimage from '../media/foot3.jpg';
 
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';

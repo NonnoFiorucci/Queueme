@@ -8,21 +8,22 @@ import { TiPlus, TiTrash, TiStarOutline, TiStarFullOutline } from 'react-icons/t
 import '../../styles/style.css';
 import '../../styles/btnStyle.css';
 
-import imgProva from '../media/banca-interno.jpg';
-
 class SimpleQueue extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             enqueued: "",
+            pos: 0,
             favorite: "",
         }
         this.onRenderVerifyEnqueue = this.onRenderVerifyEnqueue.bind(this);
         this.onRenderFavoriteEnqueue = this.onRenderFavoriteEnqueue.bind(this);
+        this.checkPosition = this.checkPosition.bind(this)
     }
     componentDidMount() {
         this.onRenderVerifyEnqueue();
         this.onRenderFavoriteEnqueue();
+        this.checkPosition(this.props.userId);
     }
 
     onToggleAddUserQueue = () => {
@@ -69,8 +70,8 @@ class SimpleQueue extends React.Component {
                     })
                 }
             })
-
     }
+
     onRenderFavoriteEnqueue = () => {
         fire.database().ref('users/' + this.props.userId + '/favoriteQueues/')
             .orderByChild('queueId').equalTo(this.props.queue.queueId).on('value', s => {
@@ -87,13 +88,13 @@ class SimpleQueue extends React.Component {
             })
     }
     
-    checkPosition = (quId, usId) => {
-        fire.database().ref('queues/' + quId + '/userList').orderByChild('userId').limitToFirst(3).on('value', snap => {
+    checkPosition = usId => {
+        fire.database().ref('queues/' + this.props.queue.queueId + '/userList').orderByChild('userId').limitToFirst(3).on('value', snap => {
             snap.forEach(us => {
                 if (us.val().userId === usId)
-                    this.alertQueuePosition(quId, this.state.posApp)
+                    alert("Attenzione! Ci sono "+this.state.pos+ " persone prima di te nella fila "+this.props.queue.title + " con descrizione " +this.props.queue.description)
                 else
-                    this.setState({ posApp: this.state.posApp + 1 })
+                    this.setState({ pos: this.state.pos + 1 })
 
             })
         })

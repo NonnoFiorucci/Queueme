@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { fire } from './config/FirebaseConfig';
 import { Spinner } from 'react-bootstrap';
 
@@ -14,7 +14,7 @@ import Profile from './components/pages/profile/profile';
 
 import Favorite from './components/pages/profile/favorite/favorite';
 import MyQueue from './components/pages/profile/myqueue/myqueue';
-import NotificationModal from './components/notificationModal/notificationModal';
+//import NotificationModal from './components/notificationModal/notificationModal';
 import Faq from './components/pages/faq/faq';
 import DeleteProfile from './components/pages/profile/delete/delete';
 import Company from './components/pages/company';
