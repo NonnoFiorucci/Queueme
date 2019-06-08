@@ -4,6 +4,9 @@ import SimpleCard from '../../../queue/queueCard';
 import { Spinner } from 'react-bootstrap';
 import { fire } from '../../../../config/FirebaseConfig';
 
+
+import '../../../../styles/style.css'
+
 class MyQueueView extends React.Component {
     constructor(props){
         super(props);
@@ -138,8 +141,8 @@ class MyQueueView extends React.Component {
   render() {
       const { favorite, loading } = this.state;
       return(
-          <div>
-              <h2 style={{textAlign:'center',marginTop:20}}>Preferiti</h2>
+          <div className="favDiv">
+              <h2  >Preferiti</h2>
               {/*durante il caricamento da realtimedb*/}
               {loading && (<Spinner color="secondary" />)}
               {/*se ci sono code*/}
@@ -160,7 +163,7 @@ class MyQueueView extends React.Component {
               }     
 
               {this.state.favorite.length === 0 ?
-                    <h3 style={{textAlign:"center"}}> Non hai nessuna coda tra i Preferiti </h3> :null}     
+                    <h3 > Non hai nessuna coda tra i Preferiti </h3> :null}     
           
           </div>
         )

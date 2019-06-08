@@ -8,7 +8,7 @@ import '../../../styles/style.css'
 function Company() {
     
     return (
-      <div style={{marginLeft:30, marginRight:30, }}>
+      <div >
           <h3>Qual'è il compito dell'azienda?</h3>
 
           <p className='just'>L'azienda ha il compito di creare delle code per la propria attività ed assegnargli un operatore.
