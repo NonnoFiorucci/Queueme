@@ -85,8 +85,18 @@ class SimpleQueue extends React.Component {
                     })
                 }
             })
+    }
+    
+    checkPosition = (quId, usId) => {
+        fire.database().ref('queues/' + quId + '/userList').orderByChild('userId').limitToFirst(3).on('value', snap => {
+            snap.forEach(us => {
+                if (us.val().userId === usId)
+                    this.alertQueuePosition(quId, this.state.posApp)
+                else
+                    this.setState({ posApp: this.state.posApp + 1 })
 
-
+            })
+        })
     }
 
 
