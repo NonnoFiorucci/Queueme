@@ -22,7 +22,12 @@ class Header extends Component {
                             alt="React Bootstrap logo"
                         /></Navbar.Brand>
                     <Navbar.Toggle
+<<<<<<< HEAD
                         style={{ backgroundColor: "info" }}
+=======
+                      
+                        aria-controls="basic-navbar-nav"
+>>>>>>> b60aecc24490fd8595222c2188cbd0058c29d6be
                     />
                     <Navbar.Collapse  >
                         <Nav className="justify-content-end" style={{ width: "100%" }}>
@@ -30,20 +35,20 @@ class Header extends Component {
 
                            
                             {((this.props.role === ROLES.OPERATOR) || (this.props.role === ROLES.ADMIN))
-                                ? <Nav.Link style={{ fontWeight: 'bold' }} href={ROUTES.OPERATOR}>Operator Panel</Nav.Link> : null } 
+                                ? <Nav.Link className="headLink" href={ROUTES.OPERATOR}>Operator Panel</Nav.Link> : null } 
                             {((this.props.role === ROLES.COMPANY) || (this.props.role === ROLES.ADMIN)) 
-                                ? <Nav.Link style={{ fontWeight: 'bold' }} href={ROUTES.COMPANY}>Manage Company</Nav.Link> : null }
+                                ? <Nav.Link className="headLink" href={ROUTES.COMPANY}>Manage Company</Nav.Link> : null }
 
-                                 <Nav.Link style={{ fontWeight: 'bold' }} href={ROUTES.INFO}>Info</Nav.Link>
+                                 <Nav.Link className="headLink"  href={ROUTES.INFO}>Info</Nav.Link>
                                  {((this.props.role === ROLES.USER) || (this.props.role === ROLES.ADMIN)) 
-                                ? <Nav.Link style={{ fontWeight: 'bold' }} href={'/faq/user'}>Faq</Nav.Link> : null }
+                                ? <Nav.Link className="headLink" href={'/faq/user'}>Faq</Nav.Link> : null }
 
-                                <NavDropdown drop={"left"} className="drop" style={{ color: 'white', fontWeight: 'bold' }} title="Profile" id="basic-nav-dropdown">
-                                <NavDropdown.Item style={{ fontWeight: 'bold', color: '#9a9da0' }} href={ROUTES.PROFILE}>My Profile</NavDropdown.Item>
+                                <NavDropdown drop={"left"} className="drop"  title="Profile" id="basic-nav-dropdown">
+                                <NavDropdown.Item className="headDropItem" href={ROUTES.PROFILE}>My Profile</NavDropdown.Item>
                                 
-                                <NavDropdown.Item style={{ fontWeight: 'bold', color: '#9a9da0' }} href={ROUTES.DELPRO}>Delete Accaunt</NavDropdown.Item>
+                                <NavDropdown.Item className="headDropItem" href={ROUTES.DELPRO}>Delete Accaunt</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item style={{ fontWeight: 'bold', color: '#9a9da0' }} href={ROUTES.LOGOUT}>Logout</NavDropdown.Item>
+                                <NavDropdown.Item className="headDropItem" href={ROUTES.LOGOUT}>Logout</NavDropdown.Item>
 
                             </NavDropdown>
 

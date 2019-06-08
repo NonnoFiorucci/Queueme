@@ -20,11 +20,8 @@ function Info() {
       <div>
       <div>
         <br />
-        <div
-          className="infoCard"
-          style={{ display: "flex", justifyContent: "center" }}
-        >
-          <Card style={{borderRadius: "20px", width: "18rem", textAlign:'center'}}  text="grey">
+        <div className="infoCard" >
+          <Card className="infoC"  >
             <Card.Header>Queue Me</Card.Header>
             <Card.Body>
               <p>v 1.0.0</p>
@@ -54,10 +51,8 @@ function Info() {
         <br />
 
         <div
-          className="infoCard"
-          style={{ display: "flex", justifyContent: "center" }}
-        >
-          <Card style={{borderRadius: "20px", width: "18rem", textAlign:'center'}}  text="">
+          className="infoCard"   >
+          <Card className="infoC" >
             <Card.Header>Seguici</Card.Header>
             <Card.Body>
               <p>
@@ -119,10 +114,8 @@ function Info() {
         <br />
 
         <div
-          className="infoCard"
-          style={{ display: "flex", justifyContent: "center" }}
-        >
-          <Card style={{borderRadius: "20px", width: "18rem", marginBottom:'80px', textAlign:'center'}}  text="grey">
+          className="infoCard"   >
+          <Card className="infoC"  >
             <Card.Header>Contattaci</Card.Header>
             <Card.Body>
               <p>

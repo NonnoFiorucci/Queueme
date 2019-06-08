@@ -20,47 +20,40 @@ class Footer extends Component {
 
         return (
             <div>
-                <Navbar className="foot" style={{
-                    backgroundImage: "url(" + bgimage + ")",
-                    backgroundRepeat: 'no-repeat',
-                    backgroundSize: '100%',
-                    backgroundPosition: 'center',
-                    height: '60px'
-
-                }} fixed="bottom" expand="secondary"  >
+                <Navbar className="foot"  fixed="bottom" expand="secondary"  >
                     {((this.props.role === ROLES.USER) || (this.props.role === ROLES.ADMIN)) ?
 
-                        <Nav.Item style={{ marginLeft: '8%', marginTop: '-70px', marginBottom: '30px', fontSize: '13px', fontWeight: 'bold', color: '#c3c3c3' }}>
+                        <Nav.Item className="FootItem">
                             <a href={ROUTES.FAVORITE} className="btnStyle foot">
-                                <TiStarFullOutline style={{ marginBottom: '-50px' }} size={25} /><br />
+                                <TiStarFullOutline className="footIcon" size={25} /><br />
 
                             </a>
                             PREFERITI
                         </Nav.Item> : null}
                     {((this.props.role === ROLES.USER) || (this.props.role === ROLES.ADMIN)) ?
-                        <Nav.Item style={{ marginTop: '-70px', marginBottom: '30px', fontSize: '13px', fontWeight: 'bold', color: '#c3c3c3', textAlign: 'center' }}>
+                        <Nav.Item className="FootItem">
                             <a href={ROUTES.MYQUEUES} className="btnStyle foot">
-                                <FaUsers style={{ marginBottom: '-50px' }} size={30} /><br />
+                                <FaUsers className="footIcon" size={30} /><br />
 
                             </a>
                             LE TUE CODE
                         </Nav.Item> : null}
 
                     {((this.props.role === ROLES.USER) || (this.props.role === ROLES.ADMIN)) ?
-                        <Nav.Item style={{ marginTop: '-70px', marginRight: '8%', marginBottom: '30px', fontSize: '13px', fontWeight: 'bold', color: '#c3c3c3', textAlign: 'center' }}>
+                        <Nav.Item className="FootItem">
                             <a href={ROUTES.QUEUES} className="btnStyle foot">
-                                <IoMdContacts style={{ marginBottom: '-50px' }} size={30} /><br />
+                                <IoMdContacts className="footIcon" size={30} /><br />
 
                             </a>
-                            CODE
+                               LISTA CODE
                         </Nav.Item> : null}
 
 
                     {((this.props.role === ROLES.COMPANY) || (this.props.role === ROLES.OPERATOR) || (this.props.role === ROLES.ADMIN)) ?
 
-                        <Nav.Item style={{ marginLeft: '8%', marginTop: '-70px', marginBottom: '30px', fontSize: '13px', fontWeight: 'bold', color: '#c3c3c3' }}>
+                        <Nav.Item className="FootItem">
                             <a href={ROUTES.PROFILE} className="btnStyle foot">
-                                <FaUserCircle style={{ marginBottom: '-50px' }} size={25} /><br />
+                                <FaUserCircle className="footIcon" size={25} /><br />
 
                             </a>
                             PROFILO
@@ -69,9 +62,9 @@ class Footer extends Component {
 
 
                     {((this.props.role === ROLES.COMPANY) || (this.props.role === ROLES.ADMIN)) ?
-                        <Nav.Item style={{ marginTop: '-70px', marginBottom: '30px', fontSize: '10px', fontWeight: 'bold', color: '#c3c3c3', textAlign: 'center' }}>
+                        <Nav.Item className="FootItem">
                             <a href={ROUTES.COMPANY} className="btnStyle foot">
-                                <FaStoreAlt style={{ marginBottom: '-50px' }} size={30} /><br />
+                                <FaStoreAlt className="footIcon" size={30} /><br />
 
                             </a>
                             MANAGE COMPANY
@@ -79,18 +72,18 @@ class Footer extends Component {
 
 
                     {((this.props.role === ROLES.COMPANY) || (this.props.role === ROLES.ADMIN)) ?
-                        <Nav.Item style={{ marginTop: '-70px', marginBottom: '30px', fontSize: '10px', fontWeight: 'bold', color: '#c3c3c3', textAlign: 'center' }}>
+                        <Nav.Item className="FootItem">
                             <a href={ROUTES.FAQ + '/company'} className="btnStyle foot">
-                                <FaQuestionCircle style={{ marginBottom: '-50px' }} size={30} /><br />
+                                <FaQuestionCircle className="footIcon" size={30} /><br />
 
                             </a>
                             GUIDE COMPANY
                     </Nav.Item> : null}
 
                     {((this.props.role === ROLES.OPERATOR) || (this.props.role === ROLES.ADMIN)) ?
-                        <Nav.Item style={{ marginTop: '-70px', marginBottom: '30px', fontSize: '13px', fontWeight: 'bold', color: '#c3c3c3', textAlign: 'center' }}>
+                        <Nav.Item className="FootItem">
                             <a href={ROUTES.OPERATOR} className="btnStyle foot">
-                                <FaUsersCog style={{ marginBottom: '-50px' }} size={30} /><br />
+                                <FaUsersCog className="footIcon" size={30} /><br />
 
                             </a>
                             MANAGE QUEUES
@@ -98,9 +91,10 @@ class Footer extends Component {
 
 
                     {((this.props.role === ROLES.OPERATOR) || (this.props.role === ROLES.ADMIN)) ?
-                        <Nav.Item style={{ marginTop: '-70px', marginBottom: '30px', fontSize: '13px', fontWeight: 'bold', color: '#c3c3c3', textAlign: 'center' }}>
+                        <Nav.Item className="FootItem">
                             <a href={ROUTES.FAQ + '/operatro'} className="btnStyle foot">
-                                <FaQuestionCircle style={{ marginBottom: '-50px' }} size={30} /><br />
+                                <FaQuestionCircle className="footIcon"
+                                 size={30} /><br />
 
                             </a>
                             GUIDE OPERATOR

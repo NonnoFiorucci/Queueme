@@ -4,6 +4,8 @@ import SimpleCard from '../../../queue/queueCard';
 import { Spinner, Button, Modal } from 'react-bootstrap';
 import { fire } from '../../../../config/FirebaseConfig';
 
+import '../../../../styles/style.css'
+
 class MyQueueView extends React.Component {
     constructor(props) {
         super(props);
@@ -164,8 +166,8 @@ class MyQueueView extends React.Component {
                 this.showNotify()
             }
             return (
-                <div>
-                    <h2 style={{ textAlign: 'center', marginTop: 20 }}>Le mie code</h2>
+                <div className="favDiv">
+                    <h2 >Le mie code</h2>
                     {/*durante il caricamento da realtimedb*/}
                     {loading && (<Spinner color="secondary" />)}
                     {/*se ci sono code*/}
@@ -184,7 +186,7 @@ class MyQueueView extends React.Component {
                     }
 
                     {this.state.myqueues.length === 0 ?
-                        <h3 style={{ textAlign: "center" }}> Non sei inserito in nessuna cosa </h3> : null}
+                        <h3 > Non sei inserito in nessuna coda </h3> : null}
 
                 </div>
             )
