@@ -30,8 +30,8 @@ exports.userEnqueued = functions.database.ref("queues/{queueId}/userList/{userId
     return null;
   })
 
-
-exports.pushNotification = functions.database.ref("queues/{:queueId}/userList/{userId}").limitToFirst(3).onWrite(
+//ogni volta che c'é un cambiamento nella coda manda una push notification
+exports.pushNotification = functions.database.ref("queues/{:queueId}/userList/{userId}").onWrite(
   async (change) => {
     const queue = change.after.ref.parent;
     const title = queue.parent.child('title');

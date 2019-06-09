@@ -41,7 +41,6 @@ class MyQueueView extends React.Component {
                 }
                 this.setState({
                     favorite: this.state.favorite.concat(tryObj),
-                    loading: false
                 })
             }
         )
@@ -51,7 +50,7 @@ class MyQueueView extends React.Component {
 
     onRemoveUser = quId => {
         const remUserFromQueue = fire.database().ref('queues/' + quId + '/userList/')
-        remUserFromQueue.plTo(this.props.userID).once('value', snap => {
+        remUserFromQueue.orderByChild('userId').equalTo(this.props.userID).once('value', snap => {
             snap.forEach(n => {
                 remUserFromQueue.child(n.key).remove();
             })
@@ -61,7 +60,6 @@ class MyQueueView extends React.Component {
             s.forEach(n => {
                 remQueueFromUser.child(n.key).remove();
             })
-
         })
 
 
@@ -108,6 +106,7 @@ class MyQueueView extends React.Component {
                 {/*durante il caricamento da realtimedb*/}
                 {loading && (<Spinner color="secondary" />)}
                 {/*se ci sono code*/}
+                {console.log(favorite)}
                 {favorite &&
                     this.state.favorite.map(queue => (
                         <SimpleCard

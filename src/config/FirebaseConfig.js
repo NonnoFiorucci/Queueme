@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import '@firebase/messaging';
 
 
 const config = {
@@ -10,22 +11,25 @@ const config = {
   messagingSenderId: "646656687066"
 };
 
-const askForPermissionNotifications = async () => {
-  try {
-    const messaging = firebase.messaging();
-    await messaging.requestPermission();
-    const token = await messaging.getToken();
-    // console.log("token: ", token);
-    localStorage.setItem("notToken",token)
-    return token;
-  } catch (error) {
-    console.error(error)
-  }
-}
+// let messaging;
+// if(firebase.messaging.isSupported()){
+//   messaging = firebase.messaging();
+// }
+
+// if ('serviceWorker' in navigator) {
+//   window.addEventListener('load', async () => {
+//       const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', {
+//           updateViaCache: 'none'
+//       });
+//       messaging.useServiceWorker(registration);
+//   });
+// }
+
+
 const fire = firebase.initializeApp(config);
 const secondaryApp = firebase.initializeApp(config, "Secondary");
 
 const providerGoogle = new firebase.auth.GoogleAuthProvider();
 
 
-export { fire,secondaryApp, askForPermissionNotifications, providerGoogle};
+export { fire,secondaryApp, providerGoogle};

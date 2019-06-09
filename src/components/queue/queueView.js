@@ -43,6 +43,7 @@ class QueueView extends React.Component {
             }
         )
     }
+
     
     onRemoveUser = quId => {        
         const remUserFromQueue = fire.database().ref('queues/' + quId + '/userList/')
@@ -64,8 +65,7 @@ class QueueView extends React.Component {
 
     onAddUser = quId => {
         fire.database().ref('queues/'+ quId + '/userList/').push({
-            userId: (this.props.userID),
-            userToken: (localStorage.getItem('notToken'))
+            userId: (this.props.userID)
         });
         fire.database().ref('users/'+this.props.userID+'/queuesStatus').push({
             queueId: quId
@@ -74,7 +74,8 @@ class QueueView extends React.Component {
     }
 
 
-    onAddFavorite = quId => {       
+    onAddFavorite = quId => {
+       
         fire.database().ref('users/'+this.props.userID+'/favoriteQueues').push({
             queueId: quId
         })
@@ -105,20 +106,18 @@ class QueueView extends React.Component {
                 {/*durante il caricamento da realtimedb*/}
                 {loading && (<Spinner color="secondary" />)}
                 {/*se ci sono code*/}
+                {console.log(queues)}
                 {queues && 
-                    this.state.queues.map( queue => (
-                        
+                    this.state.queues.map( queue => (                        
                         <SimpleCard 
                             queue={queue}
                             userId={this.props.userID}
                             onRemoveUser={this.onRemoveUser}
                             onAddUser={this.onAddUser}
                             onAddFavorite={this.onAddFavorite}
-                            onRemoveFavorite={this.onRemoveFavorite}
+                            onRemoveFavorite={this.onRemoveFavorite}                   
                             
-                            
-                            />
-                            
+                            />                          
                             
                     ) )       
             

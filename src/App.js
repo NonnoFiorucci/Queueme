@@ -31,9 +31,6 @@ import './styles/btnStyle.css';
 
 
 
-
-
-
 class App extends React.Component {
 
   constructor() {
@@ -43,6 +40,7 @@ class App extends React.Component {
       email: null,
       name: null,
       role: null,
+      notToken: null,
 
       listQueueNotify: [],
 
@@ -80,19 +78,23 @@ class App extends React.Component {
     })
   }
 
-  handleOfflineSession = ( uid, role, auth) => {
-    localStorage.setItem('userId', uid)
-    localStorage.setItem('role', role)
-    localStorage.setItem('auth', auth)
+  handleOfflineSession = () => {
+    this.setState({
+      userID: localStorage.getItem('userId'),
+      auth: localStorage.getItem('email')
+    })
   }
 
 
   componentDidMount() {
-    this.authState()
+    this.authState()      
+    // this.handleOfflineSession()
+   
     this.setState({
       loading: false
     })
   }
+
 
   render() {
     if (this.state.loading) {

@@ -15,6 +15,7 @@ class SimpleQueue extends React.Component {
             enqueued: "",
             pos: 0,
             favorite: "",
+            notified: false
         }
         // this.onRenderVerifyEnqueue = this.onRenderVerifyEnqueue.bind(this);
         // this.onRenderFavoriteEnqueue = this.onRenderFavoriteEnqueue.bind(this);
@@ -85,15 +86,19 @@ class SimpleQueue extends React.Component {
                 }
             })
     }
-    
+
     checkPosition = usId => {
         var position = 0
         fire.database().ref('queues/' + this.props.queue.queueId + '/userList').orderByChild('userId').limitToFirst(3).on('value', snap => {
             snap.forEach(us => {
-                if (us.val().userId === usId)
-                    alert("Attenzione! Ci sono "+ position + " persone prima di te nella fila "+this.props.queue.title + " con descrizione " +this.props.queue.description)
+                if (us.val().userId === usId && !this.state.notified) {
+                    alert("Attenzione! Ci sono " + position + " persone prima di te nella fila " + this.props.queue.title + " con descrizione " + this.props.queue.description)
+                    this.setState({
+                        notified: true
+                    })
+                }
                 else
-                   position = position+ 1 
+                    position = position + 1
             })
         })
     }
@@ -105,37 +110,37 @@ class SimpleQueue extends React.Component {
         const { queue } = this.props;
         return (
             <>
-            {this.checkPosition(this.props.userId)}
-            <Card className="QCard text-center">
-                <Card.Header className="QActive"> {queue.title}
-                    {this.state.favorite === false ?
-                        <Button variant="outline-warning" onClick={this.onToggleRemoveFavoriteQueue}  >
-                            <TiStarFullOutline size={25} />
-                        </Button>
-                        :
-                        <Button variant="outline-warning" onClick={this.onToggleAddFavoriteQueue}  >
-                            <TiStarOutline size={25} />
-                        </Button>}
-                </Card.Header>
-                {/* <Card.Img variant="top" src={this.state.image[index]} /> */}
-                <Card.Body >
-                    <Card.Subtitle>
-                        {queue.description}
-                    </Card.Subtitle>
-                    <Card.Text className="QNumber"> Persone in coda: {queue.numWait} </Card.Text>
-                </Card.Body>
-                <Card.Footer>
-                    <Row className="justify-content-center" md={{ span: 1, offset: 3 }}>
-                        <Button variant="outline-success" onClick={this.onToggleAddUserQueue} disabled={(!queue.active || this.state.enqueued)}>
-                            < TiPlus size={40} />
-                        </Button>
-                        <br />
-                        <Button variant="outline-danger" onClick={this.onToggleRemoveUserQueue} disabled={!this.state.enqueued} >
-                            < TiTrash size={40} />
-                        </Button>
-                    </Row>
-                </Card.Footer>
-            </Card></>
+                {this.checkPosition(this.props.userId)}
+                <Card className="QCard text-center">
+                    <Card.Header className="QActive"> {queue.title}
+                        {this.state.favorite === false ?
+                            <Button variant="outline-warning" onClick={this.onToggleRemoveFavoriteQueue}  >
+                                <TiStarFullOutline size={25} />
+                            </Button>
+                            :
+                            <Button variant="outline-warning" onClick={this.onToggleAddFavoriteQueue}  >
+                                <TiStarOutline size={25} />
+                            </Button>}
+                    </Card.Header>
+                    {/* <Card.Img variant="top" src={this.state.image[index]} /> */}
+                    <Card.Body >
+                        <Card.Subtitle>
+                            {queue.description}
+                        </Card.Subtitle>
+                        <Card.Text className="QNumber"> Persone in coda: {queue.numWait} </Card.Text>
+                    </Card.Body>
+                    <Card.Footer>
+                        <Row className="justify-content-center" md={{ span: 1, offset: 3 }}>
+                            <Button variant="outline-success" onClick={this.onToggleAddUserQueue} disabled={(!queue.active || this.state.enqueued)}>
+                                < TiPlus size={40} />
+                            </Button>
+                            <br />
+                            <Button variant="outline-danger" onClick={this.onToggleRemoveUserQueue} disabled={!this.state.enqueued} >
+                                < TiTrash size={40} />
+                            </Button>
+                        </Row>
+                    </Card.Footer>
+                </Card></>
         )
     }
 }
