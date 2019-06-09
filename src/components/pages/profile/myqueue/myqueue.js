@@ -92,10 +92,6 @@ class MyQueueView extends React.Component {
         const { myqueues } = this.state;
         return (
             <>
-<<<<<<< HEAD
-=======
-               {/*  {this.showNotify()} */}
->>>>>>> 3769d46b62d49caad1c2bc469e6ae22e1892a82c
                 <div className="favDiv">
                     <h2 >Le mie code</h2>
                     {myqueues.length === 0 ?

@@ -246,15 +246,10 @@ class Company extends React.Component {
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" placeholder="Inserisci Email" ref='registerEmail' required />
                     <Form.Label>Password</Form.Label>
-<<<<<<< HEAD
                     <Form.Control type="password" placeholder="Inserisci Password" ref='registerPwd' required />                  
                     <Form.Label>Nome e cognome</Form.Label>
                     <Form.Control type="text" placeholder="Inserisci Nome e Cognome" ref='registerName' required />                  
                   </Form.Group>
-=======
-                    <Form.Control type="password" placeholder="Inserisci Password" ref='registerPwd' required />
-                    </Form.Group>
->>>>>>> 3769d46b62d49caad1c2bc469e6ae22e1892a82c
                   <Button type="submit" bsPrefix="btnStyle one">
                     Crea Operator
                   </Button>
