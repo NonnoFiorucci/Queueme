@@ -1,6 +1,6 @@
 import React from 'react';
 import { fire } from '../../../config/FirebaseConfig';
-import { Row, Form, Col} from 'react-bootstrap';
+import { Button,Row, Form, Col} from 'react-bootstrap';
 import WorkingQueue  from './operatorWorkingView';
 
 import '../../../styles/style.css';
@@ -27,14 +27,17 @@ class OperatorView extends React.Component {
         this.setState({
             workingQueueId: this.refs.choosedQueueId.value,
             workingStatus: true
-        })        
+        })
+        fire.database().ref('queues/'+this.state.queueId).update({
+            active: true
+        })       
         event.preventDefault()
     }
 
 
     onRenderSelect = () => {
         return (
-            <Form >
+            <Form onSubmit={this.setWorkingQueue}>
                 <Form.Group as={Row}>
                     <Form.Label column sm="2">Scegli coda</Form.Label>
                     <Col sm="8">
@@ -47,6 +50,9 @@ class OperatorView extends React.Component {
                             }
                         </Form.Control>
                     </Col>
+                    <Button type="submit" bsPrefix="btnStyle one">
+                        Attiva coda
+                    </Button>
                 </Form.Group>
             </Form>
         )
@@ -75,6 +81,9 @@ class OperatorView extends React.Component {
             workingQueueId: null,
             workingStatus: false,
             workingQueue: null,
+        })
+        fire.database().ref('queues/'+this.state.queueId).update({
+            active: true
         })
 
     }

@@ -31,25 +31,25 @@ exports.userEnqueued = functions.database.ref("queues/{queueId}/userList/{userId
   })
 
 //ogni volta che c'é un cambiamento nella coda manda una push notification
-exports.pushNotification = functions.database.ref("queues/{:queueId}/userList/{userId}").onWrite(
-  async (change) => {
-    const queue = change.after.ref.parent;
-    const title = queue.parent.child('title');
-    const desc = queue.parent.child('description');
-    const payload = {
-      notification: {
-        title: "QueueMe: Tocca quasi a te!",
-        body: title + " "+ desc +" ",
-        badge: '1',
-        sound: 'default'
-      }
-    }
-    const userToken = change.child("tokeNotifyId").val()
-    if(userToken)
-      admin.messaging().sendToDevice(userToken,payload)    
-  }
+// exports.pushNotification = functions.database.ref("queues/{:queueId}/userList/{userId}").onWrite(
+//   async (change) => {
+//     const queue = change.after.ref.parent;
+//     const title = queue.parent.child('title');
+//     const desc = queue.parent.child('description');
+//     const payload = {
+//       notification: {
+//         title: "QueueMe: Tocca quasi a te!",
+//         body: title + " "+ desc +" ",
+//         badge: '1',
+//         sound: 'default'
+//       }
+//     }
+//     const userToken = change.child("tokeNotifyId").val()
+//     if(userToken)
+//       admin.messaging().sendToDevice(userToken,payload)    
+//   }
 
-)
+// )
 
 
 

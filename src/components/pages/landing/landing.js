@@ -5,7 +5,7 @@ import '../../../styles/style.css';
 import '../../../styles/btnStyle.css';
 import logo from '../../media/LogoQME.png';
 import { TiTickOutline } from 'react-icons/ti'
-import { Row, Col } from 'react-bootstrap';
+// import { Row, Col } from 'react-bootstrap';
 
 function Landing() {
     return (

@@ -65,7 +65,7 @@ class MyQueueView extends React.Component {
         })
     }
 
-    onAddUser = quId => {
+    onAddUser = (quId)=> {
         fire.database().ref('queues/' + quId + '/userList/').push({
             userId: (this.props.userID)
         });

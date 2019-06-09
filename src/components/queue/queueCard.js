@@ -15,16 +15,25 @@ class SimpleQueue extends React.Component {
             enqueued: "",
             pos: 0,
             favorite: "",
+            lastNumber: 0,
             notified: false
         }
-        // this.onRenderVerifyEnqueue = this.onRenderVerifyEnqueue.bind(this);
-        // this.onRenderFavoriteEnqueue = this.onRenderFavoriteEnqueue.bind(this);
+        this.onRenderVerifyEnqueue = this.onRenderVerifyEnqueue.bind(this);
+        this.onRenderFavoriteEnqueue = this.onRenderFavoriteEnqueue.bind(this);
+        // this.getLastNumber = this.getLastNumber.bind(this);
     }
     componentDidMount() {
         this.onRenderVerifyEnqueue();
         this.onRenderFavoriteEnqueue();
+        // this.getLastNumber()
     }
-
+    // getLastNumber () {
+    //         const lastNumber = fire.database().ref('queues/' +this.props.queue.queueId + '/userList')
+    //         lastNumber.orderByChild('number').limitToLast(1).on('value', n=> {
+    //             if(n.val())
+    //                 this.setState({lastNumber: n.val()})
+    //         })    
+    // }
     onToggleAddUserQueue = () => {
         this.setState({
             enqueued: !this.state.enqueued

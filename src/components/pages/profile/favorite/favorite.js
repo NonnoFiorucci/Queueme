@@ -5,6 +5,7 @@ import { Spinner } from 'react-bootstrap';
 import { fire } from '../../../../config/FirebaseConfig';
 
 
+
 import '../../../../styles/style.css'
 
 class MyQueueView extends React.Component {
@@ -47,7 +48,6 @@ class MyQueueView extends React.Component {
     }
 
 
-
     onRemoveUser = quId => {
         const remUserFromQueue = fire.database().ref('queues/' + quId + '/userList/')
         remUserFromQueue.orderByChild('userId').equalTo(this.props.userID).once('value', snap => {
@@ -61,30 +61,27 @@ class MyQueueView extends React.Component {
                 remQueueFromUser.child(n.key).remove();
             })
         })
-
-
+        this.setState({
+            favorite: null
+        })
     }
 
-    onAddUser = quId => {
+    onAddUser = (quId) => {
         fire.database().ref('queues/' + quId + '/userList/').push({
             userId: (this.props.userID)
         });
         fire.database().ref('users/' + this.props.userID + '/queuesStatus').push({
             queueId: quId
         })
-
     }
 
     onAddFavorite = quId => {
-
         fire.database().ref('users/' + this.props.userID + '/favoriteQueues').push({
             queueId: quId
         })
-
     }
 
     onRemoveFavorite = quId => {
-
         const remQueueFromUser = fire.database().ref('users/' + this.props.userID + '/favoriteQueues/')
         remQueueFromUser.orderByChild('queueId').equalTo(quId).once('value', s => {
             s.forEach(n => {
@@ -92,8 +89,6 @@ class MyQueueView extends React.Component {
             })
 
         })
-
-
     }
 
 
@@ -106,7 +101,6 @@ class MyQueueView extends React.Component {
                 {/*durante il caricamento da realtimedb*/}
                 {loading && (<Spinner color="secondary" />)}
                 {/*se ci sono code*/}
-                {console.log(favorite)}
                 {favorite &&
                     this.state.favorite.map(queue => (
                         <SimpleCard

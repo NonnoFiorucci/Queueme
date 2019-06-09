@@ -40,7 +40,7 @@ class App extends React.Component {
       email: null,
       name: null,
       role: null,
-      notToken: null,
+      // notToken: null,
 
       listQueueNotify: [],
 
