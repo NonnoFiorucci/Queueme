@@ -137,7 +137,7 @@ class Login extends React.Component {
             <Form.Label>Email</Form.Label>
             <Form.Control type="email" placeholder="Inserisci Email" ref='registerEmail' required />
             <Form.Label>Name</Form.Label>
-            <Form.Control type="text" placeholder="Inserisci Email" ref='registerName' required />
+            <Form.Control type="text" placeholder="Inserisci Nome" ref='registerName' required />
             <Form.Label>Password</Form.Label>
             <Form.Control type="password" placeholder="Inserisci Password" ref='registerPwd' required />
             <Form.Label>Sono uno</Form.Label>

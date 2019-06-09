@@ -26,10 +26,12 @@ class Profile extends Component {
   getUserData(uid) {
     fire.database().ref('users/' + uid).once(
       "value", snap => {
+        if(snap.val()){
         this.setState({
           name: snap.val().name,
           email: snap.val().email
         })
+      }
       }
     )
   } 

@@ -73,7 +73,7 @@ class Footer extends Component {
                     {((this.props.role === ROLES.COMPANY) || (this.props.role === ROLES.ADMIN)) ?
                         <Nav.Item className="FootItem">
                             <a href={ROUTES.FAQ + '/company'} className="btnStyle foot">
-                                <FaQuestionCircle className="footIcon" size={30} /><br />
+                                <FaQuestionCircle className="footIcon" size={25} /><br />
 
                             </a>
                             GUIDE COMPANY
@@ -93,7 +93,7 @@ class Footer extends Component {
                         <Nav.Item className="FootItem">
                             <a href={ROUTES.FAQ + '/operatro'} className="btnStyle foot">
                                 <FaQuestionCircle className="footIcon"
-                                 size={30} /><br />
+                                 size={25} /><br />
 
                             </a>
                             GUIDE OPERATOR

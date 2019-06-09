@@ -120,7 +120,7 @@ class Company extends React.Component {
             .catch((error) => {
                 alert(error);
             });
-        fire.database().ref('operators/' + this.state.idOperator + '/queues/').push({
+        fire.database().ref('operators/' + this.refs.idOperator.value + '/queues/').push({
                 idQueue: keyQueue,
                 idCompany: this.props.userID
             })
@@ -132,7 +132,7 @@ class Company extends React.Component {
             idOperator: idOp
         })
             .then((data) => {
-                alert("Operatore aggiunto all'azienda");
+                alert("Operatore aggiunto all'azienda, il suo codice è: "+idOp);
             })
             .catch((error) => {
                 alert(error);
@@ -254,8 +254,7 @@ class Company extends React.Component {
                     <Form.Control type="email" placeholder="Inserisci Email" ref='registerEmail' required />
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" placeholder="Inserisci Password" ref='registerPwd' required />
-                    <Form.Label>Sono uno</Form.Label>                   
-                  </Form.Group>
+                    </Form.Group>
                   <Button type="submit" bsPrefix="btnStyle one">
                     Crea Operator
                   </Button>
