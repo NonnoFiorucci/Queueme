@@ -16,14 +16,12 @@ class SimpleQueue extends React.Component {
             pos: 0,
             favorite: "",
         }
-        this.onRenderVerifyEnqueue = this.onRenderVerifyEnqueue.bind(this);
-        this.onRenderFavoriteEnqueue = this.onRenderFavoriteEnqueue.bind(this);
-        this.checkPosition = this.checkPosition.bind(this)
+        // this.onRenderVerifyEnqueue = this.onRenderVerifyEnqueue.bind(this);
+        // this.onRenderFavoriteEnqueue = this.onRenderFavoriteEnqueue.bind(this);
     }
     componentDidMount() {
         this.onRenderVerifyEnqueue();
         this.onRenderFavoriteEnqueue();
-        this.checkPosition(this.props.userId);
     }
 
     onToggleAddUserQueue = () => {
@@ -89,13 +87,13 @@ class SimpleQueue extends React.Component {
     }
     
     checkPosition = usId => {
+        var position = 0
         fire.database().ref('queues/' + this.props.queue.queueId + '/userList').orderByChild('userId').limitToFirst(3).on('value', snap => {
             snap.forEach(us => {
                 if (us.val().userId === usId)
-                    alert("Attenzione! Ci sono "+this.state.pos+ " persone prima di te nella fila "+this.props.queue.title + " con descrizione " +this.props.queue.description)
+                    alert("Attenzione! Ci sono "+ position + " persone prima di te nella fila "+this.props.queue.title + " con descrizione " +this.props.queue.description)
                 else
-                    this.setState({ pos: this.state.pos + 1 })
-
+                   position = position+ 1 
             })
         })
     }
@@ -106,6 +104,8 @@ class SimpleQueue extends React.Component {
 
         const { queue } = this.props;
         return (
+            <>
+            {this.checkPosition(this.props.userId)}
             <Card className="QCard text-center">
                 <Card.Header className="QActive"> {queue.title}
                     {this.state.favorite === false ?
@@ -126,21 +126,16 @@ class SimpleQueue extends React.Component {
                 </Card.Body>
                 <Card.Footer>
                     <Row className="justify-content-center" md={{ span: 1, offset: 3 }}>
-
                         <Button variant="outline-success" onClick={this.onToggleAddUserQueue} disabled={(!queue.active || this.state.enqueued)}>
                             < TiPlus size={40} />
                         </Button>
                         <br />
-
                         <Button variant="outline-danger" onClick={this.onToggleRemoveUserQueue} disabled={!this.state.enqueued} >
                             < TiTrash size={40} />
                         </Button>
-
-
-
                     </Row>
                 </Card.Footer>
-            </Card>
+            </Card></>
         )
     }
 }

@@ -10,10 +10,22 @@ const config = {
   messagingSenderId: "646656687066"
 };
 
+const askForPermissionNotifications = async () => {
+  try {
+    const messaging = firebase.messaging();
+    await messaging.requestPermission();
+    const token = await messaging.getToken();
+    // console.log("token: ", token);
+    localStorage.setItem("notToken",token)
+    return token;
+  } catch (error) {
+    console.error(error)
+  }
+}
 const fire = firebase.initializeApp(config);
 const secondaryApp = firebase.initializeApp(config, "Secondary");
 
 const providerGoogle = new firebase.auth.GoogleAuthProvider();
 
 
-export { fire,secondaryApp, providerGoogle};
+export { fire,secondaryApp, askForPermissionNotifications, providerGoogle};

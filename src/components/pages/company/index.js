@@ -206,6 +206,7 @@ class Company extends React.Component {
     regEmailPassword(event) {
         const email = this.refs.registerEmail.value
         const password = this.refs.registerPwd.value
+        const name = this.refs.registerName.value
         const role = ROLES.OPERATOR
     
         secondaryApp.auth().createUserWithEmailAndPassword(email, password)
@@ -215,7 +216,7 @@ class Company extends React.Component {
               userAuthProvider: result.user,
               role: role.OPERATOR
             })
-            this.mergeRealTimeDbUser()
+            this.mergeRealTimeDbUser(name)
             this.handleNewOperator(result.user.uid)
           }).catch((error) => {
             if (error.code === 'auth/weak-password') {
@@ -228,12 +229,12 @@ class Company extends React.Component {
         event.preventDefault()
       }
 
-    mergeRealTimeDbUser() {
+    mergeRealTimeDbUser(name) {
         const rootUtente = fire.database().ref("users/" + this.state.userAuthProvider.uid)
         rootUtente.on("value", snap => {
           if (snap.val() === null) {
             rootUtente.set({                
-              name: this.state.userAuthProvider.displayName,
+              name: name,
               email: this.state.userAuthProvider.email,
               role: ROLES.OPERATOR,
             }).then((data) => {
@@ -253,8 +254,9 @@ class Company extends React.Component {
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" placeholder="Inserisci Email" ref='registerEmail' required />
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Inserisci Password" ref='registerPwd' required />
-                    <Form.Label>Sono uno</Form.Label>                   
+                    <Form.Control type="password" placeholder="Inserisci Password" ref='registerPwd' required />                  
+                    <Form.Label>Nome e cognome</Form.Label>
+                    <Form.Control type="text" placeholder="Inserisci Nome e Cognome" ref='registerName' required />                  
                   </Form.Group>
                   <Button type="submit" bsPrefix="btnStyle one">
                     Crea Operator

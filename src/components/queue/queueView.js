@@ -64,7 +64,8 @@ class QueueView extends React.Component {
 
     onAddUser = quId => {
         fire.database().ref('queues/'+ quId + '/userList/').push({
-            userId: (this.props.userID)
+            userId: (this.props.userID),
+            userToken: (localStorage.getItem('notToken'))
         });
         fire.database().ref('users/'+this.props.userID+'/queuesStatus').push({
             queueId: quId
@@ -73,8 +74,7 @@ class QueueView extends React.Component {
     }
 
 
-    onAddFavorite = quId => {
-       
+    onAddFavorite = quId => {       
         fire.database().ref('users/'+this.props.userID+'/favoriteQueues').push({
             queueId: quId
         })
