@@ -71,15 +71,7 @@ class Company extends React.Component {
                 console.log(s.key)
             })
         })
-         const dbQueryOperator = fire.database().ref('company/' + this.state.idCompany + '/operators/')
-         dbQueryOperator.on('value', snap => {
-             snap.forEach(s => {
-                 this.setState({
-                     listOfOperator: this.state.listOfOperator.concat([s.val().idOperator])
-                 })
-                 console.log(s.val().idOperator)
-             })
-         })
+       
     }
     //fa una query per visualizzare le code gestite da una determinata azienda ## da sistemare
     showQueues() {
@@ -120,7 +112,7 @@ class Company extends React.Component {
             .catch((error) => {
                 alert(error);
             });
-        fire.database().ref('operators/' + this.state.idOperator + '/queues/').push({
+        fire.database().ref('operators/' + this.refs.idOperator.value + '/queues/').push({
                 idQueue: keyQueue,
                 idCompany: this.props.userID
             })
@@ -132,7 +124,7 @@ class Company extends React.Component {
             idOperator: idOp
         })
             .then((data) => {
-                alert("Operatore aggiunto all'azienda");
+                alert("Operatore aggiunto all'azienda, il suo codice è: "+idOp);
             })
             .catch((error) => {
                 alert(error);
@@ -254,10 +246,15 @@ class Company extends React.Component {
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" placeholder="Inserisci Email" ref='registerEmail' required />
                     <Form.Label>Password</Form.Label>
+<<<<<<< HEAD
                     <Form.Control type="password" placeholder="Inserisci Password" ref='registerPwd' required />                  
                     <Form.Label>Nome e cognome</Form.Label>
                     <Form.Control type="text" placeholder="Inserisci Nome e Cognome" ref='registerName' required />                  
                   </Form.Group>
+=======
+                    <Form.Control type="password" placeholder="Inserisci Password" ref='registerPwd' required />
+                    </Form.Group>
+>>>>>>> 3769d46b62d49caad1c2bc469e6ae22e1892a82c
                   <Button type="submit" bsPrefix="btnStyle one">
                     Crea Operator
                   </Button>

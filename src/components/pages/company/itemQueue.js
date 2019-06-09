@@ -3,7 +3,8 @@ import { fire } from '../../../config/FirebaseConfig';
 
 
 class ItemQueue extends React.Component {
-    constructor(proos){
+    constructor(props){
+        super(props);
         this.state = {
             editMode:false
         }
