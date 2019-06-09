@@ -71,15 +71,7 @@ class Company extends React.Component {
                 console.log(s.key)
             })
         })
-         const dbQueryOperator = fire.database().ref('company/' + this.state.idCompany + '/operators/')
-         dbQueryOperator.on('value', snap => {
-             snap.forEach(s => {
-                 this.setState({
-                     listOfOperator: this.state.listOfOperator.concat([s.val().idOperator])
-                 })
-                 console.log(s.val().idOperator)
-             })
-         })
+       
     }
     //fa una query per visualizzare le code gestite da una determinata azienda ## da sistemare
     showQueues() {
