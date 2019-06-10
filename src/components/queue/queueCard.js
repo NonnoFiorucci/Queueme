@@ -13,27 +13,19 @@ class SimpleQueue extends React.Component {
         super(props);
         this.state = {
             enqueued: "",
-            pos: 0,
             favorite: "",
             lastNumber: 0,
             notified: false
         }
         this.onRenderVerifyEnqueue = this.onRenderVerifyEnqueue.bind(this);
         this.onRenderFavoriteEnqueue = this.onRenderFavoriteEnqueue.bind(this);
-        // this.getLastNumber = this.getLastNumber.bind(this);
+        this.checkPosition = this.checkPosition.bind(this);
     }
     componentDidMount() {
         this.onRenderVerifyEnqueue();
         this.onRenderFavoriteEnqueue();
-        // this.getLastNumber()
+        this.checkPosition(this.props.userId)
     }
-    // getLastNumber () {
-    //         const lastNumber = fire.database().ref('queues/' +this.props.queue.queueId + '/userList')
-    //         lastNumber.orderByChild('number').limitToLast(1).on('value', n=> {
-    //             if(n.val())
-    //                 this.setState({lastNumber: n.val()})
-    //         })    
-    // }
     onToggleAddUserQueue = () => {
         this.setState({
             enqueued: !this.state.enqueued
@@ -97,19 +89,17 @@ class SimpleQueue extends React.Component {
     }
 
     checkPosition = usId => {
-        var position = 0
-        fire.database().ref('queues/' + this.props.queue.queueId + '/userList').orderByChild('userId').limitToFirst(3).on('value', snap => {
-            snap.forEach(us => {
-                if (us.val().userId === usId && !this.state.notified) {
-                    alert("Attenzione! Ci sono " + position + " persone prima di te nella fila " + this.props.queue.title + " con descrizione " + this.props.queue.description)
-                    this.setState({
-                        notified: true
-                    })
-                }
-                else
-                    position = position + 1
+            var position = 0
+            fire.database().ref('queues/' + this.props.queue.queueId + '/userList').orderByChild('userId').limitToFirst(3).on('value', snap => {
+                snap.forEach(us => {
+                    if (us.val().userId === usId && !this.state.notified) {
+                        this.props.onAddToNotifyQueue(position, this.props.queue.title, this.props.queue.description)
+                    }
+                    else
+                        position = position + 1
+                })
             })
-        })
+        
     }
 
 
@@ -119,7 +109,6 @@ class SimpleQueue extends React.Component {
         const { queue } = this.props;
         return (
             <>
-                {this.checkPosition(this.props.userId)}
                 <Card className="QCard text-center">
                     <Card.Header className="QActive"> {queue.title}
                         {this.state.favorite === false ?

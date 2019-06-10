@@ -11,10 +11,7 @@ class MyQueueView extends React.Component {
         super(props);
         this.state = {
             myqueues: [],
-            notify: null,
-            showNot: false,
-            posApp: 0,
-            limit: 5
+            notify: [],
         }
         this.getMyQueues = this.getMyQueues.bind(this)
     }
@@ -37,6 +34,7 @@ class MyQueueView extends React.Component {
     onShowQueue = quId => {
         fire.database().ref('queues/' + quId).on(
             'value', snap => {
+                if(snap.val()){
                 const tryObj = {
                     active: snap.val().active,
                     title: snap.val().title,
@@ -45,8 +43,9 @@ class MyQueueView extends React.Component {
                     queueId: snap.key
                 }
                 this.setState({
-                    myqueues: this.state.myqueues.concat(tryObj)
+                    myqueues: this.state.myqueues.concat([tryObj])
                 })
+            }
             }
         )
     }
@@ -87,6 +86,22 @@ class MyQueueView extends React.Component {
             })
         })
     }
+    onAddToNotifyQueue = (pos,title,desc) => {
+        const elem = {
+            position: pos,
+            title: title,
+            description: desc
+        }
+        this.setState({
+            notify: this.state.notify.concat(elem )
+        })
+
+    }
+    showAlert(){
+        this.state.notify.forEach(elem =>{
+            alert("Attenzione tocca a te! Hai " + elem.position +" persone davanti a te nella coda "+elem.title + " "+ elem.description)
+        })
+    }
 
     render() {
         const { myqueues } = this.state;
@@ -102,8 +117,10 @@ class MyQueueView extends React.Component {
                                 onRemoveUser={this.onRemoveUser}
                                 onAddUser={this.onAddUser}
                                 onAddFavorite={this.onAddFavorite}
-                                onRemoveFavorite={this.onRemoveFavorite} />
+                                onRemoveFavorite={this.onRemoveFavorite}
+                                onAddToNotifyQueue= {this.onAddToNotifyQueue} />
                         ))}
+                        {this.showAlert()}
 
                 </div>
             </>

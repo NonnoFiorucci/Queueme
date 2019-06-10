@@ -15,7 +15,7 @@ class QueueView extends React.Component {
             loading: false,
             //code 
             queues: [],
-            limit: 5
+            notify: []
         }
         this.onShowQueue = this.onShowQueue.bind(this);
         // this.onVerifyAlreadyEnqueue = this.onVerifyAlreadyEnqueue.bind(this);
@@ -79,6 +79,17 @@ class QueueView extends React.Component {
         })
 
     }
+    onAddToNotifyQueue = (pos,title,desc) => {
+        const elem = {
+            position: pos,
+            title: title,
+            description: desc
+        }
+        this.setState({
+            notify: this.state.notify.concat(elem )
+        })
+
+    }
 
 
     onRemoveFavorite = quId => {        
@@ -93,6 +104,11 @@ class QueueView extends React.Component {
            
     
     }
+    showAlert(){
+        this.state.notify.forEach(elem =>{
+            alert("Attenzione tocca a te! Hai " + elem.position +" persone davanti a te nella coda "+elem.title + " "+ elem.description)
+        })
+    }
 
 
 
@@ -104,7 +120,6 @@ class QueueView extends React.Component {
                 {/*durante il caricamento da realtimedb*/}
                 {loading && (<Spinner color="secondary" />)}
                 {/*se ci sono code*/}
-                {console.log(queues)}
                 {queues && 
                     this.state.queues.map( queue => (                        
                         <SimpleCard 
@@ -114,13 +129,14 @@ class QueueView extends React.Component {
                             onAddUser={this.onAddUser}
                             onAddFavorite={this.onAddFavorite}
                             onRemoveFavorite={this.onRemoveFavorite}               
-                            
+                            onAddToNotifyQueue= {this.onAddToNotifyQueue}
                             />                          
                             
                     ) )       
             
                         
-                }      
+                }
+                {this.showAlert()} 
                     
             
             </div>

@@ -14,7 +14,7 @@ class MyQueueView extends React.Component {
         this.state = {
             loading: true,
             favorite: [],
-            limit: 5
+            notify: []
         }
         this.getFavQueue = this.getFavQueue.bind(this);
     }
@@ -33,16 +33,18 @@ class MyQueueView extends React.Component {
     onShowQueue = quId => {
         fire.database().ref('queues/' + quId).on(
             'value', snap => {
-                const tryObj = {
-                    active: snap.val().active,
-                    title: snap.val().title,
-                    description: snap.val().description,
-                    numWait: snap.val().numWait,
-                    queueId: snap.key
+                if (snap.val()) {
+                    const tryObj = {
+                        active: snap.val().active,
+                        title: snap.val().title,
+                        description: snap.val().description,
+                        numWait: snap.val().numWait,
+                        queueId: snap.key
+                    }
+                    this.setState({
+                        favorite: this.state.favorite.concat(tryObj),
+                    })
                 }
-                this.setState({
-                    favorite: this.state.favorite.concat(tryObj),
-                })
             }
         )
     }
@@ -90,6 +92,22 @@ class MyQueueView extends React.Component {
 
         })
     }
+    onAddToNotifyQueue = (pos, title, desc) => {
+        const elem = {
+            position: pos,
+            title: title,
+            description: desc
+        }
+        this.setState({
+            notify: this.state.notify.concat(elem)
+        })
+
+    }
+    showAlert() {
+        this.state.notify.forEach(elem => {
+            alert("Attenzione tocca a te! Hai " + elem.position + " persone davanti a te nella coda " + elem.title + " " + elem.description)
+        })
+    }
 
 
 
@@ -110,12 +128,13 @@ class MyQueueView extends React.Component {
                             onAddUser={this.onAddUser}
                             onAddFavorite={this.onAddFavorite}
                             onRemoveFavorite={this.onRemoveFavorite}
-
+                            onAddToNotifyQueue={this.onAddToNotifyQueue}
                         />
                     ))
 
 
                 }
+                {this.showAlert()}
 
                 {this.state.favorite.length === 0 ?
                     <h3 > Non hai nessuna coda tra i Preferiti </h3> : null}
